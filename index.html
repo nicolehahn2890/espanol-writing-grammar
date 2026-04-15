@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Español Trainer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:    #F4A7C3;
+  --pink2:   #E879A0;
+  --violet:  #C4A8E8;
+  --violet2: #9B6DD6;
+  --mint:    #A8E0CC;
+  --mint2:   #5CC4A0;
+  --blue:    #7BAEE8;
+  --blue2:   #3A7BD5;
+  --peach:   #F9C9A8;
+  --bg:      #0f0d14;
+  --bg2:     #17141f;
+  --bg3:     #1e1a2a;
+  --bg4:     #252130;
+  --text:    #f0eaf8;
+  --text2:   #b8b0cc;
+  --text3:   #7a7090;
+  --border:  rgba(196,168,232,0.15);
+  --border2: rgba(196,168,232,0.25);
+  --radius:  16px;
+  --radius2: 12px;
+  --radius3: 8px;
+  --shadow:  0 4px 24px rgba(0,0,0,0.4);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background decoration */
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px; left: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(196,168,232,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -200px; right: -200px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(168,224,204,0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── HEADER ─── */
+#header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(15,13,20,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+#header-logo {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--pink), var(--violet));
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+#header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px; font-style: italic;
+  background: linear-gradient(90deg, var(--pink), var(--violet), var(--mint));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#header-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+#btn-settings, #btn-back {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius3);
+  color: var(--text2);
+  padding: 6px 12px;
+  font-size: 13px; font-family: inherit;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+#btn-settings:hover, #btn-back:hover { border-color: var(--violet); color: var(--text); }
+#btn-back { display: none; }
+
+/* ─── MAIN CONTAINER ─── */
+#app { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* ─── SCREENS ─── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ─── HOME SCREEN ─── */
+#screen-home {}
+.home-intro {
+  text-align: center;
+  padding: 32px 0 28px;
+}
+.home-intro .big-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px; font-style: italic;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--pink), var(--violet), var(--mint));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 10px;
+}
+.home-intro p {
+  color: var(--text2); font-size: 15px; line-height: 1.6;
+}
+
+/* Stats bar */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 14px 16px;
+  text-align: center;
+}
+.stat-card .stat-val {
+  font-size: 24px; font-weight: 600;
+  background: linear-gradient(135deg, var(--pink), var(--violet));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-card .stat-lbl { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+/* Level grid */
+.section-title {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 12px;
+}
+.level-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-bottom: 28px;
+}
+.level-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 16px 14px;
+  cursor: pointer; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.level-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.level-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.level-card:hover::before { opacity: 1; }
+.level-card[data-level="A1"]::before { background: var(--mint); }
+.level-card[data-level="A2"]::before { background: var(--mint2); }
+.level-card[data-level="B1"]::before { background: var(--blue); }
+.level-card[data-level="B2"]::before { background: var(--blue2); }
+.level-card[data-level="C1"]::before { background: var(--violet); }
+.level-card[data-level="C2"]::before { background: var(--violet2); }
+.level-badge {
+  font-size: 20px; font-weight: 600;
+  margin-bottom: 4px;
+}
+.level-card[data-level="A1"] .level-badge { color: var(--mint2); }
+.level-card[data-level="A2"] .level-badge { color: var(--mint2); }
+.level-card[data-level="B1"] .level-badge { color: var(--blue); }
+.level-card[data-level="B2"] .level-badge { color: var(--blue2); }
+.level-card[data-level="C1"] .level-badge { color: var(--violet); }
+.level-card[data-level="C2"] .level-badge { color: var(--violet2); }
+.level-name { font-size: 11px; color: var(--text3); }
+.level-progress {
+  margin-top: 10px;
+  background: var(--bg4); border-radius: 4px; height: 3px;
+}
+.level-progress-fill {
+  height: 3px; border-radius: 4px; transition: width 0.6s;
+}
+
+/* ─── TOPIC SCREEN ─── */
+.topic-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.topic-level-badge {
+  font-size: 28px; font-weight: 700; padding: 8px 16px;
+  border-radius: var(--radius2); background: var(--bg3);
+  border: 1px solid var(--border);
+}
+.topic-header h2 {
+  font-size: 20px; font-weight: 500; color: var(--text2);
+}
+.topics-list { display: flex; flex-direction: column; gap: 8px; }
+.topic-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius2);
+  padding: 14px 16px;
+  cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 12px;
+}
+.topic-item:hover { border-color: var(--border2); background: var(--bg3); }
+.topic-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--bg4); border: 2px solid var(--text3);
+  transition: all 0.2s;
+}
+.topic-dot.done { background: var(--mint2); border-color: var(--mint2); }
+.topic-dot.partial { background: var(--peach); border-color: var(--peach); }
+.topic-info { flex: 1; }
+.topic-name { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+.topic-desc { font-size: 12px; color: var(--text3); }
+.topic-arrow { color: var(--text3); font-size: 16px; }
+.topic-score { font-size: 12px; color: var(--text3); text-align: right; }
+
+/* ─── MODE SCREEN ─── */
+.mode-header {
+  text-align: center; padding: 20px 0 24px;
+}
+.mode-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px; font-style: italic;
+  color: var(--text); margin-bottom: 6px;
+}
+.mode-header p { font-size: 14px; color: var(--text3); }
+.mode-cards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 24px;
+}
+.mode-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 18px;
+  cursor: pointer; transition: all 0.25s;
+  text-align: center;
+}
+.mode-card:hover { transform: translateY(-3px); border-color: var(--border2); }
+.mode-card.mode-a:hover { border-color: var(--blue); }
+.mode-card.mode-b:hover { border-color: var(--pink2); }
+.mode-icon {
+  font-size: 28px; margin-bottom: 10px;
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+}
+.mode-a .mode-icon { background: rgba(123,174,232,0.15); }
+.mode-b .mode-icon { background: rgba(244,167,195,0.15); }
+.mode-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.mode-card p { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.mode-a h3 { color: var(--blue); }
+.mode-b h3 { color: var(--pink); }
+
+/* Grammar explanation box */
+.grammar-box {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-left: 3px solid var(--violet);
+  border-radius: var(--radius2); padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.grammar-box h3 { font-size: 13px; font-weight: 600; color: var(--violet); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.grammar-box p { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+.grammar-box .example {
+  font-style: italic; color: var(--mint2);
+  background: rgba(168,224,204,0.08);
+  border-radius: 6px; padding: 8px 12px;
+  font-size: 13px; margin-top: 8px;
+}
+
+/* ─── EXERCISE SCREEN ─── */
+.exercise-meta {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px;
+}
+.ex-level-pill {
+  font-size: 11px; font-weight: 600; padding: 3px 10px;
+  border-radius: 20px; background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text3);
+}
+.ex-topic-name { font-size: 13px; color: var(--text2); }
+.ex-counter { margin-left: auto; font-size: 12px; color: var(--text3); }
+.progress-bar {
+  background: var(--bg3); border-radius: 4px; height: 4px;
+  margin-bottom: 24px; overflow: hidden;
+}
+.progress-fill {
+  height: 4px; border-radius: 4px;
+  background: linear-gradient(90deg, var(--pink), var(--violet));
+  transition: width 0.4s;
+}
+
+/* Exercise card */
+.exercise-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px 20px;
+  margin-bottom: 16px;
+}
+.ex-type-badge {
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text3); margin-bottom: 12px; font-weight: 600;
+}
+.ex-question {
+  font-size: 17px; font-weight: 500; line-height: 1.5;
+  color: var(--text); margin-bottom: 18px;
+}
+.ex-question .blank {
+  display: inline-block;
+  border-bottom: 2px solid var(--violet);
+  min-width: 80px; height: 24px;
+  vertical-align: bottom;
+}
+.ex-hint { font-size: 12px; color: var(--text3); margin-bottom: 16px; font-style: italic; }
+
+/* Multiple choice */
+.choices { display: flex; flex-direction: column; gap: 8px; }
+.choice-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius3); padding: 12px 16px;
+  color: var(--text); font-family: inherit; font-size: 15px;
+  cursor: pointer; transition: all 0.2s; text-align: left;
+  display: flex; align-items: center; gap: 10px;
+}
+.choice-btn:hover:not(:disabled) { border-color: var(--violet); background: var(--bg4); }
+.choice-btn.correct { border-color: var(--mint2); background: rgba(92,196,160,0.1); color: var(--mint2); }
+.choice-btn.wrong { border-color: #e87a7a; background: rgba(232,122,122,0.1); color: #e87a7a; }
+.choice-btn:disabled { cursor: default; }
+.choice-letter {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: var(--bg4); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; flex-shrink: 0;
+  color: var(--text3);
+}
+.choice-btn.correct .choice-letter { background: rgba(92,196,160,0.2); border-color: var(--mint2); color: var(--mint2); }
+.choice-btn.wrong .choice-letter { background: rgba(232,122,122,0.2); border-color: #e87a7a; color: #e87a7a; }
+
+/* Text input */
+.text-input-wrap { position: relative; }
+.ex-input {
+  width: 100%; background: var(--bg3);
+  border: 1px solid var(--border); border-radius: var(--radius3);
+  color: var(--text); font-family: inherit; font-size: 16px;
+  padding: 12px 16px; outline: none; transition: border-color 0.2s;
+}
+.ex-input:focus { border-color: var(--violet); }
+.ex-input.correct { border-color: var(--mint2); }
+.ex-input.wrong { border-color: #e87a7a; }
+
+/* Feedback box */
+.feedback-box {
+  border-radius: var(--radius2); padding: 14px 16px;
+  margin-bottom: 16px; display: none;
+  animation: fadeIn 0.3s ease;
+}
+.feedback-box.correct { background: rgba(92,196,160,0.1); border: 1px solid rgba(92,196,160,0.3); }
+.feedback-box.wrong { background: rgba(232,122,122,0.08); border: 1px solid rgba(232,122,122,0.25); }
+.feedback-box.show { display: block; }
+.feedback-icon { font-size: 16px; margin-right: 8px; }
+.feedback-text { font-size: 14px; line-height: 1.5; }
+.feedback-correct-ans { font-size: 13px; color: var(--text2); margin-top: 6px; }
+.feedback-correct-ans strong { color: var(--mint2); }
+.feedback-explain { font-size: 13px; color: var(--text3); margin-top: 6px; line-height: 1.5; }
+
+/* Action buttons */
+.ex-actions { display: flex; gap: 10px; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--violet2), var(--pink2));
+  border: none; border-radius: var(--radius3);
+  color: white; font-family: inherit; font-size: 15px; font-weight: 500;
+  padding: 13px 24px; cursor: pointer; transition: all 0.2s;
+  flex: 1;
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: default; transform: none; }
+.btn-secondary {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius3); color: var(--text2);
+  font-family: inherit; font-size: 15px;
+  padding: 13px 20px; cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--border2); color: var(--text); }
+
+/* ─── MODUS B ─── */
+.modeb-task {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-left: 3px solid var(--pink);
+  border-radius: var(--radius2); padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.modeb-task-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--pink); margin-bottom: 8px; }
+.modeb-task-text { font-size: 15px; line-height: 1.6; color: var(--text); }
+.modeb-task-hint { font-size: 12px; color: var(--text3); margin-top: 8px; font-style: italic; }
+
+.modeb-textarea {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: var(--radius2);
+  color: var(--text); font-family: inherit; font-size: 15px;
+  padding: 16px; outline: none; transition: border-color 0.2s;
+  resize: vertical; min-height: 120px; margin-bottom: 12px;
+  line-height: 1.6;
+}
+.modeb-textarea:focus { border-color: var(--pink); }
+
+.ai-feedback {
+  background: var(--bg2); border: 1px solid rgba(244,167,195,0.25);
+  border-radius: var(--radius); padding: 18px 20px;
+  margin-bottom: 16px; display: none;
+}
+.ai-feedback.show { display: block; animation: fadeIn 0.4s ease; }
+.ai-feedback-header {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 12px;
+}
+.ai-badge {
+  font-size: 10px; font-weight: 600; padding: 3px 10px;
+  background: rgba(244,167,195,0.15); border: 1px solid rgba(244,167,195,0.3);
+  border-radius: 20px; color: var(--pink); letter-spacing: 0.05em; text-transform: uppercase;
+}
+.ai-feedback-content { font-size: 14px; line-height: 1.7; color: var(--text2); }
+.ai-feedback-content strong { color: var(--text); }
+.ai-feedback-content .correction { color: var(--mint2); }
+.ai-feedback-content .error-text { color: #e87a7a; text-decoration: line-through; }
+.ai-loading {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--text3); font-size: 14px;
+}
+.ai-dots span {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--pink);
+  animation: dot-pulse 1.4s infinite ease-in-out;
+  margin: 0 2px;
+}
+.ai-dots span:nth-child(2) { animation-delay: 0.2s; }
+.ai-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ─── RESULTS SCREEN ─── */
+.results-wrap { text-align: center; padding: 32px 0; }
+.results-score {
+  font-size: 72px; font-weight: 700;
+  background: linear-gradient(135deg, var(--pink), var(--violet), var(--mint));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.results-label { font-size: 14px; color: var(--text3); margin: 8px 0 24px; }
+.results-msg {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-style: italic;
+  color: var(--text); margin-bottom: 8px;
+}
+.results-sub { font-size: 14px; color: var(--text3); margin-bottom: 32px; }
+.results-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ─── SETTINGS ─── */
+#screen-settings {
+  padding-top: 8px;
+}
+.settings-title {
+  font-size: 20px; font-weight: 600;
+  color: var(--text); margin-bottom: 20px;
+}
+.settings-group {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+}
+.settings-group h3 { font-size: 13px; font-weight: 600; color: var(--violet); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+.settings-row { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.settings-row:last-child { margin-bottom: 0; }
+.settings-label { font-size: 13px; color: var(--text2); }
+.settings-input {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: var(--radius3); color: var(--text);
+  font-family: inherit; font-size: 14px;
+  padding: 10px 14px; outline: none; width: 100%;
+  transition: border-color 0.2s;
+}
+.settings-input:focus { border-color: var(--violet); }
+.settings-hint { font-size: 12px; color: var(--text3); }
+.settings-save {
+  background: linear-gradient(135deg, var(--violet2), var(--pink2));
+  border: none; border-radius: var(--radius3);
+  color: white; font-family: inherit; font-size: 15px; font-weight: 500;
+  padding: 13px 24px; cursor: pointer; transition: all 0.2s; width: 100%;
+}
+.settings-save:hover { opacity: 0.9; }
+.settings-status { font-size: 13px; color: var(--mint2); text-align: center; margin-top: 10px; display: none; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dot-pulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 480px) {
+  .level-grid { grid-template-columns: repeat(2, 1fr); }
+  .mode-cards { grid-template-columns: 1fr; }
+  .stats-bar { grid-template-columns: repeat(3, 1fr); }
+  .home-intro .big-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div id="header-logo">✦</div>
+  <h1>Español Trainer</h1>
+  <div id="header-right">
+    <button id="btn-back" onclick="goBack()">← Zurück</button>
+    <button id="btn-settings" onclick="showScreen('settings')">⚙ Einstellungen</button>
+  </div>
+</div>
+
+<div id="app">
+
+  <!-- ══════════════ HOME ══════════════ -->
+  <div id="screen-home" class="screen active">
+    <div class="home-intro">
+      <div class="big-title">¡Aprende español!</div>
+      <p>Grammatik von A1 bis C2 — geführte Übungen &amp; KI-Feedback</p>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-val" id="stat-total">0</div>
+        <div class="stat-lbl">Übungen</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-correct">0%</div>
+        <div class="stat-lbl">Richtig</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="stat-topics">0</div>
+        <div class="stat-lbl">Themen</div>
+      </div>
+    </div>
+    <div class="section-title">Wähle dein Level</div>
+    <div class="level-grid" id="level-grid"></div>
+  </div>
+
+  <!-- ══════════════ TOPICS ══════════════ -->
+  <div id="screen-topics" class="screen">
+    <div class="topic-header">
+      <div class="topic-level-badge" id="topic-level-badge">B2</div>
+      <div>
+        <h2 id="topic-level-name">Obere Mittelstufe</h2>
+        <div style="font-size:12px;color:var(--text3)" id="topic-level-desc"></div>
+      </div>
+    </div>
+    <div class="topics-list" id="topics-list"></div>
+  </div>
+
+  <!-- ══════════════ MODE SELECT ══════════════ -->
+  <div id="screen-mode" class="screen">
+    <div class="mode-header">
+      <h2 id="mode-topic-name">Subjuntivo presente</h2>
+      <p id="mode-topic-level">B1 — Mittelstufe</p>
+    </div>
+    <div class="grammar-box" id="grammar-box">
+      <h3>Grammatik-Erklärung</h3>
+      <p id="grammar-text"></p>
+      <div class="example" id="grammar-example"></div>
+    </div>
+    <div class="mode-cards">
+      <div class="mode-card mode-a" onclick="startModeA()">
+        <div class="mode-icon">📝</div>
+        <h3>Geführte Übungen</h3>
+        <p>Lückentext, Multiple Choice und Übersetzungsaufgaben mit sofortigem Feedback</p>
+      </div>
+      <div class="mode-card mode-b" onclick="startModeB()">
+        <div class="mode-icon">✨</div>
+        <h3>Freies Schreiben</h3>
+        <p>Schreibe eigene Sätze — KI analysiert und korrigiert deine Antwort</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ EXERCISE (Mode A) ══════════════ -->
+  <div id="screen-exercise" class="screen">
+    <div class="exercise-meta">
+      <div class="ex-level-pill" id="ex-level-pill">B2</div>
+      <div class="ex-topic-name" id="ex-topic-name">Subjuntivo</div>
+      <div class="ex-counter" id="ex-counter">1 / 6</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="ex-progress" style="width:0%"></div></div>
+    <div class="exercise-card" id="exercise-card">
+      <div class="ex-type-badge" id="ex-type-badge">Lückentext</div>
+      <div class="ex-question" id="ex-question"></div>
+      <div class="ex-hint" id="ex-hint"></div>
+      <div id="ex-input-area"></div>
+    </div>
+    <div class="feedback-box" id="feedback-box">
+      <div><span class="feedback-icon" id="fb-icon"></span><span class="feedback-text" id="fb-text"></span></div>
+      <div class="feedback-correct-ans" id="fb-correct"></div>
+      <div class="feedback-explain" id="fb-explain"></div>
+    </div>
+    <div class="ex-actions">
+      <button class="btn-secondary" onclick="showScreen('mode')" id="btn-skip">Überspringen</button>
+      <button class="btn-primary" id="btn-check" onclick="checkAnswer()">Prüfen</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ FREE WRITING (Mode B) ══════════════ -->
+  <div id="screen-free" class="screen">
+    <div class="exercise-meta">
+      <div class="ex-level-pill" id="free-level-pill">B2</div>
+      <div class="ex-topic-name" id="free-topic-name">Subjuntivo</div>
+      <div class="ex-counter" id="free-task-num">Aufgabe 1</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="free-progress" style="width:16%"></div></div>
+    <div class="modeb-task">
+      <div class="modeb-task-label">Deine Aufgabe</div>
+      <div class="modeb-task-text" id="free-task-text"></div>
+      <div class="modeb-task-hint" id="free-task-hint"></div>
+    </div>
+    <textarea class="modeb-textarea" id="free-textarea" placeholder="Schreibe hier auf Spanisch..."></textarea>
+    <div class="ai-feedback" id="ai-feedback">
+      <div class="ai-feedback-header">
+        <div class="ai-badge">KI-Feedback</div>
+      </div>
+      <div class="ai-feedback-content" id="ai-feedback-content"></div>
+    </div>
+    <div class="ex-actions">
+      <button class="btn-secondary" onclick="nextFreeTask()" id="btn-free-next" style="display:none">Nächste Aufgabe →</button>
+      <button class="btn-primary" id="btn-free-check" onclick="checkFreeAnswer()">Feedback erhalten</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ RESULTS ══════════════ -->
+  <div id="screen-results" class="screen">
+    <div class="results-wrap">
+      <div class="results-score" id="results-score">5/6</div>
+      <div class="results-label">Richtige Antworten</div>
+      <div class="results-msg" id="results-msg">¡Muy bien!</div>
+      <div class="results-sub" id="results-sub"></div>
+      <div class="results-actions">
+        <button class="btn-secondary" onclick="showScreen('topics')">← Zurück</button>
+        <button class="btn-primary" onclick="retryExercises()">Nochmal üben</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SETTINGS ══════════════ -->
+  <div id="screen-settings" class="screen">
+    <div class="settings-title">Einstellungen</div>
+    <div class="settings-group">
+      <h3>API-Key</h3>
+      <div class="settings-row">
+        <div class="settings-label">Anthropic API-Key (für KI-Feedback)</div>
+        <input type="password" class="settings-input" id="settings-key" placeholder="sk-ant-api03-..." autocomplete="off">
+        <div class="settings-hint">Wird nur lokal in deinem Browser gespeichert. Nie weitergegeben.</div>
+      </div>
+    </div>
+    <div class="settings-group">
+      <h3>Fortschritt</h3>
+      <div class="settings-row">
+        <div class="settings-label">Alle Fortschrittsdaten zurücksetzen</div>
+        <button class="btn-secondary" onclick="resetProgress()" style="align-self:flex-start;padding:8px 16px;font-size:13px">Fortschritt löschen</button>
+      </div>
+    </div>
+    <button class="settings-save" onclick="saveSettings()">Speichern</button>
+    <div class="settings-status" id="settings-status">✓ Gespeichert!</div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
+const LS = 'espanol_trainer_v1';
+let S = {
+  apiKey: '',
+  progress: {},  // { "B2_Subjuntivo": { done: 3, correct: 2 } }
+  totalExercises: 0,
+  totalCorrect: 0,
+};
+let currentLevel = null;
+let currentTopic = null;
+let currentExercises = [];
+let currentExIdx = 0;
+let currentScore = 0;
+let currentFreeTasks = [];
+let currentFreeIdx = 0;
+let navStack = ['home'];
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(LS);
+    if (saved) S = { ...S, ...JSON.parse(saved) };
+  } catch(e) {}
+}
+function saveState() {
+  localStorage.setItem(LS, JSON.stringify(S));
+}
+
+// ═══════════════════════════════════════════
+//  DATA — LEVELS + TOPICS
+// ═══════════════════════════════════════════
+const LEVELS = {
+  A1: { name: 'Einstieg', desc: 'Grundlagen der spanischen Sprache', color: 'var(--mint2)' },
+  A2: { name: 'Grundstufe', desc: 'Alltägliche Kommunikation', color: 'var(--mint2)' },
+  B1: { name: 'Mittelstufe', desc: 'Selbstständige Sprachverwendung', color: 'var(--blue)' },
+  B2: { name: 'Obere Mittelstufe', desc: 'Fortgeschrittene Kommunikation', color: 'var(--blue2)' },
+  C1: { name: 'Fortgeschritten', desc: 'Kompetente Sprachverwendung', color: 'var(--violet)' },
+  C2: { name: 'Meisterschaft', desc: 'Beherrschung der Sprache', color: 'var(--violet2)' },
+};
+
+const TOPICS = {
+  A1: [
+    { id: 'A1_presente', name: 'Presente de indicativo', desc: 'ser/estar/tener/ir + Reg. Verben', grammar: 'Das Presente ist die einfachste spanische Zeitform für gegenwärtige Handlungen. Regelmäßige Verben auf -ar, -er, -ir werden nach festen Mustern konjugiert.', example: 'Yo hablo español. Tú comes una manzana. Él vive en Madrid.' },
+    { id: 'A1_articulos', name: 'Artículos', desc: 'el/la/los/las — un/una/unos/unas', grammar: 'Spanische Artikel stimmen in Genus (Maskulin/Feminin) und Numerus (Singular/Plural) mit dem Nomen überein. Bestimmte Artikel: el, la, los, las. Unbestimmte: un, una, unos, unas.', example: 'El libro / La mesa / Los libros / Las mesas' },
+    { id: 'A1_pronombres', name: 'Pronombres personales', desc: 'yo, tú, él, ella, nosotros...', grammar: 'Die Personalpronomen im Spanischen werden oft weggelassen, da die Verbendung die Person anzeigt. Sie werden nur zur Betonung oder zur Vermeidung von Mehrdeutigkeiten verwendet.', example: 'Yo soy alemana. ¿Tú eres española?' },
+    { id: 'A1_numeros', name: 'Números y fechas', desc: 'Zahlen, Datum, Uhrzeit', grammar: 'Zahlen 1-100, Datum mit dem bestimmten Artikel, Uhrzeit mit "son las" (plural) oder "es la" (una).', example: 'Son las tres. Es el cinco de mayo. Tengo veinte años.' },
+    { id: 'A1_negacion', name: 'Negación simple', desc: 'no + Verb', grammar: 'Die einfache Verneinung im Spanischen: "no" steht direkt vor dem Verb. Keine Hilfsverben nötig.', example: 'No hablo chino. No tengo coche.' },
+  ],
+  A2: [
+    { id: 'A2_pasado', name: 'Pretérito indefinido', desc: 'Abgeschlossene Vergangenheit', grammar: 'Der Pretérito Indefinido beschreibt abgeschlossene Handlungen in der Vergangenheit. Regelmäßige Verben: -ar → -é, -aste, -ó; Unregelmäßige: ser/ir → fui, fuiste, fue...', example: 'Ayer comí paella. El año pasado fui a Barcelona.' },
+    { id: 'A2_imperfecto', name: 'Pretérito imperfecto', desc: 'Gewohnheiten und Beschreibungen', grammar: 'Der Imperfecto beschreibt vergangene Gewohnheiten, Zustände oder andauernde Handlungen. Sehr regelmäßig: -ar → -aba; -er/-ir → -ía.', example: 'Cuando era niña, vivía en Madrid. Siempre comíamos juntos.' },
+    { id: 'A2_adjetivos', name: 'Adjetivos calificativos', desc: 'Adjektive: Stellung und Kongruenz', grammar: 'Adjektive stimmen in Genus und Numerus mit dem Nomen überein. Sie stehen meist nach dem Nomen. Ser + Adjektiv für permanente Eigenschaften, estar + Adjektiv für Zustände.', example: 'El libro rojo / La casa grande / Estoy cansada / Soy alta' },
+    { id: 'A2_gustar', name: 'Verbos como gustar', desc: 'gustar, encantar, molestar...', grammar: 'Verben wie "gustar" funktionieren umgekehrt: Das Subjekt ist das, was gefällt. Me gusta (singular) / Me gustan (plural). Indirekte Objektpronomen: me, te, le, nos, os, les.', example: 'Me gusta el café. Me gustan las películas. Te encanta bailar.' },
+    { id: 'A2_preposiciones', name: 'Preposiciones básicas', desc: 'a, de, en, con, por, para', grammar: 'Grundlegende Präpositionen: a (Richtung/Ziel), de (Herkunft/Besitz), en (Ort), con (Begleitung), por (Grund/Mittel), para (Zweck/Ziel).', example: 'Voy a Madrid. Soy de Alemania. Vivo en Barcelona.' },
+  ],
+  B1: [
+    { id: 'B1_futuro', name: 'Futuro simple', desc: 'Zukunft mit -é, -ás, -á...', grammar: 'Das Futuro Simple drückt zukünftige Handlungen aus. Es wird durch Anfügen der Endungen an den Infinitiv gebildet: -é, -ás, -á, -emos, -éis, -án. Unregelmäßige Stämme: haré, tendré, pondré...', example: 'Mañana iré al médico. El año que viene viviremos en España.' },
+    { id: 'B1_condicional', name: 'Condicional simple', desc: 'würde... / Höflichkeit', grammar: 'Der Condicional Simple entspricht "würde + Infinitiv". Endungen: -ía, -ías, -ía, -íamos, -íais, -ían. Gleiche unregelmäßige Stämme wie Futuro: habría, tendría, pondría...', example: '¿Podrías ayudarme? Me gustaría ir al cine. Yo haría lo mismo.' },
+    { id: 'B1_subjuntivo_pres', name: 'Subjuntivo presente', desc: 'Wünsche, Zweifel, Emotionen', grammar: 'Der Subjuntivo presente drückt Wünsche, Zweifel, Emotionen und Unsicherheit aus. Bildung: 1. Pers. Singular Presente → Stamm + Endung (-e für -ar, -a für -er/-ir).', example: 'Espero que vengas. Quiero que seas feliz. Es importante que estudies.' },
+    { id: 'B1_imperativo', name: 'Imperativo afirmativo', desc: 'Befehle und Aufforderungen', grammar: 'Der bejahte Imperativ für tú: meist 3. Pers. Singular Presente. Para vosotros: Infinitiv - r + d. Unregelmäßige: haz, ven, di, ve, pon, sal, sé, ten.', example: 'Habla más despacio. Come la verdura. ¡Ven aquí!' },
+    { id: 'B1_ser_estar', name: 'Ser vs. Estar', desc: 'Permanenz vs. Zustand', grammar: 'Ser: permanente Eigenschaften, Herkunft, Material, Zeit, Identität. Estar: temporäre Zustände, Befindlichkeit, Ort (außer Ereignisse), Ergebnisse von Handlungen.', example: 'Soy alemana. Estoy cansada. El libro es rojo. La ventana está abierta.' },
+    { id: 'B1_perifrasis', name: 'Perífrasis verbales', desc: 'estar + gerundio, ir a + inf...', grammar: 'Verbale Umschreibungen: estar + gerundio (andauernde Handlung), ir a + infinitivo (nahe Zukunft), acabar de + infinitivo (gerade beendet), tener que + infinitivo (müssen).', example: 'Estoy leyendo. Voy a comer. Acabo de llegar. Tengo que estudiar.' },
+  ],
+  B2: [
+    { id: 'B2_subjuntivo_imp', name: 'Subjuntivo imperfecto', desc: '-ra / -se Formen', grammar: 'Der Subjuntivo Imperfecto (Vergangenheit des Konjunktivs) wird für Wünsche/Bedingungen in der Vergangenheit oder für höfliche Bitten genutzt. -ra Form: amara, tuviera, fuera. Auch -se möglich.', example: 'Quería que vinieras. Si tuviera dinero, viajaría. Quisiera un café.' },
+    { id: 'B2_condicionales', name: 'Oraciones condicionales', desc: 'Si + presente/imperfecto/pluscuamperfecto', grammar: 'Konditionalsätze: Typ 1 (real): si + presente → futuro. Typ 2 (unreal Gegenwart): si + subj. imperfecto → condicional. Typ 3 (unreal Vergangenheit): si + subj. pluscuamperfecto → cond. compuesto.', example: 'Si llueve, me quedo en casa. Si tuviera tiempo, estudiaría más.' },
+    { id: 'B2_subjuntivo_perf', name: 'Subjuntivo perfecto', desc: 'haya + Partizip', grammar: 'Der Subjuntivo Perfecto bezieht sich auf vergangene Handlungen im Rahmen der Gegenwart. Bildung: haya/hayas/haya/hayamos/hayáis/hayan + Partizip.', example: 'Espero que hayas dormido bien. No creo que haya llegado todavía.' },
+    { id: 'B2_imperativo_neg', name: 'Imperativo negativo', desc: 'no + Subjuntivo', grammar: 'Der verneinte Imperativ wird mit dem Subjuntivo presente gebildet. Für tú: no hables, no comas. Für vosotros: no habléis. Die Objektpronomen stehen vor dem Verb.', example: 'No hables tan alto. No lo hagas. No te preocupes.' },
+    { id: 'B2_relativos', name: 'Pronombres relativos', desc: 'que, quien, el cual, cuyo', grammar: 'Que ist der häufigste Relativpronomen (für Personen und Sachen). Quien/quienes nur für Personen. El/la/los/las cual(es) nach Präpositionen. Cuyo/cuya = possessiv.', example: 'El libro que leí es interesante. La persona con quien hablo es mi amiga.' },
+    { id: 'B2_adverbios', name: 'Adverbios y locuciones', desc: '-mente, sin embargo, aunque...', grammar: 'Adverbien auf -mente werden aus dem femininen Adjektiv gebildet. Konnektoren: sin embargo, no obstante, aunque, a pesar de, por lo tanto, por consiguiente.', example: 'Habla rápidamente. Sin embargo, no entiendo. Aunque llueve, salgo.' },
+  ],
+  C1: [
+    { id: 'C1_subj_pluscuamp', name: 'Subjuntivo pluscuamperfecto', desc: 'hubiera + Partizip', grammar: 'Der Subjuntivo Pluscuamperfecto für irreale Bedingungen in der Vergangenheit. Bildung: hubiera/hubieras/hubiera/hubiéramos/hubierais/hubieran + Partizip.', example: 'Si hubiera sabido, te lo habría dicho. Ojalá hubiera estudiado más.' },
+    { id: 'C1_voz_pasiva', name: 'Voz pasiva', desc: 'ser + Partizip / se pasivo', grammar: 'Passiv mit ser + Partizip (mit Agens: por + Nomen). Se pasivo für unbekannte/unwichtige Handelnde. Pasiva refleja für Vorgänge ohne Handelnden.', example: 'El libro fue escrito por Cervantes. Se venden pisos. Se habla español.' },
+    { id: 'C1_estilo_indirecto', name: 'Estilo indirecto', desc: 'Indirekte Rede mit Zeitverschiebung', grammar: 'In der indirekten Rede: Presente → Imperfecto, Pretérito Perfecto → Pluscuamperfecto, Futuro → Condicional. Imperativo → que + Subjuntivo.', example: 'Dijo que estaba cansado. Me preguntó si había comido. Le dije que viniera.' },
+    { id: 'C1_subjuntivo_conc', name: 'Subjuntivo en concesivas', desc: 'aunque, a pesar de que, por más que', grammar: 'Konzessivsätze mit Subjuntivo drücken aus, dass etwas trotz eines Hindernisses passiert oder nicht passiert. aunque + subj. = obwohl (hypothetisch); + ind. = obwohl (Tatsache).', example: 'Aunque llueva, iré. Por más que lo intente, no lo consigo.' },
+    { id: 'C1_gerundio', name: 'Gerundio avanzado', desc: 'Gerundium: temporal, causal, modal', grammar: 'Das Gerundium kann temporal (mientras/cuando), kausal (al + inf.), modal (Begleitung einer Handlung) oder konsekutiv verwendet werden. Nie für Nomen-Funktionen!', example: 'Saliendo de casa, la vi. Estudiando más, aprobarás. La encontré llorando.' },
+    { id: 'C1_ser_estar_adv', name: 'Ser/Estar avanzado', desc: 'Bedeutungsunterschiede durch ser/estar', grammar: 'Bestimmte Adjektive ändern ihre Bedeutung je nach Verb: ser aburrido (langweilig sein) ≠ estar aburrido (gelangweilt sein). ser malo ≠ estar malo. ser listo ≠ estar listo.', example: 'Es muy listo (klug). Está listo (bereit). Es malo (böse). Está malo (krank).' },
+  ],
+  C2: [
+    { id: 'C2_perifrasis_adv', name: 'Perífrasis verbales avanzadas', desc: 'llevar + gerundio, seguir + gerundio...', grammar: 'Fortgeschrittene verbale Umschreibungen: llevar + gerundio (seit), seguir/continuar + gerundio (weitermachen), dejar de + inf. (aufhören), ponerse a + inf. (anfangen), volver a + inf. (wieder).', example: 'Llevo tres años viviendo en España. Sigue lloviendo. Dejó de fumar.' },
+    { id: 'C2_modalidad', name: 'Modalidad y matices', desc: 'Nuancen mit Modalverben', grammar: 'Feine Nuancen: deber de + inf. (Vermutung) vs. deber + inf. (Verpflichtung). poder (Möglichkeit/Erlaubnis). querer/desear (Wunsch). soler + inf. (Gewohnheit in Gegenwart).', example: 'Debe de ser las diez. Debes llamarla. Suele llegar tarde.' },
+    { id: 'C2_discurso', name: 'Conectores del discurso', desc: 'Textbindung auf hohem Niveau', grammar: 'Hochwertige Konnektoren: Additive: además, asimismo, es más. Adversative: no obstante, ahora bien, con todo. Konzessive: si bien, aun así. Kausale: dado que, puesto que, en vista de.', example: 'Asimismo, cabe destacar que... No obstante, hay que tener en cuenta...' },
+    { id: 'C2_subjuntivo_fin', name: 'Subjuntivo en finales y temporales', desc: 'para que, antes de que, hasta que', grammar: 'Finalsätze: para que + Subjuntivo. Temporalsätze in der Zukunft: cuando/hasta que/antes de que + Subjuntivo. In der Vergangenheit: Indicativo.', example: 'Lo hago para que estés contento. Espera hasta que llegue. Cuando sea mayor...' },
+    { id: 'C2_lexicologia', name: 'Léxico avanzado y registro', desc: 'Register, Kollokationen, Idiome', grammar: 'Sprachregister: formal (aseverar, por ende, cabe señalar), informell (tío, mola, guay). Kollokationen: hacer hincapié, tomar en consideración, poner de manifiesto.', example: 'Cabe señalar que... Hizo hincapié en la importancia de... Puso de manifiesto...' },
+  ],
+};
+
+// ═══════════════════════════════════════════
+//  EXERCISES DATA
+// ═══════════════════════════════════════════
+const EXERCISES = {
+  A1_presente: [
+    { type:'mc', q:'Welche Form ist korrekt? "Yo ___ (hablar)"', choices:['hablo','hablas','habla','hablan'], correct:0, explain:'Yo → -o Endung bei regelmäßigen -ar Verben.' },
+    { type:'fill', q:'Completa: "Ella ___ (vivir) en Madrid."', answer:'vive', hint:'3. Pers. Singular -ir Verb', explain:'-ir Verben: yo vivo, tú vives, él/ella vive.' },
+    { type:'mc', q:'"Nosotros ___ (comer) a las dos."', choices:['como','comes','come','comemos'], correct:3, explain:'Nosotros → -emos bei regelmäßigen -er Verben.' },
+    { type:'fill', q:'Completa: "Tú ___ (tener) veinte años."', answer:'tienes', hint:'tener ist unregelmäßig!', explain:'tener: tengo, tienes, tiene, tenemos, tenéis, tienen.' },
+    { type:'translate', q:'Übersetze: "Wir sprechen Spanisch."', answer:'Hablamos español', hint:'hablar = sprechen', explain:'nosotros hablamos — regelmäßig -ar.' },
+    { type:'mc', q:'"¿Vosotros ___ (leer) mucho?"', choices:['leo','lees','lee','leéis'], correct:3, explain:'vosotros → -éis bei -er Verben.' },
+  ],
+  A1_articulos: [
+    { type:'mc', q:'Welcher Artikel ist korrekt? "___ libro"', choices:['El','La','Los','Las'], correct:0, explain:'libro ist maskulin Singular → el.' },
+    { type:'fill', q:'Ergänze den Artikel: "___ casas son grandes."', answer:'Las', hint:'casas = Häuser (Plural, feminin)', explain:'casa ist feminin, Plural → las.' },
+    { type:'mc', q:'"Quiero ___ manzana." (eine Apfel, unbestimmt)', choices:['el','la','un','una'], correct:3, explain:'manzana ist feminin → unbestimmter Artikel una.' },
+    { type:'fill', q:'"___ estudiantes estudian mucho."', answer:'Los', hint:'Plural, maskulin', explain:'estudiante im Plural maskulin → los.' },
+    { type:'translate', q:'Übersetze: "Die Bücher sind interessant."', answer:'Los libros son interesantes', hint:'libro = Buch', explain:'libro → maskulin Plural → los libros.' },
+    { type:'mc', q:'"Necesito ___ coche." (ein Auto, unbestimmt)', choices:['el','la','un','una'], correct:2, explain:'coche ist maskulin → unbestimmter Artikel un.' },
+  ],
+  A2_pasado: [
+    { type:'mc', q:'"Ayer yo ___ (comer) paella."', choices:['como','comí','comía','comeré'], correct:1, explain:'Pretérito Indefinido, 1. Pers. Sing. -er Verb: -í.' },
+    { type:'fill', q:'"El año pasado ellos ___ (vivir) en París."', answer:'vivieron', hint:'3. Pers. Plural, -ir Verb', explain:'-ir Verb, 3. Pers. Plural: -ieron.' },
+    { type:'mc', q:'"María ___ (ir) al cine el sábado."', choices:['va','iba','fue','irá'], correct:2, explain:'ir ist im Indefinido unregelmäßig: fui, fuiste, fue...' },
+    { type:'fill', q:'"Nosotros ___ (hablar) con el profesor."', answer:'hablamos', hint:'-ar Verb, 1. Pers. Plural', explain:'-ar Verb, 1. Pers. Plural Indefinido: -amos (gleich wie Presente!).' },
+    { type:'translate', q:'Übersetze: "Gestern kaufte er ein Buch."', answer:'Ayer compró un libro', hint:'comprar = kaufen', explain:'3. Pers. Sing. -ar Verb: compró.' },
+    { type:'mc', q:'"¿Cuándo ___ (llegar) tú?"', choices:['llegas','llegaste','llegabas','llegarás'], correct:1, explain:'Abgeschlossene Vergangenheit → Indefinido: llegaste.' },
+  ],
+  A2_imperfecto: [
+    { type:'mc', q:'"Cuando era niño, ___ (jugar) mucho."', choices:['juego','jugué','jugaba','jugaré'], correct:2, explain:'Gewohnheit in der Vergangenheit → Imperfecto: jugaba.' },
+    { type:'fill', q:'"Ella siempre ___ (leer) antes de dormir."', answer:'leía', hint:'Gewohnheit, 3. Pers. Sing. -er Verb', explain:'-er Verb Imperfecto: -ía. leía, leías, leía...' },
+    { type:'translate', q:'Übersetze: "Wir lebten in Berlin." (damals, Zustand)', answer:'Vivíamos en Berlín', hint:'vivir, Gewohnheit/Zustand', explain:'Imperfecto für vergangene Zustände: vivíamos.' },
+    { type:'mc', q:'"De pequeña, ___ (tener) un perro."', choices:['tengo','tuve','tenía','tendré'], correct:2, explain:'Zustand in der Vergangenheit (hatte einen Hund) → Imperfecto.' },
+    { type:'fill', q:'"Mis padres ___ (trabajar) mucho."', answer:'trabajaban', hint:'3. Pers. Plural -ar Verb', explain:'-ar Verb Imperfecto 3. Pl.: -aban.' },
+    { type:'mc', q:'Imperfecto vs. Indefinido: "Mientras yo ___ (estudiar), ella llegó."', choices:['estudiaba','estudié','estudio','estudiaré'], correct:0, explain:'Hintergrundhandlung (andauernd) → Imperfecto. Die plötzliche Handlung (llegó) → Indefinido.' },
+  ],
+  B1_subjuntivo_pres: [
+    { type:'mc', q:'"Quiero que tú ___ (venir) mañana."', choices:['vienes','vengas','ven','vendrás'], correct:1, explain:'Nach querer que → Subjuntivo. venir unregelmäßig: venga, vengas...' },
+    { type:'fill', q:'"Es importante que vosotros ___ (estudiar)."', answer:'estudiéis', hint:'Subjuntivo, 2. Pers. Plural -ar Verb', explain:'-ar Verb Subjuntivo: estudiéis (1. Pers. Ind. → estudio → estudi- + éis).' },
+    { type:'mc', q:'"Espero que él ___ (estar) bien."', choices:['está','esté','estará','estaba'], correct:1, explain:'esperar que → Subjuntivo. estar unregelmäßig im Subj.: esté.' },
+    { type:'fill', q:'"No creo que eso ___ (ser) verdad."', answer:'sea', hint:'no creer que → Subjuntivo, 3. Pers. Sing.', explain:'ser im Subjuntivo: sea, seas, sea, seamos, seáis, sean.' },
+    { type:'translate', q:'Übersetze: "Ich hoffe, dass du kommst."', answer:'Espero que vengas', hint:'esperar que + Subjuntivo', explain:'esperar que + Subjuntivo presente: vengas.' },
+    { type:'mc', q:'"Me alegra que ___ (hacer) buen tiempo."', choices:['hace','haga','hará','hacía'], correct:1, explain:'Emotion + que → Subjuntivo: haga (hacer unregelmäßig: haga, hagas...).' },
+  ],
+  B1_imperativo: [
+    { type:'mc', q:'Imperativo tú: "___ (hablar) más despacio."', choices:['Habla','Hablas','Hable','Hablen'], correct:0, explain:'Imperativo tú regular -ar: = 3. Pers. Sing. Presente.' },
+    { type:'fill', q:'Imperativo negativo tú: "No ___ (comer) tan rápido."', answer:'comas', hint:'No + Subjuntivo presente', explain:'Imperativo negativo = no + Subjuntivo: no comas.' },
+    { type:'mc', q:'Welcher Imperativ ist korrekt für "tú"? (venir)', choices:['Venes','Viene','Ven','Vengas'], correct:2, explain:'ven ist unregelmäßiger Imperativ von venir.' },
+    { type:'fill', q:'"___ (Poner, tú) la mesa, por favor."', answer:'Pon', hint:'Unregelmäßig!', explain:'Unregelmäßige Imperative: di, haz, ve, pon, sal, sé, ten, ven.' },
+    { type:'translate', q:'Übersetze (Imperativ tú): "Sag mir die Wahrheit!"', answer:'¡Dime la Verdad!', hint:'decir → di, Pronomen anhängen', explain:'di (decir) + me = dime. Pronomen werden angehängt.' },
+    { type:'mc', q:'"No ___ (tener, tú) miedo."', choices:['ten','tienes','tengas','tendrás'], correct:2, explain:'Negativer Imperativ = no + Subjuntivo: tengas.' },
+  ],
+  B2_subjuntivo_imp: [
+    { type:'mc', q:'"Si ___ (tener) dinero, viajaría."', choices:['tengo','tuviera','tuve','tendré'], correct:1, explain:'Irreale Bedingung Gegenwart: si + Subj. Imperfecto → Condicional.' },
+    { type:'fill', q:'"Quería que tú ___ (venir) a la fiesta."', answer:'vinieras', hint:'Vergangenheit, Wunsch → Subj. Imperfecto', explain:'venir im Subj. Imperfecto: viniera, vinieras, viniera...' },
+    { type:'mc', q:'"___ más tiempo libre." (Ich wünschte, ich hätte...)', choices:['Quisiera','Quiero','Quería','Querré'], correct:0, explain:'Quisiera (Subj. Imperf. von querer) = höfliche Bitte/Wunsch.' },
+    { type:'fill', q:'"Si ella ___ (estudiar) más, sacaría mejores notas."', answer:'estudiara', hint:'Irreale Bedingung, 3. Pers. Sing. -ar Verb', explain:'-ar Verb Subj. Imperfecto: estudiara, estudiaras, estudiara...' },
+    { type:'translate', q:'Übersetze: "Wenn ich du wäre, würde ich es tun."', answer:'Si fuera tú, lo haría', hint:'ser → fuera', explain:'ser im Subj. Imperf.: fuera. Unregelmäßig!' },
+    { type:'mc', q:'"Le pedí que ___ (hablar) más claro."', choices:['habla','hable','hablara','hablaría'], correct:2, explain:'pedir que in Vergangenheit → Subj. Imperfecto: hablara.' },
+  ],
+  B2_condicionales: [
+    { type:'mc', q:'Typ 1 (real): "Si ___ mañana, avísame."', choices:['vendrías','viniste','vienes','vinieras'], correct:2, explain:'Typ 1: si + Presente → Futuro/Presente/Imperativo.' },
+    { type:'fill', q:'"Si hubiera sabido, te lo ___ (decir)."', answer:'habría dicho', hint:'Typ 3: irreale Vergangenheit', explain:'Typ 3: si + Subj. Pluscuamp. → Cond. Compuesto: habría dicho.' },
+    { type:'translate', q:'Übersetze: "Wenn es morgen regnet, bleibe ich zu Hause."', answer:'Si llueve mañana, me quedo en casa', hint:'Typ 1 (reale Bedingung)', explain:'Typ 1: si + Presente → Presente/Futuro.' },
+    { type:'mc', q:'Typ 2: "Si ___ tiempo, te ayudaría."', choices:['tuviera','tengo','tuve','tendré'], correct:0, explain:'Typ 2 (unreal Gegenwart): si + Subj. Imperfecto → Condicional.' },
+    { type:'fill', q:'"Si ___ (poder) ir, iría contigo."', answer:'pudiera', hint:'Typ 2, poder → unregelmäßig im Subj.', explain:'poder Subj. Imperfecto: pudiera, pudieras, pudiera...' },
+    { type:'mc', q:'Welcher Satz ist Typ 3 (irreale Vergangenheit)?', choices:['Si llueve, cojo el paraguas.','Si lloviera, cogería el paraguas.','Si hubiera llovido, habría cogido el paraguas.'], correct:2, explain:'Typ 3: si + hubiera/hubiese + Partizip → habría + Partizip.' },
+  ],
+  C1_subj_pluscuamp: [
+    { type:'mc', q:'"Si ___ (saber) la verdad, te lo habría dicho."', choices:['supe','sabía','hubiera sabido','habría sabido'], correct:2, explain:'Typ 3 Konditional: si + Subj. Pluscuamperfecto.' },
+    { type:'fill', q:'"Ojalá ___ (estudiar) más de joven."', answer:'hubiera estudiado', hint:'Ojalá + Subj. Pluscuamp. für irreale Vergangenheit', explain:'Ojalá + hubiera + Partizip = hätte ich... (irreale Vergangenheit).' },
+    { type:'translate', q:'Übersetze: "Wenn ich früher gelernt hätte, hätte ich bestanden."', answer:'Si hubiera estudiado antes, habría aprobado', hint:'Typ 3 Konditional', explain:'hubiera estudiado + habría aprobado = klassisches Typ-3-Konditionalgefüge.' },
+    { type:'mc', q:'"Me alegré de que todo ___ (salir) bien."', choices:['sale','salga','hubiera salido','habrá salido'], correct:2, explain:'Emotion in der Vergangenheit + que → Subj. Pluscuamperfecto.' },
+    { type:'fill', q:'"No pensaba que ella ___ (decir) eso."', answer:'hubiera dicho', hint:'Vergangenheit, Zweifel/Verneinung', explain:'pensar que negativo in Vergangenheit → Subj. Pluscuamp.: hubiera dicho.' },
+    { type:'mc', q:'"Aunque ___ (llover), habríamos salido."', choices:['llueve','lloviera','hubiera llovido','lloverá'], correct:2, explain:'Konzessivsatz mit Bezug auf irreale Vergangenheit → Subj. Pluscuamp.' },
+  ],
+  C1_voz_pasiva: [
+    { type:'mc', q:'"El libro ___ escrito por García Márquez."', choices:['es','está','fue','ha sido'], correct:2, explain:'Abgeschlossenes Passiv in der Vergangenheit → fue (Indef.) + Partizip.' },
+    { type:'fill', q:'Se pasivo: "___ (vender) pisos en esta zona."', answer:'Se venden', hint:'se + 3. Pers. Plural (pisos = Plural)', explain:'Se pasivo: das Subjekt (pisos) bestimmt die Verbform: se venden.' },
+    { type:'translate', q:'Übersetze: "In Spanien wird Spanisch gesprochen."', answer:'En España se habla español', hint:'se + 3. Pers. Sing.', explain:'se habla español — se pasivo, español ist Singular.' },
+    { type:'mc', q:'"Los premios ___ entregados mañana."', choices:['son','están','serán','estarán'], correct:2, explain:'Futur-Passiv: serán + Partizip. serán (Plural, da premios).' },
+    { type:'fill', q:'"El proyecto ___ (terminar) por el equipo ayer."', answer:'fue terminado', hint:'Passiv, Vergangenheit, mit Agens', explain:'Indefinido Passiv: fue + Partizip. Mit por → klassisches Passiv.' },
+    { type:'mc', q:'Welcher Satz ist ein se-pasivo?', choices:['Los libros fueron escritos.','Se escribieron los libros.','Los libros estaban escritos.'], correct:1, explain:'Se pasivo: se + Verb (in Kongruenz mit Subjekt).' },
+  ],
+  C2_perifrasis_adv: [
+    { type:'mc', q:'"___ tres años estudiando español." (seit 3 Jahren)', choices:['Sigo','Llevo','Acabo de','Vuelvo a'], correct:1, explain:'llevar + gerundio = seit X Zeit etwas tun.' },
+    { type:'fill', q:'"Después de tanto esfuerzo, ___ (dejar) de intentarlo."', answer:'dejó de', hint:'aufhören + Infinitiv', explain:'dejar de + infinitivo = aufhören, etwas zu tun.' },
+    { type:'translate', q:'Übersetze: "Er fing plötzlich an zu lachen."', answer:'Se puso a reír de repente', hint:'ponerse a = anfangen zu', explain:'ponerse a + infinitivo = plötzlich anfangen.' },
+    { type:'mc', q:'"¿Todavía ___ viviendo en Barcelona?"', choices:['llevas','sigues','vuelves a','acabas de'], correct:1, explain:'seguir/continuar + gerundio = weitermachen, noch immer.' },
+    { type:'fill', q:'"___ a leer el libro que dejé." (wieder lesen)', answer:'Vuelvo a', hint:'wieder etwas tun', explain:'volver a + infinitivo = etwas wieder tun.' },
+    { type:'mc', q:'"___ llegar cuando me llamaste." (gerade angekommen)', choices:['Seguía','Volvía a','Acababa de','Llevaba'], correct:2, explain:'acabar de + infinitivo = gerade etwas getan haben.' },
+  ],
+};
+
+// Default exercises for topics without specific data
+function getExercises(topicId) {
+  if (EXERCISES[topicId]) return [...EXERCISES[topicId]];
+  // Generic fallback
+  return [
+    { type:'mc', q:'Esto es una pregunta de práctica para este tema.', choices:['Opción A','Opción B','Opción C','Opción D'], correct:0, explain:'Ejemplo de retroalimentación.' },
+    { type:'fill', q:'Completa este ejemplo de práctica: "___"', answer:'ejemplo', hint:'Pista de ejemplo', explain:'Explicación de ejemplo.' },
+  ];
+}
+
+// ═══════════════════════════════════════════
+//  FREE WRITING TASKS
+// ═══════════════════════════════════════════
+const FREE_TASKS = {
+  A1_presente: [
+    { task:'Escribe 3 frases sobre ti mismo/a usando verbos regulares en presente. (hablar, vivir, comer, estudiar...)', hint:'Ej: Me llamo... Vivo en... Como...' },
+    { task:'Describe tu rutina diaria con al menos 4 verbos diferentes en presente.', hint:'Ej: Me levanto a las... Después...' },
+    { task:'Escribe 3 preguntas a un/a amigo/a usando el presente de indicativo.', hint:'Ej: ¿Dónde vives? ¿Qué comes normalmente?' },
+  ],
+  B1_subjuntivo_pres: [
+    { task:'Escribe 3 frases expresando deseos usando "querer que" o "esperar que" + subjuntivo.', hint:'Ej: Quiero que mi familia esté bien.' },
+    { task:'Escribe 2 recomendaciones usando "es importante que" o "es necesario que".', hint:'Ej: Es importante que estudies todos los días.' },
+    { task:'Expresa 3 emociones o reacciones usando "me alegra que", "me sorprende que", etc.', hint:'Ej: Me alegra que hagas ejercicio.' },
+  ],
+  B2_subjuntivo_imp: [
+    { task:'Escribe 2 frases condicionales irreales con "si + imperfecto de subjuntivo".', hint:'Ej: Si tuviera más tiempo, aprendería a tocar el piano.' },
+    { task:'Expresa 3 deseos usando "ojalá" + imperfecto de subjuntivo.', hint:'Ej: Ojalá pudiera viajar por todo el mundo.' },
+    { task:'Escribe 2 frases de cortesía usando "quisiera" o "podría".', hint:'Ej: Quisiera reservar una mesa para dos personas.' },
+  ],
+  C1_subj_pluscuamp: [
+    { task:'Escribe 2 situaciones hipotéticas del pasado usando "si hubiera + participio".', hint:'Ej: Si hubiera estudiado más, habría aprobado el examen.' },
+    { task:'Expresa 2 lamentos o arrepentimientos usando "ojalá hubiera...".', hint:'Ej: Ojalá hubiera aprendido a cocinar de pequeña.' },
+    { task:'Describe una situación pasada usando el estilo indirecto con cambio temporal.', hint:'Ej: Me dijo que había llegado tarde porque...' },
+  ],
+};
+
+function getFreeTasks(topicId) {
+  if (FREE_TASKS[topicId]) return FREE_TASKS[topicId];
+  const topic = findTopic(topicId);
+  return [
+    { task:`Escribe 3 frases originales usando "${topic ? topic.name : 'este tema'}". Intenta usar estructuras variadas.`, hint:'Usa el tema gramatical de forma natural.' },
+    { task:`Escribe un párrafo corto (4-5 frases) aplicando lo que sabes sobre "${topic ? topic.name : 'este tema'}".`, hint:'Sé creativo/a y usa vocabulario variado.' },
+  ];
+}
+
+function findTopic(topicId) {
+  for (const level of Object.values(TOPICS)) {
+    const t = level.find(t => t.id === topicId);
+    if (t) return t;
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  document.getElementById('btn-back').style.display = name === 'home' ? 'none' : 'flex';
+  if (name !== navStack[navStack.length-1]) navStack.push(name);
+  window.scrollTo(0,0);
+}
+
+function goBack() {
+  navStack.pop();
+  const prev = navStack[navStack.length-1] || 'home';
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + prev).classList.add('active');
+  document.getElementById('btn-back').style.display = prev === 'home' ? 'none' : 'flex';
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════
+//  HOME & LEVEL
+// ═══════════════════════════════════════════
+function renderHome() {
+  // Stats
+  let total = 0, correct = 0, doneTopics = 0;
+  for (const k of Object.keys(S.progress)) {
+    total += S.progress[k].done || 0;
+    correct += S.progress[k].correct || 0;
+    if ((S.progress[k].done || 0) > 0) doneTopics++;
+  }
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-correct').textContent = total > 0 ? Math.round(correct/total*100)+'%' : '0%';
+  document.getElementById('stat-topics').textContent = doneTopics;
+
+  // Level grid
+  const grid = document.getElementById('level-grid');
+  grid.innerHTML = '';
+  for (const [lvl, info] of Object.entries(LEVELS)) {
+    const topics = TOPICS[lvl] || [];
+    const done = topics.filter(t => (S.progress[t.id]?.done||0) > 0).length;
+    const pct = topics.length > 0 ? Math.round(done/topics.length*100) : 0;
+    const card = document.createElement('div');
+    card.className = 'level-card';
+    card.dataset.level = lvl;
+    card.innerHTML = `
+      <div class="level-badge">${lvl}</div>
+      <div class="level-name">${info.name}</div>
+      <div class="level-progress">
+        <div class="level-progress-fill" style="width:${pct}%;background:${info.color}"></div>
+      </div>
+    `;
+    card.onclick = () => selectLevel(lvl);
+    grid.appendChild(card);
+  }
+}
+
+function selectLevel(lvl) {
+  currentLevel = lvl;
+  const info = LEVELS[lvl];
+  document.getElementById('topic-level-badge').textContent = lvl;
+  document.getElementById('topic-level-name').textContent = info.name;
+  document.getElementById('topic-level-desc').textContent = info.desc;
+
+  const list = document.getElementById('topics-list');
+  list.innerHTML = '';
+  for (const topic of (TOPICS[lvl] || [])) {
+    const prog = S.progress[topic.id] || {};
+    const done = prog.done || 0;
+    const correct = prog.correct || 0;
+    const dotClass = done === 0 ? '' : (correct/done >= 0.7 ? 'done' : 'partial');
+    const item = document.createElement('div');
+    item.className = 'topic-item';
+    item.innerHTML = `
+      <div class="topic-dot ${dotClass}"></div>
+      <div class="topic-info">
+        <div class="topic-name">${topic.name}</div>
+        <div class="topic-desc">${topic.desc}</div>
+      </div>
+      <div class="topic-score">${done > 0 ? correct+'/'+done : ''}</div>
+      <div class="topic-arrow">›</div>
+    `;
+    item.onclick = () => selectTopic(topic);
+    list.appendChild(item);
+  }
+  navStack = ['home'];
+  showScreen('topics');
+}
+
+function selectTopic(topic) {
+  currentTopic = topic;
+  document.getElementById('mode-topic-name').textContent = topic.name;
+  document.getElementById('mode-topic-level').textContent = currentLevel + ' — ' + LEVELS[currentLevel].name;
+  document.getElementById('grammar-text').textContent = topic.grammar;
+  document.getElementById('grammar-example').textContent = topic.example;
+  showScreen('mode');
+}
+
+// ═══════════════════════════════════════════
+//  MODE A — GUIDED EXERCISES
+// ═══════════════════════════════════════════
+function startModeA() {
+  currentExercises = getExercises(currentTopic.id);
+  currentExIdx = 0;
+  currentScore = 0;
+  showScreen('exercise');
+  renderExercise();
+}
+
+function renderExercise() {
+  if (currentExIdx >= currentExercises.length) {
+    showResults();
+    return;
+  }
+  const ex = currentExercises[currentExIdx];
+  const total = currentExercises.length;
+
+  document.getElementById('ex-level-pill').textContent = currentLevel;
+  document.getElementById('ex-topic-name').textContent = currentTopic.name;
+  document.getElementById('ex-counter').textContent = (currentExIdx+1) + ' / ' + total;
+  document.getElementById('ex-progress').style.width = (currentExIdx/total*100) + '%';
+
+  const typeLabels = { mc: 'Multiple Choice', fill: 'Lückentext', translate: 'Übersetzen' };
+  document.getElementById('ex-type-badge').textContent = typeLabels[ex.type] || ex.type;
+  document.getElementById('ex-question').textContent = ex.q;
+  document.getElementById('ex-hint').textContent = ex.hint ? '💡 ' + ex.hint : '';
+  document.getElementById('ex-hint').style.display = ex.hint ? 'block' : 'none';
+
+  // Input area
+  const area = document.getElementById('ex-input-area');
+  if (ex.type === 'mc') {
+    const letters = ['A','B','C','D'];
+    area.innerHTML = '<div class="choices">' +
+      ex.choices.map((c,i) => `<button class="choice-btn" onclick="selectChoice(${i})" data-idx="${i}">
+        <span class="choice-letter">${letters[i]}</span>${c}</button>`).join('') +
+      '</div>';
+  } else {
+    area.innerHTML = `<div class="text-input-wrap">
+      <input type="text" class="ex-input" id="ex-text-input" placeholder="Deine Antwort..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    </div>`;
+    setTimeout(() => {
+      const inp = document.getElementById('ex-text-input');
+      if (inp) {
+        inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+      }
+    }, 50);
+  }
+
+  // Reset feedback
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  fb.style.display = 'none';
+  document.getElementById('btn-check').textContent = 'Prüfen';
+  document.getElementById('btn-check').disabled = false;
+  document.getElementById('btn-skip').textContent = 'Überspringen';
+  document.getElementById('btn-skip').onclick = () => showScreen('mode');
+}
+
+let selectedChoice = -1;
+function selectChoice(idx) {
+  selectedChoice = idx;
+  document.querySelectorAll('.choice-btn').forEach((b,i) => {
+    b.style.borderColor = i === idx ? 'var(--violet)' : '';
+    b.style.background = i === idx ? 'var(--bg4)' : '';
+  });
+}
+
+function checkAnswer() {
+  const ex = currentExercises[currentExIdx];
+  let isCorrect = false;
+  let userAnswer = '';
+
+  if (ex.type === 'mc') {
+    if (selectedChoice === -1) return;
+    isCorrect = selectedChoice === ex.correct;
+    userAnswer = ex.choices[selectedChoice];
+    document.querySelectorAll('.choice-btn').forEach((b,i) => {
+      b.disabled = true;
+      if (i === ex.correct) b.classList.add('correct');
+      else if (i === selectedChoice && !isCorrect) b.classList.add('wrong');
+    });
+  } else {
+    const inp = document.getElementById('ex-text-input');
+    userAnswer = inp ? inp.value.trim() : '';
+    if (!userAnswer) return;
+    // Flexible comparison
+    const normalize = s => s.toLowerCase()
+      .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e')
+      .replace(/[íìï]/g,'i').replace(/[óòö]/g,'o')
+      .replace(/[úùü]/g,'u').replace(/ñ/g,'n')
+      .replace(/[¡¿!?.,"']/g,'').trim();
+    isCorrect = normalize(userAnswer) === normalize(ex.answer);
+    if (inp) inp.classList.add(isCorrect ? 'correct' : 'wrong');
+  }
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box ' + (isCorrect ? 'correct' : 'wrong') + ' show';
+  fb.style.display = 'block';
+  document.getElementById('fb-icon').textContent = isCorrect ? '✓' : '✗';
+  document.getElementById('fb-text').textContent = isCorrect ? '¡Correcto!' : 'Nicht ganz...';
+  document.getElementById('fb-correct').innerHTML = isCorrect ? '' :
+    `Richtige Antwort: <strong>${ex.type === 'mc' ? ex.choices[ex.correct] : ex.answer}</strong>`;
+  document.getElementById('fb-explain').textContent = ex.explain || '';
+
+  if (isCorrect) currentScore++;
+
+  // Update progress
+  const key = currentTopic.id;
+  if (!S.progress[key]) S.progress[key] = { done: 0, correct: 0 };
+  S.progress[key].done++;
+  if (isCorrect) S.progress[key].correct++;
+  saveState();
+
+  // Button → Next
+  const btn = document.getElementById('btn-check');
+  btn.textContent = currentExIdx < currentExercises.length - 1 ? 'Weiter →' : 'Ergebnis →';
+  btn.onclick = () => {
+    currentExIdx++;
+    selectedChoice = -1;
+    renderExercise();
+  };
+  document.getElementById('btn-skip').textContent = 'Beenden';
+  document.getElementById('btn-skip').onclick = showResults;
+}
+
+function showResults() {
+  const total = currentExercises.length;
+  const pct = total > 0 ? Math.round(currentScore/total*100) : 0;
+  document.getElementById('results-score').textContent = currentScore + '/' + total;
+  const msgs = [
+    [90, '¡Excelente!', 'Du hast das Thema sehr gut gemeistert!'],
+    [70, '¡Muy bien!', 'Gute Arbeit — noch ein bisschen Übung und du hast es!'],
+    [50, '¡Bien!', 'Du machst Fortschritte. Mehr üben hilft!'],
+    [0,  'Sigue intentando', 'Nicht aufgeben! Lies nochmal die Grammatik-Erklärung.'],
+  ];
+  const [,msg,sub] = msgs.find(([t]) => pct >= t);
+  document.getElementById('results-msg').textContent = msg;
+  document.getElementById('results-sub').textContent = sub;
+  showScreen('results');
+}
+
+function retryExercises() {
+  currentExIdx = 0;
+  currentScore = 0;
+  currentExercises = getExercises(currentTopic.id);
+  showScreen('exercise');
+  renderExercise();
+}
+
+// ═══════════════════════════════════════════
+//  MODE B — FREE WRITING + AI
+// ═══════════════════════════════════════════
+function startModeB() {
+  if (!S.apiKey) {
+    alert('Bitte trage zuerst deinen API-Key in den Einstellungen ein.');
+    showScreen('settings');
+    return;
+  }
+  currentFreeTasks = getFreeTasks(currentTopic.id);
+  currentFreeIdx = 0;
+  showScreen('free');
+  renderFreeTask();
+}
+
+function renderFreeTask() {
+  const task = currentFreeTasks[currentFreeIdx];
+  const total = currentFreeTasks.length;
+  document.getElementById('free-level-pill').textContent = currentLevel;
+  document.getElementById('free-topic-name').textContent = currentTopic.name;
+  document.getElementById('free-task-num').textContent = 'Aufgabe ' + (currentFreeIdx+1) + ' / ' + total;
+  document.getElementById('free-progress').style.width = ((currentFreeIdx+1)/total*100) + '%';
+  document.getElementById('free-task-text').textContent = task.task;
+  document.getElementById('free-task-hint').textContent = task.hint ? '💡 ' + task.hint : '';
+  document.getElementById('free-task-hint').style.display = task.hint ? 'block' : 'none';
+  document.getElementById('free-textarea').value = '';
+  document.getElementById('ai-feedback').className = 'ai-feedback';
+  document.getElementById('ai-feedback-content').innerHTML = '';
+  document.getElementById('btn-free-next').style.display = 'none';
+  document.getElementById('btn-free-check').style.display = '';
+  document.getElementById('btn-free-check').disabled = false;
+  document.getElementById('btn-free-check').textContent = 'Feedback erhalten';
+}
+
+function nextFreeTask() {
+  currentFreeIdx++;
+  if (currentFreeIdx >= currentFreeTasks.length) {
+    showScreen('topics');
+    return;
+  }
+  renderFreeTask();
+}
+
+async function checkFreeAnswer() {
+  const text = document.getElementById('free-textarea').value.trim();
+  if (!text || text.length < 5) {
+    alert('Bitte schreibe zuerst etwas auf Spanisch.');
+    return;
+  }
+  const task = currentFreeTasks[currentFreeIdx];
+
+  document.getElementById('btn-free-check').disabled = true;
+  document.getElementById('btn-free-check').textContent = 'Analysiert...';
+
+  const feedback = document.getElementById('ai-feedback');
+  feedback.className = 'ai-feedback show';
+  document.getElementById('ai-feedback-content').innerHTML =
+    '<div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div> KI analysiert deine Antwort...</div>';
+
+  const topic = currentTopic;
+  const systemPrompt = `Du bist ein spanischer Grammatik-Tutor. Analysiere die Antwort der Lernenden auf folgende Aufgabe und gib strukturiertes Feedback auf Deutsch.
+
+Aufgabe: ${task.task}
+Grammatikthema: ${topic.name} (Level ${currentLevel})
+
+Gib folgendes Feedback:
+1. BEWERTUNG: Kurz (1 Satz) ob die Aufgabe erfüllt wurde
+2. KORREKTUREN: Liste konkrete Fehler mit Korrektur (wenn vorhanden). Format: ❌ Fehler → ✅ Korrektur
+3. ERKLÄRUNG: Erkläre den wichtigsten Fehler grammatikalisch (1-2 Sätze)
+4. POSITIVES: Was gut gemacht wurde (1 Satz)
+5. VERBESSERTER TEXT: Die korrigierte Version
+
+Sei präzise, ermutigend und lehrreich. Wenn keine Fehler vorhanden sind, lobe die Antwort und gib Tipps für höheres Niveau.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': S.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 800,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: `Meine Antwort: ${text}` }],
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'API-Fehler: ' + response.status);
+    }
+
+    const data = await response.json();
+    const content = data.content?.[0]?.text || 'Kein Feedback erhalten.';
+
+    // Format the response
+    const formatted = content
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/❌/g, '<span style="color:#e87a7a">❌</span>')
+      .replace(/✅/g, '<span style="color:var(--mint2)">✅</span>')
+      .replace(/\n/g, '<br>');
+
+    document.getElementById('ai-feedback-content').innerHTML = formatted;
+
+    // Update progress
+    const key = currentTopic.id;
+    if (!S.progress[key]) S.progress[key] = { done: 0, correct: 0 };
+    S.progress[key].done++;
+    S.progress[key].correct++;
+    saveState();
+
+    document.getElementById('btn-free-check').style.display = 'none';
+    document.getElementById('btn-free-next').style.display = '';
+
+  } catch(e) {
+    document.getElementById('ai-feedback-content').innerHTML =
+      `<span style="color:#e87a7a">Fehler: ${e.message}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
+    document.getElementById('btn-free-check').disabled = false;
+    document.getElementById('btn-free-check').textContent = 'Nochmal versuchen';
+  }
+}
+
+// ═══════════════════════════════════════════
+//  SETTINGS
+// ═══════════════════════════════════════════
+function saveSettings() {
+  S.apiKey = document.getElementById('settings-key').value.trim();
+  saveState();
+  const status = document.getElementById('settings-status');
+  status.style.display = 'block';
+  setTimeout(() => status.style.display = 'none', 2500);
+}
+
+function resetProgress() {
+  if (confirm('Wirklich alle Fortschrittsdaten löschen?')) {
+    S.progress = {};
+    saveState();
+    renderHome();
+    alert('Fortschritt wurde zurückgesetzt.');
+  }
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+loadState();
+document.getElementById('settings-key').value = S.apiKey || '';
+renderHome();
+navStack = ['home'];
+</script>
+</body>
+</html>
