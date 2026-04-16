@@ -844,7 +844,6 @@ C2_conectores:[
   {type:'sort',q:'Stelle zusammen:',words:['llegó tarde','con todo','trabajó','eficientemente'],answer:'llegó tarde con todo trabajó eficientemente',explain:'con todo = dennoch/trotzdem(adversativ).'},
   {type:'translate',q:'Übersetze: "Folglich müssen wir die Strategie überdenken."',answer:'Por consiguiente, debemos reconsiderar la estrategia',hint:'por consiguiente = folglich',explain:'por consiguiente = konsekutiv, formell.'},
 ],
-}
 };
 
 const FREE={
@@ -1058,25 +1057,19 @@ C2_registro:[
   {task:'Verfasse eine kurze akademische oder berufliche Stellungnahme in hohem Register.',hint:'En virtud de..., a tenor de..., cabe subrayar...'},
   {task:'Schreibe einen Text mit bewusstem Registerwechsel fuer zwei Zielgruppen.',hint:'z.B. formelle Mail und lockere Nachricht zum gleichen Thema.'},
 ],
-}
+B1_pluscuamperfecto:[
+  {task:'Schreibe 3 Sätze: Was hattest du schon getan, bevor etwas anderes passierte? Benutze "cuando" + Indefinido + "ya había".',hint:'Cuando llegué, ya había... / Cuando llamó, yo ya había terminado...'},
+  {task:'Erzähle von einem Erlebnis: Was war passiert, bevor du ankamst? Mindestens 3 Pluscuamperfecto-Formen.',hint:'Cuando entré, todos ya habían salido. La clase había empezado cuando llegué.'},
+  {task:'Beschreibe eine Situation, in der etwas noch NICHT passiert war. Benutze "todavía no había" und "nunca había".',hint:'Nunca había viajado sola. Todavía no había aprendido a conducir cuando...'},
+  {task:'Schreibe einen kurzen Absatz über eine Reise und erkläre, was vorher schon alles vorbereitet war.',hint:'Antes de salir, ya habíamos reservado... El guía ya había preparado el itinerario.'},
+],
+B2_condicionales:[
+  {task:'Schreibe je einen Satz für Typ 1, 2 und 3 Konditionalsatz zu einem eigenen Thema.',hint:'Typ1: Si tengo tiempo... Typ2: Si tuviera tiempo... Typ3: Si hubiera tenido tiempo...'},
+  {task:'Beschreibe eine irreale Gegenwartssituation (Typ 2): Was würdest du tun, wenn du eine Woche frei hättest? Mindestens 4 Sätze.',hint:'Si tuviera una semana libre, iría a... Viviría en... Aprendería...'},
+  {task:'Schreibe über Vergangenheit (Typ 3): Was wäre anders gewesen, wenn du etwas anders entschieden hättest?',hint:'Si hubiera estudiado más, habría... Si no hubiera... nunca habría conocido...'},
+  {task:'Mische Typ 2 und 3: Beschreibe eine irreale Vergangenheit und ihre Wirkung auf die Gegenwart.',hint:'Si hubiera aprendido inglés de niña, ahora podría... (gemischter Konditional)'},
+],
 };
-
-function getExercises(id){
-  if(EX[id])return[...EX[id]];
-  const t=findTopic(id);
-  return[
-    {type:'mc',q:'Beispielübung für "'+( t?t.name:'dieses Thema')+'". Welche Antwort ist korrekt?',choices:['Option A','Option B','Option C','Option D'],correct:0,explain:'Zu diesem Thema gibt es noch keine spezifischen Übungen. Versuche das freie Schreiben!'},
-    {type:'fill',q:'Schreibe ein Beispiel für "'+( t?t.de:'dieses Thema')+'" auf Spanisch:',answer:'ejemplo',hint:'Nutze das Thema kreativ',explain:'Übungsbeispiel.'},
-  ];
-}
-function getFreeTasks(id){
-  if(FREE[id])return FREE[id];
-  const t=findTopic(id);
-  return[
-    {task:'Schreibe 3-4 eigene Sätze auf Spanisch zum Thema "'+( t?t.name:'Grammatik')+'".',hint:'Nutze verschiedene Strukturen und Verben.'},
-    {task:'Schreibe einen kurzen Absatz(4-5 Sätze) und integriere "'+( t?t.de:'das Thema')+'" natürlich.',hint:'Sei kreativ und abwechslungsreich!'},
-  ];
-}
 function getExampleSentences(topic){
   return(topic?.example||'').split(/[.!?â€”]+/).map(s=>s.replace(/\s+/g,' ').trim()).filter(Boolean);
 }
