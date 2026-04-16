@@ -3,9 +3,9 @@ name: spanish-trainer
 description: >
   Use this skill for EVERY request related to the Spanisch-Trainer App — a Spanish grammar learning app
   built in standalone HTML, deployed to GitHub Pages. Trigger on any mention of:
-  "Spanisch Trainer", "Español Trainer", "Spanisch App", "Grammatik App", "espanol-trainer",
-  "nicolehahn2890.github.io/espanol-trainer" (new app, not the old verb trainer), or any request
-  to add/fix/extend the Spanish learning app. Also trigger when the user uploads an HTML file related to this app.
+  "Spanisch Trainer", "Español Trainer", "Spanisch App", "Grammatik App", "espanol-writing-grammar",
+  "nicolehahn2890/espanol-writing-grammar", or any request to add/fix/extend the Spanish learning app.
+  Also trigger when the user uploads an HTML file related to this app.
   Never skip this skill for Spanish trainer app work.
 ---
 
@@ -13,146 +13,181 @@ description: >
 
 ## Wer ist die Nutzerin?
 
-Rexi — kein Coding-Hintergrund, kein Terminal. Ausschliesslich Claude.ai. Deutsch, Du-Anrede.
-Deployment immer ueber GitHub Browser-Interface (Stift-Symbol, Strg+A, Inhalt ersetzen, Commit).
+Nicole — kein Coding-Hintergrund, kein Terminal. Ausschliesslich Claude.ai / Claude Code. Deutsch, Du-Anrede.
+Deployment über GitHub (Branch pushen → Pull Request → merge in main → GitHub Pages).
 Spanisch-Level: C1
 
 ---
 
 ## Was ist die App?
 
-- Geplante Live-URL: https://nicolehahn2890.github.io/espanol-trainer (NEUES Repo, nicht der alte Verb-Trainer!)
-- Repository: github.com/nicolehahn2890/espanol-trainer (neu anzulegen)
+- Live-URL: https://nicolehahn2890.github.io/espanol-writing-grammar
+- Repository: github.com/nicolehahn2890/espanol-writing-grammar
 - Technologie: Standalone HTML-Datei (kein Framework, kein Build-Schritt)
 - Dateiname: index.html
-- localStorage-Key: espanol_trainer_v1 — NIEMALS umbenennen!
-- API: Anthropic Claude Haiku (claude-haiku-4-5-20251001) fuer Modus B (freies Schreiben)
+- localStorage-Key: `espanol_trainer_v1` — **NIEMALS umbenennen!**
+- API: Anthropic Claude Haiku (`claude-haiku-4-5-20251001`) für Modus B (freies Schreiben)
 
 ---
 
 ## Design-System
 
-Hintergrund: #0f0d14
-Sekundaer-BG: #17141f, #1e1a2a, #252130
-Primaerfarbe Pink: #F4A7C3 / #E879A0
-Sekundaerfarbe Violet: #C4A8E8 / #9B6DD6
-Akzent Mint: #A8E0CC / #5CC4A0
-Akzent Blau: #7BAEE8 / #3A7BD5
-Akzent Peach: #F9C9A8
-Text: #f0eaf8 / #b8b0cc / #7a7090
-Font: DM Sans + Playfair Display (Google Fonts)
+```
+Hintergrund:       #0f0d14
+Sekundaer-BG:      #17141f / #1e1a2a / #252130
+Pink:              #F4A7C3 / #E879A0
+Violet:            #C4A8E8 / #9B6DD6
+Mint:              #A8E0CC / #5CC4A0
+Blau:              #7BAEE8 / #3A7BD5
+Peach:             #F9C9A8
+Text:              #f0eaf8 / #b8b0cc / #7a7090
+Font:              DM Sans + Playfair Display (Google Fonts)
+```
 
 Level-Farben:
-  A1/A2: Mint (#5CC4A0)
-  B1/B2: Blau (#7BAEE8 / #3A7BD5)
-  C1: Violet (#C4A8E8)
-  C2: Violet dunkel (#9B6DD6)
+- A1/A2: Mint (#5CC4A0)
+- B1/B2: Blau (#7BAEE8 / #3A7BD5)
+- C1: Violet (#C4A8E8)
+- C2: Violet dunkel (#9B6DD6)
 
 ---
 
 ## App-Architektur
 
 ### State-Objekt S
-```
+```javascript
 S = {
-  apiKey: '',         // Anthropic API Key, gespeichert in localStorage
-  progress: {},       // { "B2_Subjuntivo": { done: 3, correct: 2 } }
-  totalExercises: 0,
-  totalCorrect: 0,
+  apiKey: '',      // Anthropic API Key, gespeichert in localStorage
+  progress: {},    // { "B2_subjuntivo_imp": { done: 3, correct: 2 } }
 }
 ```
 
 ### Screens
-- home: Level-Auswahl (A1-C2) + Stats
-- topics: Themenliste fuer gewaehltes Level
-- mode: Modus-Auswahl (A oder B) + Grammatik-Erklaerung
-- exercise: Gefuehrte Uebungen (Modus A)
-- free: Freies Schreiben mit KI (Modus B)
-- results: Ergebnis-Anzeige nach Modus A
-- settings: API-Key + Fortschritt zuruecksetzen
+| Screen | Beschreibung |
+|--------|-------------|
+| home | Level-Auswahl (A1–C2) + Stats |
+| topics | Themenliste für gewähltes Level |
+| mode | Modus-Auswahl + Grammatik-Erklärung |
+| exercise | Geführte Übungen (Modus A) |
+| free | Freies Schreiben mit KI (Modus B) |
+| results | Ergebnis nach Modus A |
+| settings | API-Key + Fortschritt zurücksetzen |
 
-### Key-Format fuer Progress
-```
-topicId z.B. "B2_subjuntivo_imp"
-S.progress[topicId] = { done: N, correct: N }
+### Daten-Objekte
+
+```javascript
+const TOPICS = { A1:[...], A2:[...], B1:[...], B2:[...], C1:[...], C2:[...] }
+// Jedes Topic: { id, name, de, desc, grammar, example }
+
+const EX = { TOPIC_ID: [ {type:'mc'|'fill'|'translate'|'sort', ...} ] }
+// 31 Themen mit je 10 kuratierten Übungen
+
+const FREE = { TOPIC_ID: [ {task:'...', hint:'...'} ] }
+// 35 Themen mit je 4 Schreibaufgaben
+// 6 Themen ohne kuratierte EX nutzen createFallbackExercises() (autogeneriert)
 ```
 
 ---
 
-## Uebungs-Typen (Modus A)
+## Übungs-Typen (Modus A — EX-Objekt)
 
-```
-mc:        Multiple Choice (4 Optionen, choices[], correct: Index)
-fill:      Lueckentext (answer: String, flexible Vergleich mit Normalisierung)
-translate: Uebersetzen DE→ES (answer: String)
+```javascript
+// Multiple Choice
+{ type:'mc', q:'Frage', choices:['A','B','C','D'], correct:0, explain:'...' }
+
+// Lückentext
+{ type:'fill', q:'Frage', answer:'Antwort', hint:'...', explain:'...' }
+
+// Übersetzen DE→ES
+{ type:'translate', q:'Übersetze: "..."', answer:'...', hint:'...', explain:'...' }
+
+// Satz umstellen
+{ type:'sort', q:'Stelle zusammen:', words:['word1','word2',...], answer:'word1 word2 ...', explain:'...' }
 ```
 
-Feedback immer mit: Richtig/Falsch-Anzeige + korrekte Antwort + grammatikalische Erklaerung (explain).
+Feedback immer mit: Richtig/Falsch + korrekte Antwort + `explain`-Text.
 
 ### Antwort-Normalisierung (fill/translate)
 ```javascript
-const normalize = s => s.toLowerCase()
-  .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e')
-  .replace(/[íìï]/g,'i').replace(/[óòö]/g,'o')
-  .replace(/[úùü]/g,'u').replace(/ñ/g,'n')
-  .replace(/[¡¿!?.,"']/g,'').trim();
+function normalizeAnswer(s) {
+  return (s||'').toLowerCase()
+    .replace(/[áàä]/g,'a').replace(/[éèë]/g,'e')
+    .replace(/[íìï]/g,'i').replace(/[óòö]/g,'o')
+    .replace(/[úùü]/g,'u').replace(/ñ/g,'n')
+    .replace(/[¡¿!?.,"']/g,'').replace(/\s+/g,' ').trim();
+}
 ```
-Akzente werden also toleriert/ignoriert beim Vergleich.
+Akzente werden beim Vergleich toleriert.
 
 ---
 
-## Grammatik-Themen (vollstaendige Liste)
+## Grammatik-Themen (vollständige aktuelle Liste — 37 Themen)
 
-### A1
-- A1_presente: Presente de indicativo (ser/estar/tener/ir + regulaere Verben)
-- A1_articulos: Articulos (el/la/los/las, un/una)
-- A1_pronombres: Pronombres personales (yo/tu/el/ella...)
-- A1_numeros: Numeros y fechas (Zahlen, Datum, Uhrzeit)
-- A1_negacion: Negacion simple (no + Verb)
+### A1 (5 Themen)
+| ID | Spanisch | Deutsch |
+|----|----------|---------|
+| A1_presente | Presente de indicativo | Präsens |
+| A1_articulos | Artículos | Artikel |
+| A1_ser_estar | Ser vs. Estar (básico) | Sein – Grundlagen |
+| A1_pronombres | Pronombres personales | Personalpronomen |
+| A1_negacion | Negación y preguntas | Verneinung & Fragen |
 
-### A2
-- A2_pasado: Preterito indefinido (abgeschlossene Vergangenheit)
-- A2_imperfecto: Preterito imperfecto (Gewohnheiten/Beschreibungen)
-- A2_adjetivos: Adjetivos calificativos (Stellung + Kongruenz)
-- A2_gustar: Verbos como gustar (gustar/encantar/molestar)
-- A2_preposiciones: Preposiciones basicas (a/de/en/con/por/para)
+### A2 (6 Themen)
+| ID | Spanisch | Deutsch |
+|----|----------|---------|
+| A2_indefinido | Pretérito Indefinido | Einfache Vergangenheit |
+| A2_imperfecto | Pretérito Imperfecto | Unvollendete Vergangenheit |
+| A2_perf_simple | Pretérito Perfecto | Perfekt |
+| A2_gustar | Verbos tipo gustar | Verben wie gustar |
+| A2_adjetivos | Adjetivos y comparativos | Adjektive & Komparativ |
+| A2_preposiciones | Preposiciones básicas | Grundlegende Präpositionen |
 
-### B1
-- B1_futuro: Futuro simple (-e/-as/-a...)
-- B1_condicional: Condicional simple (wuerde...)
-- B1_subjuntivo_pres: Subjuntivo presente (Wuensche/Zweifel/Emotionen)
-- B1_imperativo: Imperativo afirmativo (Befehle)
-- B1_ser_estar: Ser vs. Estar
-- B1_perifrasis: Perifrasis verbales (estar+gerundio, ir a+inf...)
+### B1 (7 Themen)
+| ID | Spanisch | Deutsch |
+|----|----------|---------|
+| B1_pluscuamperfecto | Pretérito Pluscuamperfecto | Plusquamperfekt |
+| B1_futuro | Futuro simple | Zukunft einfach |
+| B1_condicional | Condicional simple | Konditional |
+| B1_subjuntivo_pres | Subjuntivo presente | Konjunktiv Präsens |
+| B1_imperativo | Imperativo afirmativo y negativo | Imperativ |
+| B1_ser_estar_adv | Ser/Estar cambios semánticos | Ser/Estar Bedeutungsunterschiede |
+| B1_perifrasis | Perífrasis verbales | Verbale Umschreibungen |
 
-### B2
-- B2_subjuntivo_imp: Subjuntivo imperfecto (-ra/-se Formen)
-- B2_condicionales: Oraciones condicionales (Typ 1/2/3)
-- B2_subjuntivo_perf: Subjuntivo perfecto (haya + Partizip)
-- B2_imperativo_neg: Imperativo negativo (no + Subjuntivo)
-- B2_relativos: Pronombres relativos (que/quien/el cual/cuyo)
-- B2_adverbios: Adverbios y locuciones (-mente, sin embargo...)
+### B2 (8 Themen)
+| ID | Spanisch | Deutsch |
+|----|----------|---------|
+| B2_futuro_perf | Futuro perfecto | Futur II |
+| B2_cond_perf | Condicional perfecto | Konditional Perfekt |
+| B2_subjuntivo_imp | Subjuntivo imperfecto | Konjunktiv Imperfekt |
+| B2_subjuntivo_perf | Subjuntivo perfecto | Konjunktiv Perfekt |
+| B2_condicionales | Oraciones condicionales | Konditionalsätze (Typ 1–3) |
+| B2_imperativo_pron | Imperativo con pronombres | Imperativ mit Pronomen |
+| B2_relativos | Pronombres relativos | Relativpronomen |
+| B2_concesivas | Oraciones concesivas | Konzessivsätze |
 
-### C1
-- C1_subj_pluscuamp: Subjuntivo pluscuamperfecto (hubiera + Partizip)
-- C1_voz_pasiva: Voz pasiva (ser+Partizip / se pasivo)
-- C1_estilo_indirecto: Estilo indirecto (indirekte Rede mit Zeitverschiebung)
-- C1_subjuntivo_conc: Subjuntivo en concesivas (aunque/a pesar de que)
-- C1_gerundio: Gerundio avanzado (temporal/kausal/modal)
-- C1_ser_estar_adv: Ser/Estar avanzado (Bedeutungsunterschiede)
+### C1 (6 Themen)
+| ID | Spanisch | Deutsch |
+|----|----------|---------|
+| C1_subj_pluscuamp | Subjuntivo pluscuamperfecto | Konjunktiv Plusquamperfekt |
+| C1_voz_pasiva | Voz pasiva | Passiv |
+| C1_estilo_indirecto | Estilo indirecto | Indirekte Rede |
+| C1_gerundio | Gerundio avanzado | Gerundium fortgeschritten |
+| C1_finales_temporales | Finales y temporales | Final- & Temporalsätze |
+| C1_ser_estar_full | Ser/Estar lista completa | Ser/Estar vollständige Liste |
 
-### C2
-- C2_perifrasis_adv: Perifrasis verbales avanzadas (llevar+gerundio...)
-- C2_modalidad: Modalidad y matices (deber de vs. deber...)
-- C2_discurso: Conectores del discurso (asimismo/no obstante...)
-- C2_subjuntivo_fin: Subjuntivo en finales y temporales
-- C2_lexicologia: Lexico avanzado y registro (Kollokationen/Idiome)
+### C2 (5 Themen)
+| ID | Spanisch | Deutsch |
+|----|----------|---------|
+| C2_perifrasis_adv | Perífrasis verbales avanzadas | Fortgeschrittene Verbumschreibungen |
+| C2_modalidad | Modalidad epistémica y deóntica | Modalität |
+| C2_conectores | Conectores del discurso | Diskurskonnektoren |
+| C2_subj_complejo | Subjuntivo en construcciones complejas | Konjunktiv komplex |
+| C2_registro | Registro y léxico avanzado | Register & Wortschatz |
 
 ---
 
 ## Modus B — KI-Feedback
 
-API-Aufruf:
 ```javascript
 fetch('https://api.anthropic.com/v1/messages', {
   method: 'POST',
@@ -164,51 +199,49 @@ fetch('https://api.anthropic.com/v1/messages', {
   },
   body: JSON.stringify({
     model: 'claude-haiku-4-5-20251001',
-    max_tokens: 800,
+    max_tokens: 900,
     system: systemPrompt,
     messages: [{ role: 'user', content: `Meine Antwort: ${text}` }],
   })
 });
 ```
 
-System-Prompt-Struktur fuer Feedback:
-1. BEWERTUNG (1 Satz)
-2. KORREKTUREN: Fehler → Korrektur (Emojis: ❌ / ✅)
-3. ERKLAERUNG grammatikalisch
-4. POSITIVES
-5. VERBESSERTER TEXT
+System-Prompt-Struktur für Feedback:
+1. **Bewertung** (1 Satz)
+2. **Korrekturen**: ❌ Fehler → ✅ Korrektur (Erklärung)
+3. **Haupterklärung** grammatikalisch (2–3 Sätze)
+4. **Positives**
+5. **Verbesserter Text**
 
 ---
 
-## WICHTIGE CODING-REGELN
+## Fallback-Mechanismus
 
-1. localStorage-Key espanol_trainer_v1 NIE umbenennen
-2. Keine Sonderzeichen in JS-Strings ausser Standard-Umlaute
-3. Alle 3 Uebungstypen (mc/fill/translate) pro Thema nutzen
-4. Antwort-Normalisierung immer verwenden (Akzente tolerieren)
-5. Feedback immer mit explain-Text versehen
-6. API-Key NIE hardcoden — immer aus S.apiKey lesen
-7. anthropic-dangerous-direct-browser-access Header immer setzen (Browser-API-Call)
-8. Bei Erweiterungen: Uebungen als Array im EXERCISES-Objekt, Key = topicId
+Themen ohne kuratierte Übungen in EX (aktuell 6 C1/C2-Themen) nutzen `createFallbackExercises()`:
+- Generiert sort/fill/mc/translate aus `topic.example` und `topic.grammar`
+- Gibt max. 8 Aufgaben zurück
+
+Themen ohne kuratierte FREE-Tasks nutzen `createFallbackFreeTasks()`:
+- 4 generische Schreibaufgaben zum Thema
 
 ---
 
-## Ausstehende Verbesserungen (TODO)
+## Wichtige Coding-Regeln
 
-- Mehr Uebungen pro Thema (Ziel: 8-10 pro Thema, alle 3 Typen)
-- Fehlende Themen-Uebungen erganzen (aktuell haben nur manche Themen spezifische Uebungen)
-- Mehr Free-Tasks pro Thema (Ziel: 4-5 pro Thema)
-- Grammatik-Themen ueberpruefen und ggf. erganzen
-- Evtl. Audio-Aussprache-Tipps
-- Evtl. Vokabel-Modul
+1. `espanol_trainer_v1` als localStorage-Key NIE umbenennen
+2. Alle 4 Übungstypen (mc/fill/translate/sort) pro Thema verwenden
+3. Antwort-Normalisierung (`normalizeAnswer`) immer verwenden
+4. Jeden Übungstyp mit `explain`-Text versehen
+5. API-Key NIE hardcoden — immer aus `S.apiKey` lesen
+6. `anthropic-dangerous-direct-browser-access` Header immer setzen
+7. Neue Themen: sowohl in `TOPICS` als auch in `EX` und `FREE` eintragen
+8. Keine doppelten Schlüssel in `EX` oder `FREE` — JavaScript nimmt stillschweigend den letzten!
+9. Strings immer als UTF-8 schreiben — keine manuellen Escape-Sequenzen für Umlaute
 
 ---
 
 ## Deployment
 
-1. index.html herunterladen
-2. github.com/nicolehahn2890/espanol-trainer > index.html > Stift-Symbol
-   (oder neues Repo anlegen falls noch nicht vorhanden)
-3. Strg+A > Entf > Strg+V > Commit changes
-4. Repository Settings > Pages > Branch: main > Save
-5. ~2 Min warten > https://nicolehahn2890.github.io/espanol-trainer/
+Branch `claude/add-grammar-exercises-3DqgQ` → Pull Request → merge in `main` → GitHub Pages aktualisiert sich automatisch (~2 Min).
+
+Live-URL: https://nicolehahn2890.github.io/espanol-writing-grammar
