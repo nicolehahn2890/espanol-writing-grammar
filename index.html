@@ -229,9 +229,9 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
 </div>
 <div id="screen-mode" class="screen">
   <div class="mode-summary" style="display:none">
-    <div class="mode-summary-pill" id="mode-summary-guided">0 gefÃ¼hrte Aufgaben</div>
+    <div class="mode-summary-pill" id="mode-summary-guided">0 geführte Aufgaben</div>
     <div class="mode-summary-pill" id="mode-summary-free">0 Schreibimpulse</div>
-    <div class="mode-summary-pill" id="mode-summary-source">ErgÃ¤nzte Lernkarten</div>
+    <div class="mode-summary-pill" id="mode-summary-source">Ergänzte Lernkarten</div>
   </div>
   <div class="mode-header"><h2 id="mode-topic-name"></h2><div class="mode-de" id="mode-topic-de"></div><p id="mode-topic-level"></p></div>
   <div class="grammar-box"><h3>Grammatik-Erklärung</h3><p id="grammar-text"></p><div class="example" id="grammar-example"></div></div>
@@ -333,8 +333,8 @@ function loadState(){
   }catch(e){}
 }
 function saveState(){localStorage.setItem(LS,JSON.stringify(S));}
-function normalizeAnswer(s){return(s||'').toLowerCase().replace(/[Ã¡Ã Ã¤]/g,'a').replace(/[Ã©Ã¨Ã«]/g,'e').replace(/[Ã­Ã¬Ã¯]/g,'i').replace(/[Ã³Ã²Ã¶]/g,'o').replace(/[ÃºÃ¹Ã¼]/g,'u').replace(/Ã±/g,'n').replace(/[Â¡Â¿!?.,"']/g,'').replace(/\s+/g,' ').trim();}
-function normalizeSortAnswer(s){return(s||'').toLowerCase().replace(/[Â¡Â¿!?.,"']/g,'').replace(/\s+/g,' ').trim();}
+function normalizeAnswer(s){return(s||'').toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[¡¿!?.,"']/g,'').replace(/\s+/g,' ').trim();}
+function normalizeSortAnswer(s){return(s||'').toLowerCase().replace(/[¡¿!?.,"']/g,'').replace(/\s+/g,' ').trim();}
 
 const LEVELS={
   A1:{name:'Einstieg',desc:'Grundlagen der spanischen Sprache',color:'var(--mint2)'},
@@ -473,7 +473,7 @@ C2:[
 
 const EX={
 A1_presente:[
-  {type:'mc',q:'"Yo ___ (hablar) español todos los días."',choices:['hablas','habla','hablo','hablamos'],correct:2,explain:'yo → -o Endung bei -ar Verben: hablo.'},
+{type:'mc',q:'"Yo ___ (hablar) español todos los días."',choices:['hablas','habla','hablo','hablamos'],correct:2,explain:'yo → -o Endung bei -ar Verben: hablo.'},
   {type:'fill',q:'Completa: "Ella ___ (vivir) en Madrid."',answer:'vive',hint:'3. Pers. Sing. -ir Verb',explain:'-ir Verb 3. Sing.: -e → vive.'},
   {type:'mc',q:'"Nosotros ___ (comer) a las dos."',choices:['como','comes','come','comemos'],correct:3,explain:'nosotros → -emos bei -er Verben: comemos.'},
   {type:'fill',q:'"Tú ___ (tener) veinte años."',answer:'tienes',hint:'tener ist unregelmäßig!',explain:'tener: tengo/tienes/tiene/tenemos/tenéis/tienen.'},
@@ -485,7 +485,7 @@ A1_presente:[
   {type:'sort',q:'Stelle zusammen:',words:['los','pasean','perros','el','por','parque'],answer:'los perros pasean por el parque',explain:'los perros(Subjekt) + pasean por + el parque.'},
 ],
 A1_articulos:[
-  {type:'mc',q:'"___ libro está en la mesa."',choices:['El','La','Los','Las'],correct:0,explain:'libro = maskulin Singular → el.'},
+{type:'mc',q:'"___ libro está en la mesa."',choices:['El','La','Los','Las'],correct:0,explain:'libro = maskulin Singular → el.'},
   {type:'fill',q:'"___ casas de mi ciudad son bonitas."',answer:'Las',hint:'casas = feminin, Plural',explain:'casa = feminin Plural → las.'},
   {type:'mc',q:'"Quiero ___ manzana." (unbestimmt, feminin)',choices:['el','la','un','una'],correct:3,explain:'manzana = feminin, unbestimmt → una.'},
   {type:'fill',q:'"Tengo ___ perro y ___ gata."',answer:'un, una',hint:'perro=maskulin, gata=feminin, beide unbestimmt',explain:'un perro(m.) / una gata(f.).'},
@@ -497,7 +497,7 @@ A1_articulos:[
   {type:'translate',q:'Übersetze: "Ich habe einen Bruder und eine Schwester."',answer:'Tengo un hermano y una hermana',hint:'hermano/hermana',explain:'un hermano(m.) / una hermana(f.).'},
 ],
 A1_ser_estar:[
-  {type:'mc',q:'"Yo ___ alemana." (Nationalität)',choices:['estoy','soy','tengo','hay'],correct:1,explain:'Nationalität → ser: soy alemana.'},
+{type:'mc',q:'"Yo ___ alemana." (Nationalität)',choices:['estoy','soy','tengo','hay'],correct:1,explain:'Nationalität → ser: soy alemana.'},
   {type:'fill',q:'"¿Dónde ___ el restaurante?" (Ort)',answer:'está',hint:'Ort → estar',explain:'Ort von Dingen → estar: ¿Dónde está?'},
   {type:'mc',q:'"Hoy ___ muy cansada." (aktueller Zustand)',choices:['soy','estoy','tengo','hay'],correct:1,explain:'Temporärer Zustand/Befindlichkeit → estar.'},
   {type:'fill',q:'"Mi madre ___ médica." (Beruf)',answer:'es',hint:'Beruf → ser',explain:'Beruf → ser: mi madre es médica.'},
@@ -509,51 +509,31 @@ A1_ser_estar:[
   {type:'fill',q:'"Ellos ___ de Madrid." (Herkunft)',answer:'son',hint:'Herkunft → ser',explain:'Herkunft → ser: son de Madrid.'},
 ],
 A1_pronombres:[
-  {type:'mc',q:'Welche Form passt? "___ soy Ana."',choices:['Yo','Me','Mi','Tu'],correct:0,explain:'Zur Betonung kann das Subjektpronomen yo stehen: Yo soy Ana.'},
+{type:'mc',q:'Welche Form passt? "___ soy Ana."',choices:['Yo','Me','Mi','Tu'],correct:0,explain:'Zur Betonung kann das Subjektpronomen yo stehen: Yo soy Ana.'},
   {type:'fill',q:'Completa: "___ hablas muy rapido." (informell)',answer:'Tu',hint:'2. Person Singular informell',explain:'Tu ist das informelle du. In der App werden Akzente beim Antworten toleriert.'},
   {type:'mc',q:'Welche Form ist formell? "___ habla espanol muy bien."',choices:['Tu','Nosotros','Usted','Vosotros'],correct:2,explain:'Usted ist formell, aber das Verb steht in der 3. Person Singular.'},
   {type:'fill',q:'Completa: "___ vivimos en Sevilla."',answer:'Nosotros',hint:'1. Person Plural',explain:'Nosotros = wir. Oft wird das Pronomen weggelassen, aber hier wird es bewusst geuebt.'},
   {type:'sort',q:'Stelle zusammen:',words:['ustedes','en','viven','Madrid'],answer:'ustedes viven en Madrid',explain:'Ustedes steht mit der 3. Person Plural: viven.'},
   {type:'mc',q:'Welche Kombination ist korrekt?',choices:['vosotros habláis','vosotros habláis','vosotros hablo','vosotros habla'],correct:1,explain:'Vosotros verwendet die 2. Person Plural: habláis.'},
   {type:'translate',q:'Uebersetze: "Sie (feminin Singular) ist Lehrerin."',answer:'Ella es profesora',hint:'ella + ser',explain:'Ella bezeichnet eine weibliche Person im Singular.'},
-  {type:'fill',q:'Completa: "___ son mis amigos." (m.Pl.)',answer:'Ellos',hint:'3. Person Plural maskulin oder gemischte Gruppe',explain:'Ellos = sie fuer eine maennliche oder gemischte Gruppe.'},
+  {type:'fill',q:'Completa: "___ son mis amigos." (m.Pl.)',answer:'Ellos',hint:'3. Person Plural maskulin oder gemischte Gruppe',explain:'Ellos = sie fuer eine maennliche oder gemischte Gruppe.'},,
+  {type:'mc',q:'Welche Form passt? "___ son de Alemania."',choices:['Nosotros','Ellos','Vosotros','Usted'],correct:1,explain:'Für eine Gruppe → ellos.'},
+  {type:'translate',q:'Übersetze: "Ihr seid sehr freundlich."',answer:'Vosotros sois muy amables',hint:'vosotros (Spanien) = ihr',explain:'Vosotros + sois. In Lateinamerika: ustedes son.'}
 ],
 A1_negacion:[
-  {type:'mc',q:'Welche Form ist korrekt?',choices:['No hablo frances.','Hablo no frances.','No frances hablo.','Frances no hablo.'],correct:0,explain:'Die einfache Verneinung setzt no direkt vor das Verb.'},
+{type:'mc',q:'Welche Form ist korrekt?',choices:['No hablo frances.','Hablo no frances.','No frances hablo.','Frances no hablo.'],correct:0,explain:'Die einfache Verneinung setzt no direkt vor das Verb.'},
   {type:'fill',q:'Completa: "Yo ___ vivo en Madrid."',answer:'no',hint:'Verneinung vor dem Verb',explain:'No steht direkt vor vivo: Yo no vivo en Madrid.'},
   {type:'mc',q:'Welche Frage passt zu "En Berlin"?',choices:['Quien vives?','Donde vives?','Como vives?','Cuando vives?'],correct:1,explain:'Donde fragt nach dem Ort: Donde vives?'},
   {type:'fill',q:'Completa: "___ estudias espanol?" - "Porque me gusta."',answer:'Por que',hint:'Frage nach dem Grund',explain:'Por que fragt nach dem Grund. Die Antwort ist porque.'},
   {type:'sort',q:'Stelle die Frage richtig zusammen:',words:['donde','trabajas','tu'],answer:'donde trabajas tu',explain:'Fragewort + Verb + Person ist hier die Grundstruktur.'},
   {type:'mc',q:'Welche doppelte Verneinung ist korrekt?',choices:['No tengo nada.','No tengo algo.','Tengo no nada.','Nada tengo no.'],correct:0,explain:'Im Spanischen ist doppelte Verneinung normal: No tengo nada.'},
   {type:'translate',q:'Uebersetze: "Ich habe heute keine Zeit."',answer:'No tengo tiempo hoy',hint:'no + tener',explain:'Die Verneinung steht vor tengo.'},
-  {type:'fill',q:'Completa: "___ anos tienes?"',answer:'Cuantos',hint:'Frage nach Anzahl/Alter',explain:'Cuantos anos tienes? fragt nach dem Alter.'},
-],
-A1_articulos:[
-  {task:'Beschreibe dein Zimmer oder deine Tasche und benutze moeglichst viele bestimmte und unbestimmte Artikel.',hint:'Hay una mesa, un libro, la ventana, los cuadernos...'},
-  {task:'Schreibe 5 kurze Saetze zu Dingen in deiner Kueche oder Wohnung.',hint:'El vaso esta aqui. La puerta es blanca. Tengo una taza...'},
-  {task:'Vergleiche zwei Personen oder zwei Orte und nenne dabei mehrere Nomen mit passendem Artikel.',hint:'La ciudad tiene un parque. El barrio tiene una plaza...'},
-  {task:'Schreibe eine Mini-Einkaufsliste in ganzen Saetzen statt nur als Woerter.',hint:'Necesito un tomate, una cebolla y unas naranjas.'},
-],
-A1_ser_estar:[
-  {task:'Beschreibe dich selbst in 4-5 Saetzen und benutze sowohl ser als auch estar.',hint:'Soy..., soy de..., estoy en..., estoy cansada/o...'},
-  {task:'Beschreibe einen Raum und die Personen darin.',hint:'La cocina es pequena. Mi hermana esta en la cocina. La puerta esta abierta.'},
-  {task:'Schreibe einen kurzen Dialog: Wie geht es dir, wo bist du, wie bist du als Person?',hint:'Estoy bien. Soy tranquila. Estoy en casa...'},
-  {task:'Formuliere erst 2 Saetze mit ser und dann 2 mit estar zum selben Thema.',hint:'Soy profesora. Estoy en el trabajo. Es interesante. Esta abierto.'},
-],
-A1_pronombres:[
-  {task:'Stelle deine Familie oder drei Personen vor und benutze yo, tu, el/ella, nosotros oder ellos.',hint:'Yo vivo en Paris. Mi hermano trabaja. Ellos estudian...'},
-  {task:'Schreibe einen Mini-Dialog mit du-Form und einer formellen Frage mit usted.',hint:'Tu hablas espanol? Usted vive aqui?'},
-  {task:'Schreibe 4 Saetze ueber eine Gruppe von Freunden und benutze nosotros/ellos/ellas.',hint:'Nosotros vamos al cine. Ellas viven cerca...'},
-  {task:'Beschreibe, wann du Pronomen bewusst zur Betonung verwenden wuerdest.',hint:'Yo no vivo aqui, ella vive aqui.'},
-],
-A1_negacion:[
-  {task:'Schreibe 5 verneinte Saetze ueber deinen Alltag.',hint:'No trabajo los domingos. No bebo cafe por la noche...'},
-  {task:'Formuliere 4 Fragen mit Fragewoertern und gib direkt eine kurze Antwort darauf.',hint:'Donde vives? Vivo en... Por que estudias espanol? Porque...'},
-  {task:'Schreibe einen kleinen Dialog mit mindestens zwei Verneinungen und zwei Fragen.',hint:'No tengo tiempo. Que haces? Donde estas?...'},
-  {task:'Beschreibe einen Tag und sage auch, was du nicht machst.',hint:'Hoy trabajo, pero no cocino. No voy al centro...'},
+  {type:'fill',q:'Completa: "___ anos tienes?"',answer:'Cuantos',hint:'Frage nach Anzahl/Alter',explain:'Cuantos anos tienes? fragt nach dem Alter.'},,
+  {type:'mc',q:'"No viene ___ a la fiesta." (niemand)',choices:['algo','nada','nadie','ningún'],correct:2,explain:'nadie = niemand. No viene nadie = doppelte Verneinung, korrekt im Spanischen.'},
+  {type:'sort',q:'Stelle die Verneinung zusammen:',words:['nunca','no','en','voy','domingo'],answer:'no voy nunca en domingo',explain:'no + Verb + nunca = doppelte Verneinung.'}
 ],
 A2_indefinido:[
-  {type:'mc',q:'"Ayer yo ___ (comer) paella."',choices:['como','comí','comía','comeré'],correct:1,explain:'Indefinido 1.Sing. -er Verb: -í → comí.'},
+{type:'mc',q:'"Ayer yo ___ (comer) paella."',choices:['como','comí','comía','comeré'],correct:1,explain:'Indefinido 1.Sing. -er Verb: -í → comí.'},
   {type:'fill',q:'"El año pasado ellos ___ (vivir) en París."',answer:'vivieron',hint:'3.Pl., -ir Verb, Indefinido',explain:'-ir 3.Pl.: -ieron → vivieron.'},
   {type:'mc',q:'"María ___ (ir) al cine el sábado."',choices:['va','iba','fue','irá'],correct:2,explain:'ir Indefinido: fui/fuiste/fue/fuimos/fuisteis/fueron.'},
   {type:'fill',q:'"¿Qué ___ (hacer, tú) el fin de semana?"',answer:'hiciste',hint:'hacer ist unregelmäßig!',explain:'hacer: hice/hiciste/hizo/hicimos/hicisteis/hicieron.'},
@@ -564,8 +544,20 @@ A2_indefinido:[
   {type:'mc',q:'Indefinido oder Imperfecto? "Mientras ___ (dormir), sonó el teléfono."',choices:['dormí','dormía','dormiré','duerma'],correct:1,explain:'Andauernde Hintergrundhandlung → Imperfecto: dormía. Die plötzliche Unterbrechung(sonó) → Indefinido.'},
   {type:'sort',q:'Stelle zusammen:',words:['nació','1547','en','Cervantes','Alcalá','en'],answer:'Cervantes nació en Alcalá en 1547',explain:'nacer = geboren werden. nació = 3.Sing.Indefinido.'},
 ],
+A2_imperfecto:[
+{type:'mc',q:'"Cuando era nina, yo ___ en Valencia."',choices:['vivi','vivia','he vivido','vivire'],correct:1,explain:'Das Imperfecto beschreibt Gewohnheiten oder Zustande in der Vergangenheit: vivia.'},
+  {type:'fill',q:'Completa: "Todos los veranos nosotros ___ al pueblo."',answer:'ibamos',hint:'ir im Imperfecto',explain:'ir ist unregelmaessig: iba, ibas, iba, ibamos...'},
+  {type:'mc',q:'Welche Form passt fuer eine Beschreibung?',choices:['La casa fue grande.','La casa era grande.','La casa sera grande.','La casa ha sido grande.'],correct:1,explain:'Beschreibungen im Hintergrund stehen oft im Imperfecto: era grande.'},
+  {type:'fill',q:'Completa: "Mientras yo ___, sono el telefono."',answer:'dormia',hint:'andauernde Hintergrundhandlung',explain:'Die laufende Hintergrundhandlung steht im Imperfecto: dormia.'},
+  {type:'sort',q:'Stelle zusammen:',words:['de pequeno','siempre','jugaba','en la calle'],answer:'de pequeno siempre jugaba en la calle',explain:'Mit de pequeno/siempre spricht man oft ueber Gewohnheiten im Imperfecto.'},
+  {type:'mc',q:'Welche Form ist korrekt?',choices:['Vosotros teniais un perro.','Vosotros tuvisteis un perro cada dia.','Vosotros habeis un perro.','Vosotros tendreis un perro.'],correct:0,explain:'teniais beschreibt einen laengeren Zustand in der Vergangenheit.'},
+  {type:'translate',q:'Uebersetze: "Frueher war sie sehr schuechtern."',answer:'Antes era muy timida',hint:'Beschreibung in der Vergangenheit',explain:'Era passt fuer Eigenschaften/Zustaende in der Vergangenheit.'},
+  {type:'fill',q:'Completa: "Nosotros ___ juntos todas las noches."',answer:'cenabamos',hint:'regelmaessige Handlung',explain:'Regelmaessige oder wiederholte Handlungen der Vergangenheit stehen im Imperfecto.'},,
+  {type:'mc',q:'"Mientras ella ___ (leer), sonó el teléfono."',choices:['leyó','leía','leerá','ha leído'],correct:1,explain:'Andauernde Hintergrundhandlung → Imperfecto: leía.'},
+  {type:'translate',q:'Übersetze: "Er hatte immer braunes Haar."',answer:'Siempre tenía el pelo castaño',hint:'Dauerhafter Zustand → Imperfecto',explain:'Eigenschaft/Zustand in der Vergangenheit → tenía.'}
+],
 A2_perf_simple:[
-  {type:'mc',q:'"Hoy ___ (comer, yo) muy bien."',choices:['comí','comía','he comido','comeré'],correct:2,explain:'hoy → Gegenwartsbezug → Perfecto: he comido.'},
+{type:'mc',q:'"Hoy ___ (comer, yo) muy bien."',choices:['comí','comía','he comido','comeré'],correct:2,explain:'hoy → Gegenwartsbezug → Perfecto: he comido.'},
   {type:'fill',q:'"¿___ (estar, tú) alguna vez en España?"',answer:'Has estado',hint:'alguna vez → Perfecto',explain:'Erfahrung bis jetzt → ¿Has estado?'},
   {type:'mc',q:'Korrekt für "Ich habe das Buch noch nicht gelesen."',choices:['No leí el libro todavía.','No he leído el libro todavía.','No leyó el libro.'],correct:1,explain:'todavía no + Perfecto für Gegenwartsbezug.'},
   {type:'fill',q:'"Este mes ___ (trabajar, nosotros) mucho."',answer:'hemos trabajado',hint:'este mes → Gegenwartsbezug',explain:'este mes → Perfecto: hemos trabajado.'},
@@ -576,160 +568,44 @@ A2_perf_simple:[
   {type:'translate',q:'Übersetze: "Hast du schon gegessen?"',answer:'¿Ya has comido?',hint:'ya = schon',explain:'ya + Perfecto: ¿Ya has comido?'},
   {type:'fill',q:'"Los niños ___ (romper) el jarrón." (unregelmäßiges Partizip!)',answer:'han roto',hint:'romper → Partizip: roto',explain:'roto = unregelmäßiges Partizip von romper. han roto.'},
 ],
-A2_imperfecto:[
-  {type:'mc',q:'"Cuando era nina, yo ___ en Valencia."',choices:['vivi','vivia','he vivido','vivire'],correct:1,explain:'Das Imperfecto beschreibt Gewohnheiten oder Zustande in der Vergangenheit: vivia.'},
-  {type:'fill',q:'Completa: "Todos los veranos nosotros ___ al pueblo."',answer:'ibamos',hint:'ir im Imperfecto',explain:'ir ist unregelmaessig: iba, ibas, iba, ibamos...'},
-  {type:'mc',q:'Welche Form passt fuer eine Beschreibung?',choices:['La casa fue grande.','La casa era grande.','La casa sera grande.','La casa ha sido grande.'],correct:1,explain:'Beschreibungen im Hintergrund stehen oft im Imperfecto: era grande.'},
-  {type:'fill',q:'Completa: "Mientras yo ___, sono el telefono."',answer:'dormia',hint:'andauernde Hintergrundhandlung',explain:'Die laufende Hintergrundhandlung steht im Imperfecto: dormia.'},
-  {type:'sort',q:'Stelle zusammen:',words:['de pequeno','siempre','jugaba','en la calle'],answer:'de pequeno siempre jugaba en la calle',explain:'Mit de pequeno/siempre spricht man oft ueber Gewohnheiten im Imperfecto.'},
-  {type:'mc',q:'Welche Form ist korrekt?',choices:['Vosotros teniais un perro.','Vosotros tuvisteis un perro cada dia.','Vosotros habeis un perro.','Vosotros tendreis un perro.'],correct:0,explain:'teniais beschreibt einen laengeren Zustand in der Vergangenheit.'},
-  {type:'translate',q:'Uebersetze: "Frueher war sie sehr schuechtern."',answer:'Antes era muy timida',hint:'Beschreibung in der Vergangenheit',explain:'Era passt fuer Eigenschaften/Zustaende in der Vergangenheit.'},
-  {type:'fill',q:'Completa: "Nosotros ___ juntos todas las noches."',answer:'cenabamos',hint:'regelmaessige Handlung',explain:'Regelmaessige oder wiederholte Handlungen der Vergangenheit stehen im Imperfecto.'},
-],
 A2_gustar:[
-  {type:'mc',q:'Welche Form ist korrekt?',choices:['Me gustan el cafe.','Me gusta el cafe.','Yo gusto el cafe.','Me gusto el cafe.'],correct:1,explain:'Bei einem singularischen Subjekt wie el cafe steht gusta.'},
+{type:'mc',q:'Welche Form ist korrekt?',choices:['Me gustan el cafe.','Me gusta el cafe.','Yo gusto el cafe.','Me gusto el cafe.'],correct:1,explain:'Bei einem singularischen Subjekt wie el cafe steht gusta.'},
   {type:'fill',q:'Completa: "A mi ___ gustan las peliculas espanolas."',answer:'me',hint:'indirektes Objektpronomen',explain:'A mi me gustan... ist die betonte Form.'},
   {type:'mc',q:'Welche Antwort ist korrekt?',choices:['Le encanta bailar.','Le encantan bailar.','Le encanta bailan.','Le encantar bailar.'],correct:0,explain:'Ein Infinitiv zaehlt wie Singular: le encanta bailar.'},
   {type:'fill',q:'Completa: "A mis padres les ___ mucho viajar."',answer:'gusta',hint:'Infinitiv = Singular',explain:'Auch bei les bleibt gusta, wenn danach ein Infinitiv kommt.'},
   {type:'sort',q:'Stelle zusammen:',words:['a Maria','le','molesta','el ruido'],answer:'a Maria le molesta el ruido',explain:'Die Person bekommt das indirekte Pronomen: le molesta.'},
   {type:'mc',q:'Welche Form ist korrekt?',choices:['Nos interesan la historia.','Nos interesa la historia.','Interesamos la historia.','Nos interesamos la historia.'],correct:1,explain:'la historia ist Singular, deshalb interesa.'},
   {type:'translate',q:'Uebersetze: "Uns gefallen diese Buecher."',answer:'Nos gustan estos libros',hint:'Pluralobjekt',explain:'Bei libros im Plural verwendet man gustan.'},
-  {type:'fill',q:'Completa: "A ti te ___ cocinar, verdad?"',answer:'gusta',hint:'Infinitiv = Singular',explain:'cocinar ist ein Infinitiv und steht mit gusta.'},
+  {type:'fill',q:'Completa: "A ti te ___ cocinar, verdad?"',answer:'gusta',hint:'Infinitiv = Singular',explain:'cocinar ist ein Infinitiv und steht mit gusta.'},,
+  {type:'mc',q:'"___ a mis amigos las películas de acción."',choices:['Me gusta','Les gusta','Les gustan','Me gustan'],correct:2,explain:'Subjekt = las películas(Pl.) → gustan. Person = mis amigos → les.'},
+  {type:'translate',q:'Übersetze: "Euch gefällt diese Musik nicht."',answer:'No os gusta esta música',hint:'2.Pers.Pl. Spanien → os',explain:'os gusta(Sg.) wegen esta música(Sg.).'}
 ],
 A2_adjetivos:[
-  {type:'mc',q:'Welche Kombination ist korrekt?',choices:['un chico alta','una chica alto','una chica alta','un chico altas'],correct:2,explain:'Adjektive muessen in Genus und Numerus kongruieren: una chica alta.'},
+{type:'mc',q:'Welche Kombination ist korrekt?',choices:['un chico alta','una chica alto','una chica alta','un chico altas'],correct:2,explain:'Adjektive muessen in Genus und Numerus kongruieren: una chica alta.'},
   {type:'fill',q:'Completa: "Los libros son muy ___."',answer:'interesantes',hint:'Plural anpassen',explain:'Plural + maskulin = interesantes.'},
   {type:'mc',q:'Welche Vergleichsform ist korrekt?',choices:['Maria es mas alta que Ana.','Maria es mas alta como Ana.','Maria es tan alta que Ana.','Maria es mayor que alta.'],correct:0,explain:'Der normale Komparativ ist mas + Adjektiv + que.'},
   {type:'fill',q:'Completa: "Este coche es tan rapido ___ ese."',answer:'como',hint:'Vergleich der Gleichheit',explain:'tan ... como vergleicht Gleichheit: tan rapido como.'},
   {type:'sort',q:'Stelle zusammen:',words:['la','es','mejor','de','clase','la','estudiante'],answer:'la estudiante es la mejor de la clase',explain:'Der Superlativ verwendet oft el/la/los/las mas oder mejor/peor.'},
   {type:'mc',q:'Welche Form ist korrekt?',choices:['Mis hermanas son trabajadora.','Mis hermanas son trabajadoras.','Mis hermanas son trabajador.','Mis hermanas son trabajadore.'],correct:1,explain:'Feminin Plural verlangt -as: trabajadoras.'},
   {type:'translate',q:'Uebersetze: "Dieser Film ist besser als der andere."',answer:'Esta pelicula es mejor que la otra',hint:'bueno -> mejor',explain:'besser heisst mejor, nicht mas buena.'},
-  {type:'fill',q:'Completa: "Pedro es el chico mas ___ de su grupo."',answer:'alto',hint:'Superlativ mit el mas',explain:'el chico mas alto = der groesste Junge der Gruppe.'},
+  {type:'fill',q:'Completa: "Pedro es el chico mas ___ de su grupo."',answer:'alto',hint:'Superlativ mit el mas',explain:'el chico mas alto = der groesste Junge der Gruppe.'},,
+  {type:'mc',q:'Korrekte Superlativform?',choices:['Es la ciudad más grande de España.','Es la ciudad mayor grande de España.','Es la ciudad más grande en España.','Es la ciudad grande de España.'],correct:0,explain:'Superlativ: el/la más + Adj. + de: la más grande de España.'},
+  {type:'fill',q:'"Juan es ___ alto ___ su hermana."',answer:'más, que',hint:'Komparativ: más ... que',explain:'más alto que = größer als.'}
 ],
 A2_preposiciones:[
-  {type:'mc',q:'Welche Praeposition passt? "Voy ___ Madrid manana."',choices:['a','de','en','por'],correct:0,explain:'a verwendet man fuer Richtung oder Ziel: voy a Madrid.'},
+{type:'mc',q:'Welche Praeposition passt? "Voy ___ Madrid manana."',choices:['a','de','en','por'],correct:0,explain:'a verwendet man fuer Richtung oder Ziel: voy a Madrid.'},
   {type:'fill',q:'Completa: "Soy ___ Alemania."',answer:'de',hint:'Herkunft',explain:'de beschreibt Herkunft: soy de Alemania.'},
   {type:'mc',q:'Welche Form ist korrekt?',choices:['Voy con metro.','Voy en metro.','Voy a metro.','Voy por metro.'],correct:1,explain:'Bei Verkehrsmitteln verwendet man oft en: en metro, en coche.'},
   {type:'fill',q:'Completa: "Este regalo es ___ ti."',answer:'para',hint:'Empfaenger/Ziel',explain:'para ti zeigt den Empfaenger.'},
   {type:'sort',q:'Stelle zusammen:',words:['trabajo','desde','las nueve','hasta','las cinco'],answer:'trabajo desde las nueve hasta las cinco',explain:'desde ... hasta beschreibt Anfang und Ende eines Zeitraums.'},
   {type:'mc',q:'Welche Form ist korrekt?',choices:['Gracias para tu ayuda.','Gracias por tu ayuda.','Gracias de tu ayuda.','Gracias en tu ayuda.'],correct:1,explain:'por benutzt man hier fuer Grund/Ursache: gracias por.'},
   {type:'translate',q:'Uebersetze: "Ich wohne in Barcelona mit meiner Schwester."',answer:'Vivo en Barcelona con mi hermana',hint:'Ort + Begleitung',explain:'en fuer Ort, con fuer Begleitung.'},
-  {type:'fill',q:'Completa: "La tarea es ___ el lunes."',answer:'para',hint:'Frist/Zielzeit',explain:'para el lunes gibt eine Frist oder ein Ziel an.'},
-],
-A2_imperfecto:[
-  {task:'Beschreibe deine Kindheit oder Schulzeit mit mindestens 5 Verben im Imperfecto.',hint:'Cuando era pequena/o, vivia..., jugaba..., iba...'},
-  {task:'Schreibe eine Szene aus der Vergangenheit: Wetter, Ort, Personen, Stimmung.',hint:'Era de noche, llovia, la calle estaba vacia...'},
-  {task:'Verbinde Hintergrund und Unterbrechung in 3 Saetzen.',hint:'Mientras leia, sono el telefono. Cuando cenabamos, llego...'},
-  {task:'Beschreibe eine fruehere Gewohnheit und vergleiche sie mit heute.',hint:'Antes me levantaba temprano, ahora...'},
-],
-A2_perf_simple:[
-  {task:'Schreibe 4-5 Saetze ueber Dinge, die du diese Woche schon gemacht hast.',hint:'Esta semana he trabajado..., he visto..., he hablado...'},
-  {task:'Schreibe einen kurzen Text ueber Erfahrungen in deinem Leben mit ya, todavia no oder nunca.',hint:'Ya he visitado..., todavia no he probado..., nunca he visto...'},
-  {task:'Formuliere 3 Fragen an eine Freundin mit Pret. Perfecto und beantworte sie selbst.',hint:'Has estado en...? Has probado...? Has leido...?'},
-  {task:'Beschreibe deinen heutigen Tag bis jetzt.',hint:'Hoy me he levantado..., he desayunado..., he trabajado...'},
-],
-A2_gustar:[
-  {task:'Schreibe einen Absatz ueber Dinge, die dir gefallen oder nicht gefallen.',hint:'Me gusta..., no me gustan..., me encanta..., me molesta...'},
-  {task:'Vergleiche die Vorlieben von dir, deiner Familie und deinen Freunden.',hint:'A mi me gusta..., a mi madre le encanta..., a mis amigos les interesan...'},
-  {task:'Schreibe einen kleinen Dialog ueber Filme, Musik oder Essen mit gustar und encantar.',hint:'Te gusta el jazz? A mi me encanta...'},
-  {task:'Beschreibe ein Hobby und wie verschiedene Personen dazu stehen.',hint:'A mi hermana le gusta correr, pero a mi padre no le interesa...'},
-],
-A2_adjetivos:[
-  {task:'Beschreibe zwei Personen und vergleiche sie mit Komparativen.',hint:'Maria es mas alta que Ana. Juan es tan tranquilo como...'},
-  {task:'Schreibe eine Produkt- oder Ortsbeschreibung mit mindestens 5 Adjektiven.',hint:'Es una ciudad moderna, bonita, tranquila y bastante grande...'},
-  {task:'Vergleiche zwei Filme, Buecher oder Staedte und nutze mejor, peor, mas, menos, tan...como.',hint:'Esta pelicula es mejor que..., pero la otra es mas larga...'},
-  {task:'Schreibe 4 Saetze mit Superlativen.',hint:'Es la mejor cafeteria del barrio. Son los libros mas interesantes...'},
-],
-A2_preposiciones:[
-  {task:'Beschreibe deinen Tagesablauf und benutze a, en, con, de, por und para.',hint:'Voy al trabajo a las..., vivo en..., voy con..., trabajo para...'},
-  {task:'Schreibe einen kurzen Weg oder Reiseplan mit Orts- und Richtungsangaben.',hint:'Voy a Madrid en tren. Salgo de casa a las ocho...'},
-  {task:'Formuliere 5 Saetze ueber Geschenke, Gruende, Ziele und Fristen.',hint:'Es para ti. Gracias por tu ayuda. Es para el lunes...'},
-  {task:'Schreibe einen Absatz ueber Arbeit oder Studium und nutze desde... hasta..., por und para.',hint:'Trabajo desde las nueve hasta las cinco...'},
-],
-B1_futuro:[
-  {task:'Schreibe einen kleinen Zukunftsplan fuer morgen, naechste Woche und naechstes Jahr.',hint:'Manana hare..., la semana que viene viajare..., el ano que viene estudiare...'},
-  {task:'Formuliere 4 Vermutungen mit Futuro simple ueber eine Person oder Situation.',hint:'Estara en casa. Tendra unos treinta anos...'},
-  {task:'Schreibe 5 Versprechen oder Vorhaben fuer dein Spanischlernen.',hint:'Leere mas. Practicare todos los dias. Hablare con...'},
-  {task:'Beschreibe dein ideales Wochenende in der Zukunft.',hint:'Ire al mar, descansare, leere un libro...'},
-],
-B1_condicional:[
-  {task:'Schreibe 4 Saetze ueber Dinge, die du gerne tun wuerdest.',hint:'Me gustaria vivir en... Viajaria mas si...'},
-  {task:'Formuliere 3 hoefliche Bitten und 3 passende Antworten.',hint:'Podrias ayudarme? Me podrias decir...?'},
-  {task:'Gib einer Freundin Ratschlaege mit deberias und podrias.',hint:'Deberias descansar mas. Podrias hablar con...'},
-  {task:'Schreibe einen kurzen Text ueber dein ideales Leben, wenn du frei waehlen koenntest.',hint:'Viviria en..., trabajaria..., tendria...'},
-],
-B1_imperativo:[
-  {task:'Schreibe 6 Anweisungen fuer einen Gast bei dir zu Hause.',hint:'Entra, sientate, no fumes, no dejes...'},
-  {task:'Formuliere einen kleinen Dialog mit positiven und negativen Imperativen.',hint:'Ven aqui. No hables tan alto. Escucha...'},
-  {task:'Schreibe eine Fitness- oder Lernroutine als Befehlsliste.',hint:'Levantate, estudia veinte minutos, no mires el movil...'},
-  {task:'Gib einer Freundin konkrete Ratschlaege fuer einen stressigen Tag.',hint:'Descansa, llama a..., no te preocupes...'},
-],
-B1_ser_estar_adv:[
-  {task:'Schreibe 6 Saetze mit Paaren wie es aburrido / esta aburrido oder es listo / esta listo.',hint:'Erklaere die unterschiedliche Bedeutung direkt im Kontext.'},
-  {task:'Beschreibe Personen, Essen und Situationen und achte bewusst auf ser oder estar.',hint:'La sopa esta rica. Mi vecino es muy rico...'},
-  {task:'Schreibe einen Mini-Dialog, in dem eine Verwechslung von ser und estar die Bedeutung aendert.',hint:'Es malo / esta malo, es listo / esta listo...'},
-  {task:'Formuliere Beispiele zu mindestens vier Bedeutungswechseln.',hint:'aburrido, bueno, malo, vivo, rico, seguro...'},
-],
-B1_perifrasis:[
-  {task:'Beschreibe deinen Tag mit ir a, estar + gerundio, volver a und acabar de.',hint:'Voy a salir. Estoy estudiando. Acabo de comer...'},
-  {task:'Schreibe 4 Saetze ueber Gewohnheiten und wiederholte Handlungen.',hint:'Suelo leer, vuelvo a intentarlo, dejo de...'},
-  {task:'Erzaehle eine kleine Situation mit mehreren Umschreibungen.',hint:'Iba a salir, pero segui trabajando y acabe de...'},
-  {task:'Schreibe ueber ein Projekt, das du bald beginnen oder wieder aufnehmen willst.',hint:'Voy a empezar..., vuelvo a..., estoy pensando en...'},
-],
-B1_subjuntivo_pres:[
-  {type:'mc',q:'"Quiero que tú ___ (venir) mañana."',choices:['vienes','vendrás','vengas','ven'],correct:2,explain:'querer que → Subjuntivo. venir: venga/vengas/venga...'},
-  {type:'fill',q:'"Es importante que vosotros ___ (estudiar)."',answer:'estudiéis',hint:'Subj. 2.Pl. -ar Verb',explain:'-ar Subj. 2.Pl.: -éis → estudiéis.'},
-  {type:'mc',q:'"Espero que él ___ (estar) bien."',choices:['está','estará','estuviera','esté'],correct:3,explain:'esperar que → Subjuntivo. estar: esté/estés/esté...'},
-  {type:'fill',q:'"No creo que eso ___ (ser) verdad."',answer:'sea',hint:'no creer que → Subj. ser unregelmäßig.',explain:'ser Subj.: sea/seas/sea/seamos/seáis/sean.'},
-  {type:'sort',q:'Stelle zusammen:',words:['quiero','que','conmigo','vengas','tú'],answer:'quiero que tú vengas conmigo',explain:'querer que + Subjuntivo Präsens.'},
-  {type:'mc',q:'"Me alegra que ___ (hacer) buen tiempo."',choices:['hace','hacía','haga','hará'],correct:2,explain:'Emotion + que → Subj. hacer: haga/hagas...'},
-  {type:'translate',q:'Übersetze: "Es ist nötig, dass du kommst."',answer:'Es necesario que vengas',hint:'es necesario que + Subj.',explain:'vengas = Subj. von venir.'},
-  {type:'fill',q:'"Ojalá ___ (tener, nosotros) más tiempo."',answer:'tengamos',hint:'ojalá → immer Subjuntivo',explain:'ojalá → Subj.: tengamos(tener).'},
-  {type:'mc',q:'"Busco un piso que ___ (tener) terraza." (noch unbekannt)',choices:['tiene','tenga','tendrá','tuviera'],correct:1,explain:'Indefiniter Relativsatz(Objekt unbekannt) → Subj.: tenga.'},
-  {type:'sort',q:'Stelle zusammen:',words:['no creo','llegue','a tiempo','que','ella'],answer:'no creo que ella llegue a tiempo',explain:'no creer que → Subj.: llegue.'},
-],
-B1_futuro:[
-  {type:'mc',q:'"Manana yo ___ (llamar) a mi abuela."',choices:['llamo','llamaria','llamare','llame'],correct:2,explain:'Der Futuro simple verwendet die Endung direkt am Infinitiv: llamare.'},
-  {type:'fill',q:'Completa: "Nosotros ___ (salir) temprano."',answer:'saldremos',hint:'salir ist unregelmaessig',explain:'salir hat den Stamm saldr-: saldremos.'},
-  {type:'mc',q:'Welche Vermutung in der Gegenwart ist korrekt?',choices:['Donde estara Juan?','Donde estaba Juan?','Donde esta Juan ayer?','Donde estaria Juan manana?'],correct:0,explain:'Der Futuro kann auch Vermutung in der Gegenwart ausdruecken: Dónde estará Juan?'},
-  {type:'fill',q:'Completa: "Te lo ___ (decir) manana."',answer:'dire',hint:'decir ist unregelmaessig',explain:'decir bildet den Stamm dir-: dire.'},
-  {type:'sort',q:'Stelle zusammen:',words:['cuando','llegare','te','a casa','llamare'],answer:'cuando llegue a casa te llamare',explain:'Im Hauptsatz steht hier Futuro: te llamare.'},
-  {type:'translate',q:'Uebersetze: "In zwei Jahren werden wir in Spanien leben."',answer:'En dos anos viviremos en Espana',hint:'vivir im Futuro',explain:'viviremos = wir werden leben.'},
-],
-B1_condicional:[
-  {type:'mc',q:'"Yo ___ viajar mas, pero no tengo tiempo."',choices:['viajare','viajaria','viaje','viajaba'],correct:1,explain:'Der Condicional beschreibt hier einen Wunsch oder eine hypothetische Situation.'},
-  {type:'fill',q:'Completa: "Nosotros ___ (poder) ayudarte."',answer:'podriamos',hint:'poder ist unregelmaessig',explain:'poder verwendet den Stamm podr-: podriamos.'},
-  {type:'mc',q:'Welche Form ist eine hoefliche Bitte?',choices:['Me ayudas?','Me ayudarias?','Me ayudas manana ayer?','Ayudame usted?'],correct:1,explain:'Der Condicional klingt als Bitte hoefflicher: Me ayudarias?'},
-  {type:'fill',q:'Completa: "Ella dijo que ___ (venir) mas tarde."',answer:'vendria',hint:'venir ist unregelmaessig',explain:'venir bildet vendr-: vendria.'},
-  {type:'sort',q:'Stelle zusammen:',words:['yo','si fuera tu','lo haria'],answer:'yo lo haria si fuera tu',explain:'Typisch ist die Kombination Condicional + si + Subjuntivo.'},
-  {type:'translate',q:'Uebersetze: "Ich moechte in einer kleineren Stadt wohnen."',answer:'Me gustaria vivir en una ciudad mas pequena',hint:'gustaria + infinitivo',explain:'Me gustaria ist eine sehr haeufige Form des Condicional.'},
-],
-B1_imperativo:[
-  {type:'mc',q:'Welche Form ist ein bejahter Imperativ fuer tu?',choices:['Hablas mas despacio.','Habla mas despacio.','Hable mas despacio.','Hablas despacio!'],correct:1,explain:'Der bejahte tu-Imperativ von hablar ist habla.'},
-  {type:'fill',q:'Completa: "No ___ (comer) tanto azucar."',answer:'comas',hint:'negierter Imperativ',explain:'Der negative Imperativ fuer tu verwendet den Subjuntivo: no comas.'},
-  {type:'mc',q:'Welche unregelmaessige Form ist korrekt?',choices:['Haz la tarea.','Hace la tarea.','Haga la tarea tu.','Has la tarea.'],correct:0,explain:'hacer hat den unregelmaessigen Imperativ haz.'},
-  {type:'fill',q:'Completa: "___ (venir, tu) aqui ahora."',answer:'ven',hint:'unregelmaessiger tu-Imperativ',explain:'venir bildet den unregelmaessigen Imperativ ven.'},
-  {type:'sort',q:'Stelle zusammen:',words:['no','me','digas','eso'],answer:'no me digas eso',explain:'Beim negativen Imperativ stehen die Pronomen vor dem Verb.'},
-  {type:'translate',q:'Uebersetze: "Seid ruhig und hoert zu!"',answer:'Estad tranquilos y escuchad',hint:'vosotros-Imperativ',explain:'Im vosotros-Imperativ endet das Verb oft auf -d: escuchad.'},
-],
-B1_ser_estar_adv:[
-  {type:'mc',q:'Welche Bedeutung ist korrekt? "Juan es aburrido."',choices:['Juan ist gelangweilt.','Juan ist langweilig.','Juan ist muede.','Juan ist bereit.'],correct:1,explain:'ser aburrido beschreibt eine Eigenschaft: langweilig.'},
-  {type:'fill',q:'Completa: "Hoy Juan ___ aburrido."',answer:'esta',hint:'Zustand',explain:'estar aburrido bedeutet gelangweilt sein.'},
-  {type:'mc',q:'Welche Aussage bedeutet "das Essen schmeckt lecker"?',choices:['La comida es rica.','La comida esta rica.','La comida es lista.','La comida esta segura.'],correct:1,explain:'estar rico beschreibt den aktuellen Geschmack: lecker.'},
-  {type:'fill',q:'Completa: "Mi hermana ya ___ lista para salir."',answer:'esta',hint:'bereit sein',explain:'estar listo bedeutet bereit sein.'},
-  {type:'sort',q:'Stelle zusammen:',words:['es','muy','listo','tu hermano'],answer:'tu hermano es muy listo',explain:'ser listo bedeutet klug sein.'},
-  {type:'translate',q:'Uebersetze: "Mein Grossvater lebt noch."',answer:'Mi abuelo esta vivo',hint:'vivo mit estar',explain:'estar vivo beschreibt den Zustand, am Leben zu sein.'},
-],
-B1_perifrasis:[
-  {type:'mc',q:'Welche Umschreibung drueckt eine nahe Zukunft aus?',choices:['estar + gerundio','ir a + infinitivo','volver a + infinitivo','acabar de + infinitivo'],correct:1,explain:'ir a + infinitivo drueckt oft die nahe Zukunft aus.'},
-  {type:'fill',q:'Completa: "Ahora mismo ___ (estudiar) para el examen."',answer:'estoy estudiando',hint:'andauernde Handlung jetzt',explain:'estar + gerundio beschreibt eine laufende Handlung.'},
-  {type:'mc',q:'Welche Form bedeutet "gerade erst gemacht haben"?',choices:['voy a comer','acabo de comer','suelo comer','dejo de comer'],correct:1,explain:'acabar de + infinitivo bedeutet: gerade erst etwas getan haben.'},
-  {type:'fill',q:'Completa: "Manana ___ (ir) a visitar a mis abuelos."',answer:'voy a',hint:'nahe Zukunft',explain:'voy a visitar = ich werde besuchen / ich habe vor zu besuchen.'},
-  {type:'sort',q:'Stelle zusammen:',words:['volver','voy','a','intentarlo'],answer:'voy a volver a intentarlo',explain:'volver a + infinitivo bedeutet etwas wieder tun.'},
-  {type:'translate',q:'Uebersetze: "Ich pflege sonntags spaet aufzustehen."',answer:'Suelo levantarme tarde los domingos',hint:'soler + infinitivo',explain:'soler + infinitivo beschreibt Gewohnheiten.'},
+  {type:'fill',q:'Completa: "La tarea es ___ el lunes."',answer:'para',hint:'Frist/Zielzeit',explain:'para el lunes gibt eine Frist oder ein Ziel an.'},,
+  {type:'mc',q:'"Vengo ___ el trabajo." (ich komme von der Arbeit)',choices:['a','de','en','por'],correct:1,explain:'de = Ausgangspunkt: vengo de = ich komme von.'},
+  {type:'sort',q:'Stelle zusammen:',words:['desde','en','vivimos','hace','Berlín','dos años'],answer:'vivimos en Berlín desde hace dos años',explain:'desde hace + Zeit = seit (Gegenwartsbezug).'}
 ],
 B1_pluscuamperfecto:[
-  {type:'mc',q:'"Cuando llegué, ella ya ___ (comer)."',choices:['comió','comía','había comido','ha comido'],correct:2,explain:'Pluscuamperfecto: Handlung VOR dem Ankommen.'},
+{type:'mc',q:'"Cuando llegué, ella ya ___ (comer)."',choices:['comió','comía','había comido','ha comido'],correct:2,explain:'Pluscuamperfecto: Handlung VOR dem Ankommen.'},
   {type:'fill',q:'"No ___ (estar, yo) nunca en Japón antes de ese viaje."',answer:'había estado',hint:'Pluscuamperf. 1.Sing.',explain:'había + estado(Partizip von estar).'},
   {type:'sort',q:'Stelle zusammen:',words:['ya','se habían','cuando llegamos','ido','todos'],answer:'cuando llegamos todos ya se habían ido',explain:'ya + Pluscuamperfecto: ya se habían ido.'},
   {type:'mc',q:'"Todavía no ___ (terminar) cuando llegó el jefe."',choices:['terminó','había terminado','terminaba','ha terminado'],correct:1,explain:'todavía no + Pluscuamperf. für unabgeschlossene Vorhandlung.'},
@@ -740,8 +616,104 @@ B1_pluscuamperfecto:[
   {type:'mc',q:'Welcher Satz nutzt Pluscuamperfecto korrekt?',choices:['Cuando llegué, ella comió ya.','Cuando llegué, ella ya había comido.','Cuando llegué, ella ya ha comido.'],correct:1,explain:'ya + Pluscuamperfecto für Handlung vor Vergangenheitspunkt.'},
   {type:'translate',q:'Übersetze: "Wir hatten das Essen bestellt, bevor er ankam."',answer:'Habíamos pedido la comida antes de que él llegara',hint:'antes de que + Subj.',explain:'habíamos pedido + antes de que llegara.'},
 ],
+B1_futuro:[
+{type:'mc',q:'"Manana yo ___ (llamar) a mi abuela."',choices:['llamo','llamaria','llamare','llame'],correct:2,explain:'Der Futuro simple verwendet die Endung direkt am Infinitiv: llamare.'},
+  {type:'fill',q:'Completa: "Nosotros ___ (salir) temprano."',answer:'saldremos',hint:'salir ist unregelmaessig',explain:'salir hat den Stamm saldr-: saldremos.'},
+  {type:'mc',q:'Welche Vermutung in der Gegenwart ist korrekt?',choices:['Donde estara Juan?','Donde estaba Juan?','Donde esta Juan ayer?','Donde estaria Juan manana?'],correct:0,explain:'Der Futuro kann auch Vermutung in der Gegenwart ausdruecken: Dónde estará Juan?'},
+  {type:'fill',q:'Completa: "Te lo ___ (decir) manana."',answer:'dire',hint:'decir ist unregelmaessig',explain:'decir bildet den Stamm dir-: dire.'},
+  {type:'sort',q:'Stelle zusammen:',words:['cuando','llegare','te','a casa','llamare'],answer:'cuando llegue a casa te llamare',explain:'Im Hauptsatz steht hier Futuro: te llamare.'},
+  {type:'translate',q:'Uebersetze: "In zwei Jahren werden wir in Spanien leben."',answer:'En dos anos viviremos en Espana',hint:'vivir im Futuro',explain:'viviremos = wir werden leben.'},,
+  {type:'mc',q:'"Ellos ___ (tener) que esperar hasta mañana."',choices:['tiendrán','tendrán','tendréis','tenrán'],correct:1,explain:'tener Futuro: tendr- + -án = tendrán.'},
+  {type:'fill',q:'"¿Quién ___ (venir) a la fiesta?"',answer:'vendrá',hint:'venir Futuro: vendr-',explain:'venir: vendr- + -á = vendrá.'},
+  {type:'mc',q:'"¿Cuántos años ___ ella?" (Vermutung Gegenwart)',choices:['tiene','tendrá','tuvo','ha tenido'],correct:1,explain:'Futuro für Gegenwartsvermutung: tendrá = sie mag wohl ... Jahre alt sein.'},
+  {type:'translate',q:'Übersetze: "Nächstes Jahr werden wir in Spanien wohnen."',answer:'El año que viene viviremos en España',hint:'vivir Futuro: vivir-',explain:'viviremos = wir werden wohnen.'}
+],
+B1_condicional:[
+{type:'mc',q:'"Yo ___ viajar mas, pero no tengo tiempo."',choices:['viajare','viajaria','viaje','viajaba'],correct:1,explain:'Der Condicional beschreibt hier einen Wunsch oder eine hypothetische Situation.'},
+  {type:'fill',q:'Completa: "Nosotros ___ (poder) ayudarte."',answer:'podriamos',hint:'poder ist unregelmaessig',explain:'poder verwendet den Stamm podr-: podriamos.'},
+  {type:'mc',q:'Welche Form ist eine hoefliche Bitte?',choices:['Me ayudas?','Me ayudarias?','Me ayudas manana ayer?','Ayudame usted?'],correct:1,explain:'Der Condicional klingt als Bitte hoefflicher: Me ayudarias?'},
+  {type:'fill',q:'Completa: "Ella dijo que ___ (venir) mas tarde."',answer:'vendria',hint:'venir ist unregelmaessig',explain:'venir bildet vendr-: vendria.'},
+  {type:'sort',q:'Stelle zusammen:',words:['yo','si fuera tu','lo haria'],answer:'yo lo haria si fuera tu',explain:'Typisch ist die Kombination Condicional + si + Subjuntivo.'},
+  {type:'translate',q:'Uebersetze: "Ich moechte in einer kleineren Stadt wohnen."',answer:'Me gustaria vivir en una ciudad mas pequena',hint:'gustaria + infinitivo',explain:'Me gustaria ist eine sehr haeufige Form des Condicional.'},,
+  {type:'mc',q:'"¿___ (poder, tú) ayudarme con esto?"',choices:['Puedes','Podrías','Pudiste','Podrás'],correct:1,explain:'Höfliche Bitte → Condicional: podrías.'},
+  {type:'fill',q:'"Si fuera rico, ___ (comprar) una casa grande."',answer:'compraría',hint:'Condicional von comprar',explain:'comprar Condicional: compraría.'},
+  {type:'mc',q:'Welcher Stamm ist falsch?',choices:['poder → podr-','hacer → har-','querer → querr-','comer → comedr-'],correct:3,explain:'comer ist regelmäßig: comería. Nur 12 Verben haben unregelmäßige Stämme.'},
+  {type:'translate',q:'Übersetze: "Sie sollten mehr schlafen."',answer:'Deberían dormir más',hint:'deber Condicional → deberían',explain:'deber Condicional: deberían.'}
+],
+B1_subjuntivo_pres:[
+{type:'mc',q:'"Quiero que tú ___ (venir) mañana."',choices:['vienes','vendrás','vengas','ven'],correct:2,explain:'querer que → Subjuntivo. venir: venga/vengas/venga...'},
+  {type:'fill',q:'"Es importante que vosotros ___ (estudiar)."',answer:'estudiéis',hint:'Subj. 2.Pl. -ar Verb',explain:'-ar Subj. 2.Pl.: -éis → estudiéis.'},
+  {type:'mc',q:'"Espero que él ___ (estar) bien."',choices:['está','estará','estuviera','esté'],correct:3,explain:'esperar que → Subjuntivo. estar: esté/estés/esté...'},
+  {type:'fill',q:'"No creo que eso ___ (ser) verdad."',answer:'sea',hint:'no creer que → Subj. ser unregelmäßig.',explain:'ser Subj.: sea/seas/sea/seamos/seáis/sean.'},
+  {type:'sort',q:'Stelle zusammen:',words:['quiero','que','conmigo','vengas','tú'],answer:'quiero que tú vengas conmigo',explain:'querer que + Subjuntivo Präsens.'},
+  {type:'mc',q:'"Me alegra que ___ (hacer) buen tiempo."',choices:['hace','hacía','haga','hará'],correct:2,explain:'Emotion + que → Subj. hacer: haga/hagas...'},
+  {type:'translate',q:'Übersetze: "Es ist nötig, dass du kommst."',answer:'Es necesario que vengas',hint:'es necesario que + Subj.',explain:'vengas = Subj. von venir.'},
+  {type:'fill',q:'"Ojalá ___ (tener, nosotros) más tiempo."',answer:'tengamos',hint:'ojalá → immer Subjuntivo',explain:'ojalá → Subj.: tengamos(tener).'},
+  {type:'mc',q:'"Busco un piso que ___ (tener) terraza." (noch unbekannt)',choices:['tiene','tenga','tendrá','tuviera'],correct:1,explain:'Indefiniter Relativsatz(Objekt unbekannt) → Subj.: tenga.'},
+  {type:'sort',q:'Stelle zusammen:',words:['no creo','llegue','a tiempo','que','ella'],answer:'no creo que ella llegue a tiempo',explain:'no creer que → Subj.: llegue.'},
+],
+B1_imperativo:[
+{type:'mc',q:'Welche Form ist ein bejahter Imperativ fuer tu?',choices:['Hablas mas despacio.','Habla mas despacio.','Hable mas despacio.','Hablas despacio!'],correct:1,explain:'Der bejahte tu-Imperativ von hablar ist habla.'},
+  {type:'fill',q:'Completa: "No ___ (comer) tanto azucar."',answer:'comas',hint:'negierter Imperativ',explain:'Der negative Imperativ fuer tu verwendet den Subjuntivo: no comas.'},
+  {type:'mc',q:'Welche unregelmaessige Form ist korrekt?',choices:['Haz la tarea.','Hace la tarea.','Haga la tarea tu.','Has la tarea.'],correct:0,explain:'hacer hat den unregelmaessigen Imperativ haz.'},
+  {type:'fill',q:'Completa: "___ (venir, tu) aqui ahora."',answer:'ven',hint:'unregelmaessiger tu-Imperativ',explain:'venir bildet den unregelmaessigen Imperativ ven.'},
+  {type:'sort',q:'Stelle zusammen:',words:['no','me','digas','eso'],answer:'no me digas eso',explain:'Beim negativen Imperativ stehen die Pronomen vor dem Verb.'},
+  {type:'translate',q:'Uebersetze: "Seid ruhig und hoert zu!"',answer:'Estad tranquilos y escuchad',hint:'vosotros-Imperativ',explain:'Im vosotros-Imperativ endet das Verb oft auf -d: escuchad.'},,
+  {type:'mc',q:'Imperativ "tú" von salir?',choices:['sale','salga','sal','sals'],correct:2,explain:'salir hat den unregelmäßigen Imperativ: sal.'},
+  {type:'fill',q:'"___ (Escuchar, tú) bien!"',answer:'Escucha',hint:'regelmäßiger tú-Imperativ',explain:'-ar Imperativ tú: 3. Sing. Presente → escucha.'},
+  {type:'mc',q:'Negativer Imperativ "ir" für tú?',choices:['no va','no vaya','no ve','no vayas'],correct:3,explain:'Neg. Imperativ = Subjuntivo Präsens tú-Form: no vayas.'},
+  {type:'sort',q:'Stelle zusammen:',words:['todo','dímelo','por favor'],answer:'dímelo todo por favor',explain:'Bejahter Imperativ + Pronomen angehängt: dímelo.'}
+],
+B1_ser_estar_adv:[
+{type:'mc',q:'Welche Bedeutung ist korrekt? "Juan es aburrido."',choices:['Juan ist gelangweilt.','Juan ist langweilig.','Juan ist muede.','Juan ist bereit.'],correct:1,explain:'ser aburrido beschreibt eine Eigenschaft: langweilig.'},
+  {type:'fill',q:'Completa: "Hoy Juan ___ aburrido."',answer:'esta',hint:'Zustand',explain:'estar aburrido bedeutet gelangweilt sein.'},
+  {type:'mc',q:'Welche Aussage bedeutet "das Essen schmeckt lecker"?',choices:['La comida es rica.','La comida esta rica.','La comida es lista.','La comida esta segura.'],correct:1,explain:'estar rico beschreibt den aktuellen Geschmack: lecker.'},
+  {type:'fill',q:'Completa: "Mi hermana ya ___ lista para salir."',answer:'esta',hint:'bereit sein',explain:'estar listo bedeutet bereit sein.'},
+  {type:'sort',q:'Stelle zusammen:',words:['es','muy','listo','tu hermano'],answer:'tu hermano es muy listo',explain:'ser listo bedeutet klug sein.'},
+  {type:'translate',q:'Uebersetze: "Mein Grossvater lebt noch."',answer:'Mi abuelo esta vivo',hint:'vivo mit estar',explain:'estar vivo beschreibt den Zustand, am Leben zu sein.'},,
+  {type:'mc',q:'Was bedeutet "El niño es muy vivo"?',choices:['Das Kind lebt gerade.','Das Kind ist sehr aufgeweckt/lebhaft.','Das Kind ist gerade aktiv.','Das Kind ist wach.'],correct:1,explain:'ser vivo = lebhaft/aufgeweckt (Charaktereigenschaft).'},
+  {type:'fill',q:'"Este pescado ___ bueno." (es schmeckt lecker)',answer:'está',hint:'aktueller Geschmack',explain:'estar bueno = lecker schmecken (aktueller Zustand).'},
+  {type:'mc',q:'Was bedeutet "María está muerta"?',choices:['María ist tot als Charakter.','María ist gestorben.','María ist sehr müde.','María fühlt sich tot.'],correct:1,explain:'estar muerto = gestorben sein.'},
+  {type:'translate',q:'Übersetze: "Er ist überzeugt, dass das stimmt."',answer:'Está seguro de que es verdad',hint:'überzeugt sein → estar seguro',explain:'estar seguro = überzeugt sein. ser seguro = (Ort) ist sicher.'}
+],
+B1_perifrasis:[
+{type:'mc',q:'Welche Umschreibung drueckt eine nahe Zukunft aus?',choices:['estar + gerundio','ir a + infinitivo','volver a + infinitivo','acabar de + infinitivo'],correct:1,explain:'ir a + infinitivo drueckt oft die nahe Zukunft aus.'},
+  {type:'fill',q:'Completa: "Ahora mismo ___ (estudiar) para el examen."',answer:'estoy estudiando',hint:'andauernde Handlung jetzt',explain:'estar + gerundio beschreibt eine laufende Handlung.'},
+  {type:'mc',q:'Welche Form bedeutet "gerade erst gemacht haben"?',choices:['voy a comer','acabo de comer','suelo comer','dejo de comer'],correct:1,explain:'acabar de + infinitivo bedeutet: gerade erst etwas getan haben.'},
+  {type:'fill',q:'Completa: "Manana ___ (ir) a visitar a mis abuelos."',answer:'voy a',hint:'nahe Zukunft',explain:'voy a visitar = ich werde besuchen / ich habe vor zu besuchen.'},
+  {type:'sort',q:'Stelle zusammen:',words:['volver','voy','a','intentarlo'],answer:'voy a volver a intentarlo',explain:'volver a + infinitivo bedeutet etwas wieder tun.'},
+  {type:'translate',q:'Uebersetze: "Ich pflege sonntags spaet aufzustehen."',answer:'Suelo levantarme tarde los domingos',hint:'soler + infinitivo',explain:'soler + infinitivo beschreibt Gewohnheiten.'},,
+  {type:'mc',q:'Welche Umschreibung drückt eine Gewohnheit aus?',choices:['ir a+inf.','soler+inf.','acabar de+inf.','tener que+inf.'],correct:1,explain:'soler+inf. = Gewohnheit: suelo levantarme temprano.'},
+  {type:'fill',q:'"Ella ___ (dejar) de fumar hace dos años."',answer:'dejó de',hint:'aufgehört haben',explain:'dejar de+inf. = aufhören zu tun.'},
+  {type:'mc',q:'Was bedeutet "Lleva tres horas esperando"?',choices:['Er wartete drei Stunden.','Er wartet seit drei Stunden.','Er wird drei Stunden warten.','Er fängt gerade an.'],correct:1,explain:'llevar+gerundio = seit X Zeit tun (andauernd).'},
+  {type:'sort',q:'Stelle zusammen:',words:['voy a','hablar','del problema','con ella'],answer:'voy a hablar del problema con ella',explain:'ir a+inf. = nahe Zukunft: voy a hablar.'}
+],
+B2_futuro_perf:[
+{type:'mc',q:'"Para las ocho ya ___ terminado."',choices:['he','habre','haria','hubiera'],correct:1,explain:'Der Futuro perfecto wird mit habre + Partizip gebildet.'},
+  {type:'fill',q:'Completa: "Cuando llegues, nosotros ya ___ (salir)."',answer:'habremos salido',hint:'vollendete Zukunft',explain:'Eine Handlung wird vor einem Zeitpunkt in der Zukunft abgeschlossen sein.'},
+  {type:'mc',q:'Welche Form drueckt Vermutung ueber die Vergangenheit aus?',choices:['Habra llegado ya.','Llegaria ya.','Hubiera llegado ya.','Llega ya.'],correct:0,explain:'Habra llegado kann bedeuten: Er wird wohl schon angekommen sein.'},
+  {type:'fill',q:'Completa: "Ellos ___ (hacer) todo antes del viernes."',answer:'habran hecho',hint:'hacer mit Futuro perfecto',explain:'haben im Futuro + Partizip: habran hecho.'},
+  {type:'sort',q:'Stelle zusammen:',words:['para mayo','habre','el proyecto','terminado'],answer:'para mayo habre terminado el proyecto',explain:'para + Zeitpunkt signalisiert oft den Futuro perfecto.'},
+  {type:'translate',q:'Uebersetze: "Bis morgen werden wir die Antwort gefunden haben."',answer:'Para manana habremos encontrado la respuesta',hint:'habremos + participio',explain:'habremos encontrado = wir werden gefunden haben.'},,
+  {type:'mc',q:'"Para el viernes ya ___ (terminar, nosotros) el informe."',choices:['hemos terminado','habíamos terminado','habremos terminado','terminaremos'],correct:2,explain:'Bis Freitag abgeschlossen → Futuro perfecto: habremos terminado.'},
+  {type:'fill',q:'"¿A estas horas ya ___ (llegar, él)?"',answer:'habrá llegado',hint:'Vermutung über Vergangenheit',explain:'habrá llegado = Er wird wohl schon angekommen sein.'},
+  {type:'mc',q:'Welcher Satz ist eine Vermutung über die Vergangenheit?',choices:['Habrán salido ya.','Saldrán mañana.','Hubieran salido.','Salen a las cinco.'],correct:0,explain:'habrán salido = Sie werden wohl schon gegangen sein.'},
+  {type:'translate',q:'Übersetze: "Bis morgen werden wir die Antwort gefunden haben."',answer:'Para mañana habremos encontrado la respuesta',hint:'habremos + encontrado',explain:'habremos encontrado = wir werden gefunden haben.'}
+],
+B2_cond_perf:[
+{type:'mc',q:'"Si me hubieras llamado, yo te ___ ayudado."',choices:['habria','haria','hubiera','he'],correct:0,explain:'Der Condicional perfecto lautet habria + Partizip.'},
+  {type:'fill',q:'Completa: "Nosotros ___ (ir) contigo, pero no pudimos."',answer:'habriamos ido',hint:'irreale Vergangenheit',explain:'habriamos ido = wir waeren mitgegangen.'},
+  {type:'mc',q:'Welche Aussage ist ein Vorwurf?',choices:['Habria podido avisarme.','Ha podido avisarme.','Podria avisarme ahora.','Hubiera avisarme.'],correct:0,explain:'Der Condicional perfecto wird oft fuer Vorwuerfe verwendet.'},
+  {type:'fill',q:'Completa: "Ellos ___ (decir) la verdad si hubieran querido."',answer:'habrian dicho',hint:'dicir im Condicional perfecto',explain:'habrian dicho = sie haetten gesagt.'},
+  {type:'sort',q:'Stelle zusammen:',words:['lo','habria','hecho','mejor'],answer:'lo habria hecho mejor',explain:'Der Condicional perfecto beschreibt eine nicht eingetretene Handlung in der Vergangenheit.'},
+  {type:'translate',q:'Uebersetze: "Ohne deine Hilfe haette ich es nicht geschafft."',answer:'Sin tu ayuda no lo habria logrado',hint:'Condicional perfecto',explain:'no lo habria logrado = ich haette es nicht geschafft.'},,
+  {type:'mc',q:'"Si me hubieras llamado, yo ___ (ir)."',choices:['habría ido','hubiera ido','habrá ido','había ido'],correct:0,explain:'Typ-3-Folgesatz → Condicional perfecto: habría ido.'},
+  {type:'fill',q:'"¿___ (poder, tú) avisarme con tiempo?"',answer:'Habrías podido',hint:'Vorwurf → Condicional perfecto',explain:'Habrías podido = Du hättest es gekonnt.'},
+  {type:'mc',q:'Condicional perfecto von decir?',choices:['habría decido','habría dicho','hubiera dicho','habrá dicho'],correct:1,explain:'decir → Partizip: dicho. habría dicho.'},
+  {type:'translate',q:'Übersetze: "Ohne ihn wären wir nicht erfolgreich gewesen."',answer:'Sin él no habríamos tenido éxito',hint:'tener éxito = Erfolg haben',explain:'habríamos tenido = wir hätten gehabt.'}
+],
 B2_subjuntivo_imp:[
-  {type:'mc',q:'"Si ___ (tener) dinero, viajaría por el mundo."',choices:['tengo','tuve','tuviera','tendré'],correct:2,explain:'Typ 2: si+Subj.Imperfecto. tener: tuviera.'},
+{type:'mc',q:'"Si ___ (tener) dinero, viajaría por el mundo."',choices:['tengo','tuve','tuviera','tendré'],correct:2,explain:'Typ 2: si+Subj.Imperfecto. tener: tuviera.'},
   {type:'fill',q:'"Quería que tú ___ (venir) a la fiesta."',answer:'vinieras',hint:'Wunsch Vergangenheit → Subj.Imperf.',explain:'venir Subj.Imperf.: viniera/vinieras/viniera...'},
   {type:'mc',q:'"___ un café, por favor." (höfliche Bitte)',choices:['Quiero','Quería','Quisiera','Querré'],correct:2,explain:'quisiera = höfliche Form(Subj.Imperf. von querer).'},
   {type:'fill',q:'"Si ella ___ (estudiar) más, sacaría mejores notas."',answer:'estudiara',hint:'Typ 2, -ar Verb',explain:'-ar Subj.Imperf.: estudiara/estudiaras...'},
@@ -752,8 +724,20 @@ B2_subjuntivo_imp:[
   {type:'mc',q:'"Habló como si ___ (saber) todo."',choices:['sabe','sabrá','supiera','sepa'],correct:2,explain:'como si → immer Subj.Imperf.: supiera(saber).'},
   {type:'sort',q:'Stelle zusammen:',words:['si','lo hubiera','sabido','habría','venido'],answer:'si lo hubiera sabido habría venido',explain:'Typ 3: si+Subj.Pluscuamp. → Cond.Perfecto.'},
 ],
+B2_subjuntivo_perf:[
+{type:'mc',q:'"Me alegra que ___ venido."',choices:['has','hayas','hubieras','habras'],correct:1,explain:'Der Subjuntivo perfecto lautet haya/hayas/haya... + Partizip.'},
+  {type:'fill',q:'Completa: "Espero que ___ (descansar) bien."',answer:'hayas descansado',hint:'Gegenwart + abgeschlossene Vergangenheit',explain:'Nach espero que verwendet man hier den Subjuntivo perfecto.'},
+  {type:'mc',q:'Welche Form ist korrekt?',choices:['No creo que han llegado.','No creo que hayan llegado.','No creo que llegaron.','No creo que habrian llegado.'],correct:1,explain:'Bei Zweifel in der Gegenwart ueber etwas Abgeschlossenes nutzt man hayan llegado.'},
+  {type:'fill',q:'Completa: "Es una pena que no ___ (poder) venir."',answer:'hayas podido',hint:'negatives Bedauern',explain:'haya/hayas + Partizip: hayas podido.'},
+  {type:'sort',q:'Stelle zusammen:',words:['ojala','te haya','ido','bien'],answer:'ojala te haya ido bien',explain:'Ojala kann mit dem Subjuntivo perfecto verwendet werden.'},
+  {type:'translate',q:'Uebersetze: "Ich freue mich, dass ihr angekommen seid."',answer:'Me alegra que hayais llegado',hint:'vosotros + subjuntivo perfecto',explain:'hayais llegado = dass ihr angekommen seid.'},,
+  {type:'mc',q:'"Dudo que ___ (llegar) a tiempo."',choices:['han llegado','hayan llegado','hubieran llegado','habrán llegado'],correct:1,explain:'dudar que + abgeschlossen → Subjuntivo perfecto: hayan llegado.'},
+  {type:'fill',q:'"Nos alegramos de que todo ___ (salir) bien."',answer:'haya salido',hint:'Freude über abgeschlossenes Ereignis',explain:'alegrarse de que → haya salido.'},
+  {type:'mc',q:'"No creo que ellos ___ (ver) la película ya."',choices:['han visto','hayan visto','hubieran visto','habrán visto'],correct:1,explain:'no creer que(Gegenwart) + abgeschlossen → hayan visto.'},
+  {type:'translate',q:'Übersetze: "Ich hoffe, dass du gut geschlafen hast."',answer:'Espero que hayas dormido bien',hint:'esperar que + hayas + Partizip',explain:'dormir → dormido. hayas dormido.'}
+],
 B2_condicionales:[
-  {type:'mc',q:'Typ 1: "Si ___ mañana, te aviso."',choices:['voy','iría','fuera','fui'],correct:0,explain:'Typ 1 real: si+Presente → Futuro/Presente.'},
+{type:'mc',q:'Typ 1: "Si ___ mañana, te aviso."',choices:['voy','iría','fuera','fui'],correct:0,explain:'Typ 1 real: si+Presente → Futuro/Presente.'},
   {type:'fill',q:'Typ 2: "Si ___ (poder) elegir, viviría en Italia."',answer:'pudiera',hint:'poder → Subj.Imperfecto',explain:'Typ 2: si+Subj.Imperf. poder: pudiera.'},
   {type:'mc',q:'Typ 3: "Si hubiera estudiado más, ___."',choices:['aprobaría','habría aprobado','aprobara','habré aprobado'],correct:1,explain:'Typ 3: si+hubiera+Partz. → habría+Partz.'},
   {type:'sort',q:'Typ-2-Satz:',words:['dinero','si','tuviera','compraría','más','ese coche'],answer:'si tuviera más dinero compraría ese coche',explain:'Typ 2: si+tuviera → compraría.'},
@@ -764,146 +748,44 @@ B2_condicionales:[
   {type:'translate',q:'Übersetze: "Wenn ich du wäre, würde ich sie anrufen."',answer:'Si fuera tú, la llamaría',hint:'ser → fuera, Typ 2',explain:'ser Subj.Imperf.: fuera. + Condicional: llamaría.'},
   {type:'fill',q:'Was darf NIEMALS nach "si"(Bedingung) stehen?',answer:'Futuro o Condicional',hint:'Niemals: si hablaría/hablaré',explain:'NIEMALS si+Futuro oder si+Condicional. Korrekt: si+Presente/Subj.Imperf./Subj.Pluscuamp.'},
 ],
-B2_futuro_perf:[
-  {type:'mc',q:'"Para las ocho ya ___ terminado."',choices:['he','habre','haria','hubiera'],correct:1,explain:'Der Futuro perfecto wird mit habre + Partizip gebildet.'},
-  {type:'fill',q:'Completa: "Cuando llegues, nosotros ya ___ (salir)."',answer:'habremos salido',hint:'vollendete Zukunft',explain:'Eine Handlung wird vor einem Zeitpunkt in der Zukunft abgeschlossen sein.'},
-  {type:'mc',q:'Welche Form drueckt Vermutung ueber die Vergangenheit aus?',choices:['Habra llegado ya.','Llegaria ya.','Hubiera llegado ya.','Llega ya.'],correct:0,explain:'Habra llegado kann bedeuten: Er wird wohl schon angekommen sein.'},
-  {type:'fill',q:'Completa: "Ellos ___ (hacer) todo antes del viernes."',answer:'habran hecho',hint:'hacer mit Futuro perfecto',explain:'haben im Futuro + Partizip: habran hecho.'},
-  {type:'sort',q:'Stelle zusammen:',words:['para mayo','habre','el proyecto','terminado'],answer:'para mayo habre terminado el proyecto',explain:'para + Zeitpunkt signalisiert oft den Futuro perfecto.'},
-  {type:'translate',q:'Uebersetze: "Bis morgen werden wir die Antwort gefunden haben."',answer:'Para manana habremos encontrado la respuesta',hint:'habremos + participio',explain:'habremos encontrado = wir werden gefunden haben.'},
-],
-B2_cond_perf:[
-  {type:'mc',q:'"Si me hubieras llamado, yo te ___ ayudado."',choices:['habria','haria','hubiera','he'],correct:0,explain:'Der Condicional perfecto lautet habria + Partizip.'},
-  {type:'fill',q:'Completa: "Nosotros ___ (ir) contigo, pero no pudimos."',answer:'habriamos ido',hint:'irreale Vergangenheit',explain:'habriamos ido = wir waeren mitgegangen.'},
-  {type:'mc',q:'Welche Aussage ist ein Vorwurf?',choices:['Habria podido avisarme.','Ha podido avisarme.','Podria avisarme ahora.','Hubiera avisarme.'],correct:0,explain:'Der Condicional perfecto wird oft fuer Vorwuerfe verwendet.'},
-  {type:'fill',q:'Completa: "Ellos ___ (decir) la verdad si hubieran querido."',answer:'habrian dicho',hint:'dicir im Condicional perfecto',explain:'habrian dicho = sie haetten gesagt.'},
-  {type:'sort',q:'Stelle zusammen:',words:['lo','habria','hecho','mejor'],answer:'lo habria hecho mejor',explain:'Der Condicional perfecto beschreibt eine nicht eingetretene Handlung in der Vergangenheit.'},
-  {type:'translate',q:'Uebersetze: "Ohne deine Hilfe haette ich es nicht geschafft."',answer:'Sin tu ayuda no lo habria logrado',hint:'Condicional perfecto',explain:'no lo habria logrado = ich haette es nicht geschafft.'},
-],
-B2_subjuntivo_perf:[
-  {type:'mc',q:'"Me alegra que ___ venido."',choices:['has','hayas','hubieras','habras'],correct:1,explain:'Der Subjuntivo perfecto lautet haya/hayas/haya... + Partizip.'},
-  {type:'fill',q:'Completa: "Espero que ___ (descansar) bien."',answer:'hayas descansado',hint:'Gegenwart + abgeschlossene Vergangenheit',explain:'Nach espero que verwendet man hier den Subjuntivo perfecto.'},
-  {type:'mc',q:'Welche Form ist korrekt?',choices:['No creo que han llegado.','No creo que hayan llegado.','No creo que llegaron.','No creo que habrian llegado.'],correct:1,explain:'Bei Zweifel in der Gegenwart ueber etwas Abgeschlossenes nutzt man hayan llegado.'},
-  {type:'fill',q:'Completa: "Es una pena que no ___ (poder) venir."',answer:'hayas podido',hint:'negatives Bedauern',explain:'haya/hayas + Partizip: hayas podido.'},
-  {type:'sort',q:'Stelle zusammen:',words:['ojala','te haya','ido','bien'],answer:'ojala te haya ido bien',explain:'Ojala kann mit dem Subjuntivo perfecto verwendet werden.'},
-  {type:'translate',q:'Uebersetze: "Ich freue mich, dass ihr angekommen seid."',answer:'Me alegra que hayais llegado',hint:'vosotros + subjuntivo perfecto',explain:'hayais llegado = dass ihr angekommen seid.'},
-],
 B2_imperativo_pron:[
-  {type:'mc',q:'Welche Form ist korrekt?',choices:['Dame lo.','Damelo.','Me lo da.','Da me lo.'],correct:1,explain:'Im bejahten Imperativ werden die Pronomen angehaengt: damelo.'},
+{type:'mc',q:'Welche Form ist korrekt?',choices:['Dame lo.','Damelo.','Me lo da.','Da me lo.'],correct:1,explain:'Im bejahten Imperativ werden die Pronomen angehaengt: damelo.'},
   {type:'fill',q:'Completa: "No ___ (decir) la verdad."',answer:'me la digas',hint:'negativer Imperativ mit Pronomen',explain:'Beim negativen Imperativ stehen die Pronomen vor dem Verb.'},
   {type:'mc',q:'Welche Reihenfolge ist korrekt?',choices:['lo me das','me lo das','das me lo','me das lo'],correct:1,explain:'Die normale Reihenfolge ist indirektes + direktes Objekt: me lo.'},
   {type:'fill',q:'Completa: "___ (comprar, tu) para manana."',answer:'compraselo',hint:'bejahter Imperativ mit Pronomen',explain:'cómpraselo / compraselo haengt die Pronomen an das Verb.'},
   {type:'sort',q:'Stelle zusammen:',words:['no','se','lo','digas'],answer:'no se lo digas',explain:'le/les wird vor lo/la/los/las zu se.'},
-  {type:'translate',q:'Uebersetze: "Erklaer es mir bitte."',answer:'Explicamelo por favor',hint:'bejahter Imperativ',explain:'Der bejahte Imperativ haengt die Pronomen an: explicamelo.'},
+  {type:'translate',q:'Uebersetze: "Erklaer es mir bitte."',answer:'Explicamelo por favor',hint:'bejahter Imperativ',explain:'Der bejahte Imperativ haengt die Pronomen an: explicamelo.'},,
+  {type:'mc',q:'"Erkläre es ihr!" — welche Form ist korrekt?',choices:['Explícaselo.','Explícalelo.','Explícasela.','Explícalosela.'],correct:0,explain:'le + lo → se + lo. Bejahter Imperativ: explícaselo.'},
+  {type:'fill',q:'"No ___ todo." (mir, es) — negativer Imperativ',answer:'me lo traigas',hint:'me(Indirekt) + lo(Direkt) vor dem Verb',explain:'Neg. Imperativ + Pronomen davor: no me lo traigas.'},
+  {type:'mc',q:'"Sag es mir!" — bejahter Imperativ?',choices:['dímelo','me lo di','lo me di','dimelo'],correct:0,explain:'di(Imperativ decir) + me + lo = dímelo (Akzent auf di).'},
+  {type:'sort',q:'Stelle zusammen (verneinend):',words:['no','a tu amigo','se lo','cuentes'],answer:'no se lo cuentes a tu amigo',explain:'le(=se) + lo vor neg. Imperativ: no se lo cuentes.'}
 ],
 B2_relativos:[
-  {type:'mc',q:'Welche Form ist korrekt? "La chica con ___ hablo es medica."',choices:['que','quien','cuyo','cual'],correct:1,explain:'Nach einer Praeposition und bei Personen ist quien sehr haeufig.'},
+{type:'mc',q:'Welche Form ist korrekt? "La chica con ___ hablo es medica."',choices:['que','quien','cuyo','cual'],correct:1,explain:'Nach einer Praeposition und bei Personen ist quien sehr haeufig.'},
   {type:'fill',q:'Completa: "El libro ___ lei ayer era excelente."',answer:'que',hint:'einfacher Relativsatz',explain:'que ist das haeufigste Relativpronomen.'},
   {type:'mc',q:'Welche Form ist possessiv?',choices:['que','quien','cuyo','el cual'],correct:2,explain:'cuyo/cuya/cuyos/cuyas bedeutet dessen/deren.'},
   {type:'fill',q:'Completa: "La autora ___ novela gano el premio vive aqui."',answer:'cuya',hint:'Besitzbezug',explain:'cuya stimmt mit novela ueberein.'},
   {type:'sort',q:'Stelle zusammen:',words:['el hotel','del que','te hable','ayer'],answer:'el hotel del que te hable ayer',explain:'Nach de verwendet man oft del que/del cual.'},
-  {type:'translate',q:'Uebersetze: "Das ist der Mann, dessen Sohn in meiner Klasse ist."',answer:'Ese es el hombre cuyo hijo esta en mi clase',hint:'cuyo + Nomen',explain:'cuyo verbindet Besitz mit dem folgenden Nomen.'},
+  {type:'translate',q:'Uebersetze: "Das ist der Mann, dessen Sohn in meiner Klasse ist."',answer:'Ese es el hombre cuyo hijo esta en mi clase',hint:'cuyo + Nomen',explain:'cuyo verbindet Besitz mit dem folgenden Nomen.'},,
+  {type:'mc',q:'"La ciudad ___ vengo es muy bonita."',choices:['que','de que','de la que','de quien'],correct:2,explain:'venir de + ciudad(f.) → de la que.'},
+  {type:'fill',q:'"El profesor ___ libro leímos es muy conocido."',answer:'cuyo',hint:'possessives Relativpronomen',explain:'cuyo kongruiert mit libro(m.Sg.).'},
+  {type:'mc',q:'"La empresa para ___ trabajas parece interesante."',choices:['que','quien','la cual','el que'],correct:2,explain:'para + empresa(f.) → la cual.'},
+  {type:'translate',q:'Übersetze: "Das Hotel, in dem wir wohnten, war sehr schön."',answer:'El hotel en el que vivíamos era muy bonito',hint:'en el que = in dem (maskulin)',explain:'en el que nach hotel(m.).'}
 ],
 B2_concesivas:[
-  {type:'mc',q:'Welche Form ist hypothetisch?',choices:['Aunque llueve, salgo.','Aunque llueva, saldre.','Aunque llovio, salgo.','Aunque ha llovido, saldre.'],correct:1,explain:'Aunque + Subjuntivo beschreibt hier eine hypothetische Bedingung.'},
+{type:'mc',q:'Welche Form ist hypothetisch?',choices:['Aunque llueve, salgo.','Aunque llueva, saldre.','Aunque llovio, salgo.','Aunque ha llovido, saldre.'],correct:1,explain:'Aunque + Subjuntivo beschreibt hier eine hypothetische Bedingung.'},
   {type:'fill',q:'Completa: "___ sea dificil, quiero intentarlo."',answer:'Aunque',hint:'Konzessivsatz',explain:'aunque + Subjuntivo = auch wenn, selbst wenn.'},
   {type:'mc',q:'Welche Alternative bedeutet "trotzdem"?',choices:['a pesar de','aun asi','dado que','de ahi que'],correct:1,explain:'aun asi bedeutet trotzdem/dennoch.'},
   {type:'fill',q:'Completa: "___ estudiar mucho, no aprobo."',answer:'A pesar de',hint:'Praepositionaler Ausdruck',explain:'A pesar de + Infinitiv oder Nomen bedeutet trotz.'},
   {type:'sort',q:'Stelle zusammen:',words:['aunque','tenia fiebre','fue','a trabajar'],answer:'aunque tenia fiebre fue a trabajar',explain:'Bei einer bekannten Tatsache steht oft der Indikativ nach aunque.'},
-  {type:'translate',q:'Uebersetze: "Auch wenn sie nein sagt, werde ich es versuchen."',answer:'Aunque diga que no, lo intentare',hint:'auch wenn + Subjuntivo',explain:'Der hypothetische oder noch offene Fall nutzt den Subjuntivo.'},
-],
-B2_futuro_perf:[
-  {task:'Schreibe 4 Prognosen darueber, was bis zu einem bestimmten Zeitpunkt erledigt sein wird.',hint:'Para el viernes habre terminado..., para junio habremos...'},
-  {task:'Formuliere Vermutungen ueber bereits abgeschlossene Situationen.',hint:'Habra llegado ya. Habran salido temprano...'},
-  {task:'Schreibe einen Lern- oder Arbeitsplan mit klaren Deadlines.',hint:'Para las ocho habre repasado..., para el lunes...'},
-  {task:'Kombiniere Zukunft und Vermutung in einem kurzen Absatz.',hint:'Cuando llegues, ya habre salido; Juan habra dejado una nota...'},
-],
-B2_cond_perf:[
-  {task:'Schreibe 4 Saetze ueber Dinge, die du in der Vergangenheit anders gemacht haettest.',hint:'Habria estudiado mas, habria hablado con...'},
-  {task:'Formuliere Vorwuerfe oder rueckblickende Kommentare mit Condicional perfecto.',hint:'Habria podido avisarme. Habriais debido...'},
-  {task:'Schreibe einen kurzen Text ueber eine verpasste Chance.',hint:'Si hubiera..., habria..., pero al final...'},
-  {task:'Beschreibe eine hypothetische Vergangenheit mit mindestens drei Folgen.',hint:'Sin ese problema, habriamos llegado antes...'},
-],
-B2_subjuntivo_perf:[
-  {task:'Schreibe 4 Reaktionen auf bereits abgeschlossene Ereignisse mit me alegra que, espero que, es una pena que...',hint:'Me alegra que hayas venido. Es una pena que no hayas podido...'},
-  {task:'Formuliere Wuensche und Zweifel ueber die juengere Vergangenheit.',hint:'No creo que hayan entendido..., espero que hayas descansado...'},
-  {task:'Schreibe eine Nachricht an eine Freundin nach einem wichtigen Tag von ihr.',hint:'Espero que haya ido bien, me alegra que hayas...'},
-  {task:'Beschreibe drei Situationen, in denen du den Subjuntivo perfecto natuerlich verwenden wuerdest.',hint:'nach einem Treffen, nach einer Reise, nach einer Pruefung...'},
-],
-B2_imperativo_pron:[
-  {task:'Schreibe 6 Befehle oder Bitten mit angehaengten Pronomen.',hint:'Damelo, explicamelo, compramelo...'},
-  {task:'Schreibe 6 negative Befehle mit Pronomen vor dem Verb.',hint:'No me lo digas, no se lo expliques...'},
-  {task:'Erstelle einen Dialog mit mehreren Objektpronomen im Imperativ.',hint:'Traemelo. No me lo dejes aqui. Ensenaselo...'},
-  {task:'Beschreibe Regeln fuer einen Kurs oder Workshop mit Imperativen und Pronomen.',hint:'Apuntatelo, no lo olvides, entregamelo...'},
-],
-B2_relativos:[
-  {task:'Schreibe einen Absatz ueber eine Person, einen Ort und ein Buch mit que, quien und cuyo.',hint:'La autora cuya novela..., la persona con quien..., el libro que...'},
-  {task:'Verbinde kurze Hauptsaetze zu komplexeren Relativsaetzen.',hint:'Tengo una amiga. Su padre es medico -> Tengo una amiga cuyo padre...'},
-  {task:'Beschreibe einen Urlaubsort mit mindestens vier Relativpronomen.',hint:'el hotel en el que..., la playa que..., la gente con quien...'},
-  {task:'Schreibe 5 Saetze mit Praeposition + Relativpronomen.',hint:'de la que, con quien, en el que...'},
-],
-B2_concesivas:[
-  {task:'Schreibe 4 Saetze mit aunque, a pesar de que oder aun asi.',hint:'Aunque este cansada, voy a salir...'},
-  {task:'Vergleiche bekannte Tatsachen und hypothetische Situationen mit aunque + Indicativo/Subjuntivo.',hint:'Aunque llueve... / Aunque llueva...'},
-  {task:'Schreibe einen argumentativen Mini-Absatz mit einer concessiven Struktur.',hint:'Si bien..., no obstante..., aun asi...'},
-  {task:'Beschreibe eine schwierige Situation und wie du trotzdem weitergemacht hast.',hint:'A pesar de..., segui..., aunque...'},
-],
-C1_voz_pasiva:[
-  {task:'Schreibe einen kurzen Bericht mit ser-Passiv, se-Pasiv und estar + participio.',hint:'El informe fue redactado..., se publicaron..., la puerta estaba cerrada...'},
-  {task:'Vergleiche aktive und passive Formulierungen zu demselben Inhalt.',hint:'La empresa lanzo... / El producto fue lanzado... / Se lanzo...'},
-  {task:'Schreibe 5 Saetze im sachlichen, journalistischen Stil.',hint:'Se anuncio..., fue aprobado..., esta previsto...'},
-  {task:'Beschreibe einen Prozess oder ein Ereignis mit formellem Ton.',hint:'El proyecto fue desarrollado..., posteriormente se presento...'},
-],
-C1_estilo_indirecto:[
-  {task:'Schreibe eine Szene mit mehreren Aussagen in indirekter Rede.',hint:'Dijo que..., explico que..., pregunto si..., anadio que...'},
-  {task:'Verwandle einen kleinen Dialog in einen indirekten Bericht.',hint:'Achte auf Zeitenfolge und Zeitausdruecke.'},
-  {task:'Schreibe einen Nachrichtenabschnitt ueber Aussagen anderer Personen.',hint:'El portavoz afirmo que..., la testigo explico que...'},
-  {task:'Verbinde Bitten, Fragen und Versprechen in einem zusammenhaengenden Text.',hint:'Me pidio que..., pregunto si..., prometio que...'},
-],
-C1_gerundio:[
-  {task:'Schreibe einen Absatz mit korrekt verwendeten Gerundien fuer Zeit, Art und Begleitumstaende.',hint:'Entró sonriendo, salio corriendo, fue aprendiendo poco a poco...'},
-  {task:'Beschreibe einen Prozess und benutze llevar/seguir/continuar + gerundio.',hint:'Llevo meses preparando..., sigo buscando...'},
-  {task:'Formuliere 4 Beispiele, in denen das Gerundio korrekt ist, und 2, in denen du es bewusst vermeidest.',hint:'Kein Gerundio als Adjektiv verwenden.'},
-  {task:'Schreibe einen literarischeren Mini-Text mit bewegter Handlung.',hint:'Cruzando la calle, oyendo voces, avanzo pensando en...'},
-],
-C1_finales_temporales:[
-  {task:'Schreibe einen Plan oder Rattext mit para que, cuando, hasta que und en cuanto.',hint:'Hazlo para que..., llamame cuando..., espera hasta que...'},
-  {task:'Verbinde Zukunftsabsichten mit Temporalsaetzen im Subjuntivo.',hint:'Cuando llegues, en cuanto puedas, antes de que...'},
-  {task:'Schreibe einen Absatz ueber ein Projektziel und die noetigen Schritte.',hint:'Trabajamos para que..., antes de que termine..., en cuanto reciba...'},
-  {task:'Vergleiche Vergangenheit und Zukunft mit den gleichen Konnektoren.',hint:'Cuando llegaba... / cuando llegues...'},
-],
-C1_ser_estar_full:[
-  {task:'Schreibe 6 Kontrastsatzpaare mit Bedeutungswechsel bei ser/estar.',hint:'Es listo / esta listo, es rico / esta rico...'},
-  {task:'Beschreibe eine Person, ein Essen und eine Situation mit bewussten Bedeutungsnuancen.',hint:'Achte auf den Bedeutungswechsel je nach Verb.'},
-  {task:'Schreibe einen Dialog, in dem eine falsche ser/estar-Wahl die Aussage veraendert.',hint:'Das kann humorvoll oder missverstaendlich sein.'},
-  {task:'Formuliere kurze Definitionen fuer mehrere problematische Adjektive.',hint:'aburrido, malo, bueno, vivo, seguro, nuevo...'},
-],
-C2_perifrasis_adv:[
-  {task:'Schreibe einen reflektierten Text mit mehreren fortgeschrittenen Perifrasen.',hint:'llevar + gerundio, echarse a, acabar por, volver a, dejar de...'},
-  {task:'Erzaehle eine Entwicklung ueber laengere Zeit mit nuancierten Verbumschreibungen.',hint:'Llevo anos..., acabe por..., volvi a..., segui...'},
-  {task:'Schreibe einen stilistisch dichten Absatz ueber Emotionen und spontane Reaktionen.',hint:'Se echo a llorar, se puso a temblar, acabo por aceptar...'},
-  {task:'Vergleiche neutrale und fortgeschrittenere Ausdrucksweisen.',hint:'empezo a / se puso a, hizo otra vez / volvio a...'},
-],
-C2_modalidad:[
-  {task:'Schreibe einen argumentativen Absatz mit deber, deber de, tener que, poder und haber de.',hint:'Unterscheide klar zwischen Pflicht, Vermutung und stilistischem Register.'},
-  {task:'Formuliere 6 Saetze mit feinen Bedeutungsunterschieden bei Modalverben.',hint:'Debe de estar cansado vs. Debe descansar.'},
-  {task:'Schreibe einen formelleren Text mit epistemischer Unsicherheit und vorsichtiger Bewertung.',hint:'Podria decirse..., debe de tratarse de..., habria que...'},
-  {task:'Vergleiche Alltagssprache und gehobeneren Stil bei denselben Aussagen.',hint:'tener que / haber de, puede que / debe de...'},
-],
-C2_subj_complejo:[
-  {task:'Schreibe einen argumentativen Absatz mit de ahi que, no es que und quizas/tal vez.',hint:'De ahi que sea..., no es que no quiera..., quizas convenga...'},
-  {task:'Formuliere 5 Beispiele fuer komplexe Subjuntivo-Ausloeser in gehobenem Stil.',hint:'no porque, como si, es probable que, de ahi que...'},
-  {task:'Schreibe eine differenzierte Stellungnahme mit Unsicherheit, Distanz und Einschraenkung.',hint:'No es que..., puede que..., de ahi que...'},
-  {task:'Vergleiche neutralere und nuanciertere Varianten derselben Aussage.',hint:'Quizas viene / quizas venga, no porque...'},
-],
-C2_registro:[
-  {task:'Schreibe einen formellen Absatz und danach eine informellere Version desselben Inhalts.',hint:'Nutze cabe senalar, llevar a cabo, hacer hincapie en...'},
-  {task:'Baue mehrere Kollokationen und idiomatische Wendungen in einen zusammenhaengenden Text ein.',hint:'tener en cuenta, poner de manifiesto, estar al tanto...'},
-  {task:'Verfasse eine kurze akademische oder berufliche Stellungnahme in hohem Register.',hint:'En virtud de..., a tenor de..., cabe subrayar...'},
-  {task:'Schreibe einen Text mit bewusstem Registerwechsel fuer zwei Zielgruppen.',hint:'z.B. formelle Mail und lockere Nachricht zum gleichen Thema.'},
+  {type:'translate',q:'Uebersetze: "Auch wenn sie nein sagt, werde ich es versuchen."',answer:'Aunque diga que no, lo intentare',hint:'auch wenn + Subjuntivo',explain:'Der hypothetische oder noch offene Fall nutzt den Subjuntivo.'},,
+  {type:'mc',q:'"___ hace mucho frío, saldremos a pasear."',choices:['Aunque','Dado que','Para que','Porque'],correct:0,explain:'aunque = obwohl/auch wenn.'},
+  {type:'fill',q:'"___ la dificultad del examen, lo aprobó."',answer:'A pesar de',hint:'trotz + Nomen',explain:'a pesar de + Nomen.'},
+  {type:'mc',q:'"Por más que ___ (estudiar), no lo entiendo."',choices:['estudio','estudie','estudiaré','estudiaba'],correct:1,explain:'por más que → immer Subjuntivo: estudie.'},
+  {type:'translate',q:'Übersetze: "Obwohl er krank war, kam er zur Arbeit."',answer:'Aunque estaba enfermo, vino a trabajar',hint:'Tatsache → Indicativo',explain:'bekannte Tatsache → aunque + Indicativo.'}
 ],
 C1_subj_pluscuamp:[
-  {type:'mc',q:'"Si ___ (saber) la verdad, te lo habría dicho."',choices:['supe','sabía','hubiera sabido','habría sabido'],correct:2,explain:'Typ 3: si+Subj.Pluscuamperfecto.'},
+{type:'mc',q:'"Si ___ (saber) la verdad, te lo habría dicho."',choices:['supe','sabía','hubiera sabido','habría sabido'],correct:2,explain:'Typ 3: si+Subj.Pluscuamperfecto.'},
   {type:'fill',q:'"Ojalá ___ (estudiar, yo) más de joven."',answer:'hubiera estudiado',hint:'ojalá+Subj.Pluscuamp. für irrealen Vergangenheitswunsch',explain:'ojalá + hubiera + Partizip.'},
   {type:'sort',q:'Typ-3-Satz:',words:['habría venido','si','me lo','hubieran dicho'],answer:'si me lo hubieran dicho habría venido',explain:'si+hubieran dicho → habría venido.'},
   {type:'mc',q:'"Me alegré de que todo ___ (salir) bien."',choices:['sale','salga','hubiera salido','habrá salido'],correct:2,explain:'Emotion Vergangenheit + que + früherer Bezug → Subj.Pluscuamp.'},
@@ -915,7 +797,7 @@ C1_subj_pluscuamp:[
   {type:'translate',q:'Übersetze: "Ich wünschte, ich wäre damals nicht gegangen."',answer:'Ojalá no hubiera ido entonces',hint:'ojalá+Subj.Pluscuamp., ir → ido',explain:'ojalá no hubiera ido.'},
 ],
 C1_voz_pasiva:[
-  {type:'mc',q:'"El libro ___ escrito por Cervantes."',choices:['es','fue','está','estará'],correct:1,explain:'Passiv abgeschl.Vergangenheit → fue+Partizip.'},
+{type:'mc',q:'"El libro ___ escrito por Cervantes."',choices:['es','fue','está','estará'],correct:1,explain:'Passiv abgeschl.Vergangenheit → fue+Partizip.'},
   {type:'fill',q:'Se-Passiv: "___ (vender) pisos en esta zona."',answer:'Se venden',hint:'pisos = Plural → Plural-Verb',explain:'se venden(Pl.) wegen pisos.'},
   {type:'mc',q:'"La puerta ___ abierta." (Zustand/Ergebnis)',choices:['fue','es','está','estará'],correct:2,explain:'Ergebnis einer Handlung → estar: está abierta.'},
   {type:'translate',q:'Übersetze: "In Spanien wird Spanisch gesprochen."',answer:'En España se habla español',hint:'se-Passiv, español = Singular',explain:'se habla(Sg.) wegen español.'},
@@ -927,7 +809,7 @@ C1_voz_pasiva:[
   {type:'sort',q:'Stelle zusammen:',words:['se sirve','a las dos','la comida','aquí'],answer:'aquí se sirve la comida a las dos',explain:'se sirve(Sg.) wegen la comida.'},
 ],
 C1_estilo_indirecto:[
-  {type:'mc',q:'"Estoy cansado", dijo. → Dijo que ___.',choices:['está cansado','estaba cansado','ha estado cansado','esté cansado'],correct:1,explain:'Presente → Imperfecto in indir.Rede.'},
+{type:'mc',q:'"Estoy cansado", dijo. → Dijo que ___.',choices:['está cansado','estaba cansado','ha estado cansado','esté cansado'],correct:1,explain:'Presente → Imperfecto in indir.Rede.'},
   {type:'fill',q:'"Vendré mañana", prometió. → Prometió que ___ al día siguiente.',answer:'vendría',hint:'Futuro → Condicional',explain:'Futuro → Condicional: vendría.'},
   {type:'mc',q:'"¿Has comido?", preguntó. → Preguntó si ___.',choices:['he comido','había comido','haya comido','coma'],correct:1,explain:'Pretérito Perfecto → Pluscuamperfecto.'},
   {type:'sort',q:'Indirekte Rede:',words:['que','me dijo','tenía','hambre'],answer:'me dijo que tenía hambre',explain:'tener Präsens → tenía(Imperfecto) in indir.Rede.'},
@@ -939,7 +821,7 @@ C1_estilo_indirecto:[
   {type:'translate',q:'Übersetze: "Sie bat mich, ihr zu helfen."',answer:'Me pidió que la ayudara',hint:'pedir que + Subj.Imperf.',explain:'pedir que → Subj.Imperf.: ayudara.'},
 ],
 C2_perifrasis_adv:[
-  {type:'mc',q:'"___ tres años viviendo en Barcelona."',choices:['Sigo','Llevo','Acabo de','Vuelvo a'],correct:1,explain:'llevar+gerundio = seit X Zeit tun.'},
+{type:'mc',q:'"___ tres años viviendo en Barcelona."',choices:['Sigo','Llevo','Acabo de','Vuelvo a'],correct:1,explain:'llevar+gerundio = seit X Zeit tun.'},
   {type:'fill',q:'"Después de tanto intentarlo, ___ (dejar) de intentarlo."',answer:'dejó de',hint:'aufhören zu + inf.',explain:'dejar de+infinitivo = aufhören.'},
   {type:'sort',q:'Stelle zusammen:',words:['a reír','se echó','de repente'],answer:'se echó a reír de repente',explain:'echarse a+inf. = spontan anfangen(bei Emotion).'},
   {type:'mc',q:'"¿Todavía ___ esperando?"',choices:['llevas','sigues','vuelves a','acabas de'],correct:1,explain:'seguir+gerundio = noch weiter machen.'},
@@ -951,7 +833,7 @@ C2_perifrasis_adv:[
   {type:'sort',q:'Stelle zusammen:',words:['se puso','sin motivo','a llorar'],answer:'se puso a llorar sin motivo',explain:'ponerse a+inf. = absichtlich anfangen.'},
 ],
 C2_conectores:[
-  {type:'mc',q:'Welcher Konnektor drückt Gegensatz aus?',choices:['asimismo','no obstante','dado que','por tanto'],correct:1,explain:'no obstante = dennoch/nichtsdestotrotz(adversativ).'},
+{type:'mc',q:'Welcher Konnektor drückt Gegensatz aus?',choices:['asimismo','no obstante','dado que','por tanto'],correct:1,explain:'no obstante = dennoch/nichtsdestotrotz(adversativ).'},
   {type:'fill',q:'"___ que no pudo asistir, le enviamos el acta."',answer:'Dado',hint:'dado que = da/weil(kausal)',explain:'Dado que = kausal.'},
   {type:'mc',q:'"___, cabe destacar la importancia del tema."',choices:['No obstante','Dado que','Asimismo','Por consiguiente'],correct:2,explain:'asimismo = außerdem, desgleichen(additiv, formell).'},
   {type:'translate',q:'Übersetze: "Da sie nicht kam, begannen wir ohne sie."',answer:'Dado que no vino, empezamos sin ella',hint:'dado que = da',explain:'Dado que = kausal.'},
@@ -962,45 +844,221 @@ C2_conectores:[
   {type:'sort',q:'Stelle zusammen:',words:['llegó tarde','con todo','trabajó','eficientemente'],answer:'llegó tarde con todo trabajó eficientemente',explain:'con todo = dennoch/trotzdem(adversativ).'},
   {type:'translate',q:'Übersetze: "Folglich müssen wir die Strategie überdenken."',answer:'Por consiguiente, debemos reconsiderar la estrategia',hint:'por consiguiente = folglich',explain:'por consiguiente = konsekutiv, formell.'},
 ],
+}
 };
 
 const FREE={
 A1_presente:[
-  {task:'Stelle dich vor! Schreibe 4 Sätze: Name, Herkunft, Alter, was du magst.',hint:'Me llamo... Soy de... Tengo... Me gusta...'},
+{task:'Stelle dich vor! Schreibe 4 Sätze: Name, Herkunft, Alter, was du magst.',hint:'Me llamo... Soy de... Tengo... Me gusta...'},
   {task:'Beschreibe deinen Alltag. Was machst du jeden Tag? Mindestens 4 Verben im Presente.',hint:'Me levanto a las... Después... Trabajo/Estudio... Como...'},
   {task:'Schreibe 3 Fragen, die du einer neuen spanischen Freundin stellen würdest.',hint:'¿Dónde vives? ¿Qué haces? ¿Te gusta...?'},
   {task:'Beschreibe jemanden aus deiner Familie: wie sie/er ist, was sie/er macht.',hint:'Mi madre es... Trabaja... Vive... Le gusta...'},
 ],
+A1_articulos:[
+{task:'Beschreibe dein Zimmer oder deine Tasche und benutze moeglichst viele bestimmte und unbestimmte Artikel.',hint:'Hay una mesa, un libro, la ventana, los cuadernos...'},
+  {task:'Schreibe 5 kurze Saetze zu Dingen in deiner Kueche oder Wohnung.',hint:'El vaso esta aqui. La puerta es blanca. Tengo una taza...'},
+  {task:'Vergleiche zwei Personen oder zwei Orte und nenne dabei mehrere Nomen mit passendem Artikel.',hint:'La ciudad tiene un parque. El barrio tiene una plaza...'},
+  {task:'Schreibe eine Mini-Einkaufsliste in ganzen Saetzen statt nur als Woerter.',hint:'Necesito un tomate, una cebolla y unas naranjas.'},
+],
+A1_ser_estar:[
+{task:'Beschreibe dich selbst in 4-5 Saetzen und benutze sowohl ser als auch estar.',hint:'Soy..., soy de..., estoy en..., estoy cansada/o...'},
+  {task:'Beschreibe einen Raum und die Personen darin.',hint:'La cocina es pequena. Mi hermana esta en la cocina. La puerta esta abierta.'},
+  {task:'Schreibe einen kurzen Dialog: Wie geht es dir, wo bist du, wie bist du als Person?',hint:'Estoy bien. Soy tranquila. Estoy en casa...'},
+  {task:'Formuliere erst 2 Saetze mit ser und dann 2 mit estar zum selben Thema.',hint:'Soy profesora. Estoy en el trabajo. Es interesante. Esta abierto.'},
+],
+A1_pronombres:[
+{task:'Stelle deine Familie oder drei Personen vor und benutze yo, tu, el/ella, nosotros oder ellos.',hint:'Yo vivo en Paris. Mi hermano trabaja. Ellos estudian...'},
+  {task:'Schreibe einen Mini-Dialog mit du-Form und einer formellen Frage mit usted.',hint:'Tu hablas espanol? Usted vive aqui?'},
+  {task:'Schreibe 4 Saetze ueber eine Gruppe von Freunden und benutze nosotros/ellos/ellas.',hint:'Nosotros vamos al cine. Ellas viven cerca...'},
+  {task:'Beschreibe, wann du Pronomen bewusst zur Betonung verwenden wuerdest.',hint:'Yo no vivo aqui, ella vive aqui.'},
+],
+A1_negacion:[
+{task:'Schreibe 5 verneinte Saetze ueber deinen Alltag.',hint:'No trabajo los domingos. No bebo cafe por la noche...'},
+  {task:'Formuliere 4 Fragen mit Fragewoertern und gib direkt eine kurze Antwort darauf.',hint:'Donde vives? Vivo en... Por que estudias espanol? Porque...'},
+  {task:'Schreibe einen kleinen Dialog mit mindestens zwei Verneinungen und zwei Fragen.',hint:'No tengo tiempo. Que haces? Donde estas?...'},
+  {task:'Beschreibe einen Tag und sage auch, was du nicht machst.',hint:'Hoy trabajo, pero no cocino. No voy al centro...'},
+],
 A2_indefinido:[
-  {task:'Erzähle was du letztes Wochenende gemacht hast. Mindestens 5 Verben im Indefinido.',hint:'El sábado fui... Comí... Vi... Estuve... Hablé...'},
+{task:'Erzähle was du letztes Wochenende gemacht hast. Mindestens 5 Verben im Indefinido.',hint:'El sábado fui... Comí... Vi... Estuve... Hablé...'},
   {task:'Schreibe einen kurzen Tagebucheintrag über einen schönen Tag in deiner Vergangenheit.',hint:'El... de... fui... Con... Comimos... Fue un día muy...'},
   {task:'Erzähle von einem Urlaub: Wohin? Was hast du gemacht? Was hat dir am besten gefallen?',hint:'Fui a... con... Visitamos... Comimos... Lo que más me gustó fue...'},
   {task:'Schreibe 4-5 Sätze über deinen letzten Geburtstag oder ein Fest, das du gefeiert hast.',hint:'En mi cumpleaños... Vinieron... Celebramos... Lo pasamos muy bien.'},
 ],
+A2_imperfecto:[
+{task:'Beschreibe deine Kindheit oder Schulzeit mit mindestens 5 Verben im Imperfecto.',hint:'Cuando era pequena/o, vivia..., jugaba..., iba...'},
+  {task:'Schreibe eine Szene aus der Vergangenheit: Wetter, Ort, Personen, Stimmung.',hint:'Era de noche, llovia, la calle estaba vacia...'},
+  {task:'Verbinde Hintergrund und Unterbrechung in 3 Saetzen.',hint:'Mientras leia, sono el telefono. Cuando cenabamos, llego...'},
+  {task:'Beschreibe eine fruehere Gewohnheit und vergleiche sie mit heute.',hint:'Antes me levantaba temprano, ahora...'},
+],
+A2_perf_simple:[
+{task:'Schreibe 4-5 Saetze ueber Dinge, die du diese Woche schon gemacht hast.',hint:'Esta semana he trabajado..., he visto..., he hablado...'},
+  {task:'Schreibe einen kurzen Text ueber Erfahrungen in deinem Leben mit ya, todavia no oder nunca.',hint:'Ya he visitado..., todavia no he probado..., nunca he visto...'},
+  {task:'Formuliere 3 Fragen an eine Freundin mit Pret. Perfecto und beantworte sie selbst.',hint:'Has estado en...? Has probado...? Has leido...?'},
+  {task:'Beschreibe deinen heutigen Tag bis jetzt.',hint:'Hoy me he levantado..., he desayunado..., he trabajado...'},
+],
+A2_gustar:[
+{task:'Schreibe einen Absatz ueber Dinge, die dir gefallen oder nicht gefallen.',hint:'Me gusta..., no me gustan..., me encanta..., me molesta...'},
+  {task:'Vergleiche die Vorlieben von dir, deiner Familie und deinen Freunden.',hint:'A mi me gusta..., a mi madre le encanta..., a mis amigos les interesan...'},
+  {task:'Schreibe einen kleinen Dialog ueber Filme, Musik oder Essen mit gustar und encantar.',hint:'Te gusta el jazz? A mi me encanta...'},
+  {task:'Beschreibe ein Hobby und wie verschiedene Personen dazu stehen.',hint:'A mi hermana le gusta correr, pero a mi padre no le interesa...'},
+],
+A2_adjetivos:[
+{task:'Beschreibe zwei Personen und vergleiche sie mit Komparativen.',hint:'Maria es mas alta que Ana. Juan es tan tranquilo como...'},
+  {task:'Schreibe eine Produkt- oder Ortsbeschreibung mit mindestens 5 Adjektiven.',hint:'Es una ciudad moderna, bonita, tranquila y bastante grande...'},
+  {task:'Vergleiche zwei Filme, Buecher oder Staedte und nutze mejor, peor, mas, menos, tan...como.',hint:'Esta pelicula es mejor que..., pero la otra es mas larga...'},
+  {task:'Schreibe 4 Saetze mit Superlativen.',hint:'Es la mejor cafeteria del barrio. Son los libros mas interesantes...'},
+],
+A2_preposiciones:[
+{task:'Beschreibe deinen Tagesablauf und benutze a, en, con, de, por und para.',hint:'Voy al trabajo a las..., vivo en..., voy con..., trabajo para...'},
+  {task:'Schreibe einen kurzen Weg oder Reiseplan mit Orts- und Richtungsangaben.',hint:'Voy a Madrid en tren. Salgo de casa a las ocho...'},
+  {task:'Formuliere 5 Saetze ueber Geschenke, Gruende, Ziele und Fristen.',hint:'Es para ti. Gracias por tu ayuda. Es para el lunes...'},
+  {task:'Schreibe einen Absatz ueber Arbeit oder Studium und nutze desde... hasta..., por und para.',hint:'Trabajo desde las nueve hasta las cinco...'},
+],
+B1_futuro:[
+{task:'Schreibe einen kleinen Zukunftsplan fuer morgen, naechste Woche und naechstes Jahr.',hint:'Manana hare..., la semana que viene viajare..., el ano que viene estudiare...'},
+  {task:'Formuliere 4 Vermutungen mit Futuro simple ueber eine Person oder Situation.',hint:'Estara en casa. Tendra unos treinta anos...'},
+  {task:'Schreibe 5 Versprechen oder Vorhaben fuer dein Spanischlernen.',hint:'Leere mas. Practicare todos los dias. Hablare con...'},
+  {task:'Beschreibe dein ideales Wochenende in der Zukunft.',hint:'Ire al mar, descansare, leere un libro...'},
+],
+B1_condicional:[
+{task:'Schreibe 4 Saetze ueber Dinge, die du gerne tun wuerdest.',hint:'Me gustaria vivir en... Viajaria mas si...'},
+  {task:'Formuliere 3 hoefliche Bitten und 3 passende Antworten.',hint:'Podrias ayudarme? Me podrias decir...?'},
+  {task:'Gib einer Freundin Ratschlaege mit deberias und podrias.',hint:'Deberias descansar mas. Podrias hablar con...'},
+  {task:'Schreibe einen kurzen Text ueber dein ideales Leben, wenn du frei waehlen koenntest.',hint:'Viviria en..., trabajaria..., tendria...'},
+],
 B1_subjuntivo_pres:[
-  {task:'Schreibe 3 Wünsche für eine Freundin mit "espero que" oder "quiero que".',hint:'Espero que tengas... Quiero que seas... Deseo que encuentres...'},
+{task:'Schreibe 3 Wünsche für eine Freundin mit "espero que" oder "quiero que".',hint:'Espero que tengas... Quiero que seas... Deseo que encuentres...'},
   {task:'Du bist Trainerin. Gib 4 Ratschläge mit "es importante que" und "recomiendo que".',hint:'Es importante que entrenes... Recomiendo que comas... Es necesario que descanses...'},
   {task:'Reagiere auf 3 Nachrichten: Nutze "me alegra que...", "me sorprende que...", "me preocupa que...".',hint:'Me alegra que hayas llegado bien. Me sorprende que... Me preocupa que...'},
   {task:'Schreibe eine Textnachricht an eine Freundin: Was hoffst du für euren nächsten Besuch?',hint:'Espero que podamos... Quiero que conozcas... Ojalá tengamos tiempo para...'},
 ],
+B1_imperativo:[
+{task:'Schreibe 6 Anweisungen fuer einen Gast bei dir zu Hause.',hint:'Entra, sientate, no fumes, no dejes...'},
+  {task:'Formuliere einen kleinen Dialog mit positiven und negativen Imperativen.',hint:'Ven aqui. No hables tan alto. Escucha...'},
+  {task:'Schreibe eine Fitness- oder Lernroutine als Befehlsliste.',hint:'Levantate, estudia veinte minutos, no mires el movil...'},
+  {task:'Gib einer Freundin konkrete Ratschlaege fuer einen stressigen Tag.',hint:'Descansa, llama a..., no te preocupes...'},
+],
+B1_ser_estar_adv:[
+{task:'Schreibe 6 Saetze mit Paaren wie es aburrido / esta aburrido oder es listo / esta listo.',hint:'Erklaere die unterschiedliche Bedeutung direkt im Kontext.'},
+  {task:'Beschreibe Personen, Essen und Situationen und achte bewusst auf ser oder estar.',hint:'La sopa esta rica. Mi vecino es muy rico...'},
+  {task:'Schreibe einen Mini-Dialog, in dem eine Verwechslung von ser und estar die Bedeutung aendert.',hint:'Es malo / esta malo, es listo / esta listo...'},
+  {task:'Formuliere Beispiele zu mindestens vier Bedeutungswechseln.',hint:'aburrido, bueno, malo, vivo, rico, seguro...'},
+],
+B1_perifrasis:[
+{task:'Beschreibe deinen Tag mit ir a, estar + gerundio, volver a und acabar de.',hint:'Voy a salir. Estoy estudiando. Acabo de comer...'},
+  {task:'Schreibe 4 Saetze ueber Gewohnheiten und wiederholte Handlungen.',hint:'Suelo leer, vuelvo a intentarlo, dejo de...'},
+  {task:'Erzaehle eine kleine Situation mit mehreren Umschreibungen.',hint:'Iba a salir, pero segui trabajando y acabe de...'},
+  {task:'Schreibe ueber ein Projekt, das du bald beginnen oder wieder aufnehmen willst.',hint:'Voy a empezar..., vuelvo a..., estoy pensando en...'},
+],
+B2_futuro_perf:[
+{task:'Schreibe 4 Prognosen darueber, was bis zu einem bestimmten Zeitpunkt erledigt sein wird.',hint:'Para el viernes habre terminado..., para junio habremos...'},
+  {task:'Formuliere Vermutungen ueber bereits abgeschlossene Situationen.',hint:'Habra llegado ya. Habran salido temprano...'},
+  {task:'Schreibe einen Lern- oder Arbeitsplan mit klaren Deadlines.',hint:'Para las ocho habre repasado..., para el lunes...'},
+  {task:'Kombiniere Zukunft und Vermutung in einem kurzen Absatz.',hint:'Cuando llegues, ya habre salido; Juan habra dejado una nota...'},
+],
+B2_cond_perf:[
+{task:'Schreibe 4 Saetze ueber Dinge, die du in der Vergangenheit anders gemacht haettest.',hint:'Habria estudiado mas, habria hablado con...'},
+  {task:'Formuliere Vorwuerfe oder rueckblickende Kommentare mit Condicional perfecto.',hint:'Habria podido avisarme. Habriais debido...'},
+  {task:'Schreibe einen kurzen Text ueber eine verpasste Chance.',hint:'Si hubiera..., habria..., pero al final...'},
+  {task:'Beschreibe eine hypothetische Vergangenheit mit mindestens drei Folgen.',hint:'Sin ese problema, habriamos llegado antes...'},
+],
 B2_subjuntivo_imp:[
-  {task:'Schreibe 3 irreale Wünsche mit "ojalá + imperfecto de subjuntivo".',hint:'Ojalá tuviera... Ojalá pudiera... Ojalá viviera...'},
+{task:'Schreibe 3 irreale Wünsche mit "ojalá + imperfecto de subjuntivo".',hint:'Ojalá tuviera... Ojalá pudiera... Ojalá viviera...'},
   {task:'Formuliere 2 Typ-2-Konditionalsätze: Was würdest du anders machen?',hint:'Si tuviera más tiempo... Si viviera en... Si pudiera...'},
   {task:'Du bist in einem eleganten Restaurant. Bestelle höflich mit "quisiera" und bitte um Empfehlungen.',hint:'Quisiera reservar... ¿Me podría recomendar? Quisiera también...'},
   {task:'Schreibe 2-3 Sätze: Was würdest du anders machen, wenn du noch einmal anfangen könntest?',hint:'Si pudiera elegir de nuevo... Estudiaría... Viviría en...'},
 ],
+B2_subjuntivo_perf:[
+{task:'Schreibe 4 Reaktionen auf bereits abgeschlossene Ereignisse mit me alegra que, espero que, es una pena que...',hint:'Me alegra que hayas venido. Es una pena que no hayas podido...'},
+  {task:'Formuliere Wuensche und Zweifel ueber die juengere Vergangenheit.',hint:'No creo que hayan entendido..., espero que hayas descansado...'},
+  {task:'Schreibe eine Nachricht an eine Freundin nach einem wichtigen Tag von ihr.',hint:'Espero que haya ido bien, me alegra que hayas...'},
+  {task:'Beschreibe drei Situationen, in denen du den Subjuntivo perfecto natuerlich verwenden wuerdest.',hint:'nach einem Treffen, nach einer Reise, nach einer Pruefung...'},
+],
+B2_imperativo_pron:[
+{task:'Schreibe 6 Befehle oder Bitten mit angehaengten Pronomen.',hint:'Damelo, explicamelo, compramelo...'},
+  {task:'Schreibe 6 negative Befehle mit Pronomen vor dem Verb.',hint:'No me lo digas, no se lo expliques...'},
+  {task:'Erstelle einen Dialog mit mehreren Objektpronomen im Imperativ.',hint:'Traemelo. No me lo dejes aqui. Ensenaselo...'},
+  {task:'Beschreibe Regeln fuer einen Kurs oder Workshop mit Imperativen und Pronomen.',hint:'Apuntatelo, no lo olvides, entregamelo...'},
+],
+B2_relativos:[
+{task:'Schreibe einen Absatz ueber eine Person, einen Ort und ein Buch mit que, quien und cuyo.',hint:'La autora cuya novela..., la persona con quien..., el libro que...'},
+  {task:'Verbinde kurze Hauptsaetze zu komplexeren Relativsaetzen.',hint:'Tengo una amiga. Su padre es medico -> Tengo una amiga cuyo padre...'},
+  {task:'Beschreibe einen Urlaubsort mit mindestens vier Relativpronomen.',hint:'el hotel en el que..., la playa que..., la gente con quien...'},
+  {task:'Schreibe 5 Saetze mit Praeposition + Relativpronomen.',hint:'de la que, con quien, en el que...'},
+],
+B2_concesivas:[
+{task:'Schreibe 4 Saetze mit aunque, a pesar de que oder aun asi.',hint:'Aunque este cansada, voy a salir...'},
+  {task:'Vergleiche bekannte Tatsachen und hypothetische Situationen mit aunque + Indicativo/Subjuntivo.',hint:'Aunque llueve... / Aunque llueva...'},
+  {task:'Schreibe einen argumentativen Mini-Absatz mit einer concessiven Struktur.',hint:'Si bien..., no obstante..., aun asi...'},
+  {task:'Beschreibe eine schwierige Situation und wie du trotzdem weitergemacht hast.',hint:'A pesar de..., segui..., aunque...'},
+],
 C1_subj_pluscuamp:[
-  {task:'Schreibe 2 Bedauern aus deiner Vergangenheit mit "ojalá hubiera...".',hint:'Ojalá hubiera aprendido a... Ojalá hubiera dicho que...'},
+{task:'Schreibe 2 Bedauern aus deiner Vergangenheit mit "ojalá hubiera...".',hint:'Ojalá hubiera aprendido a... Ojalá hubiera dicho que...'},
   {task:'Schreibe 2 Typ-3-Konditionalsätze über hypothetische Situationen in der Vergangenheit.',hint:'Si hubiera estudiado más... Si hubiera conocido a... habría...'},
   {task:'Beschreibe eine Situation aus der Vergangenheit in indirekter Rede(4 Sätze).',hint:'Me dijo que había... Prometió que vendría... Me pidió que... Afirmó que...'},
   {task:'Schreibe einen kurzen Brief an dein jüngeres Ich: Was hättest du dir gewünscht zu wissen?',hint:'Ojalá hubiera sabido que... Si hubiera podido elegir... Habría...'},
 ],
+C1_voz_pasiva:[
+{task:'Schreibe einen kurzen Bericht mit ser-Passiv, se-Pasiv und estar + participio.',hint:'El informe fue redactado..., se publicaron..., la puerta estaba cerrada...'},
+  {task:'Vergleiche aktive und passive Formulierungen zu demselben Inhalt.',hint:'La empresa lanzo... / El producto fue lanzado... / Se lanzo...'},
+  {task:'Schreibe 5 Saetze im sachlichen, journalistischen Stil.',hint:'Se anuncio..., fue aprobado..., esta previsto...'},
+  {task:'Beschreibe einen Prozess oder ein Ereignis mit formellem Ton.',hint:'El proyecto fue desarrollado..., posteriormente se presento...'},
+],
+C1_estilo_indirecto:[
+{task:'Schreibe eine Szene mit mehreren Aussagen in indirekter Rede.',hint:'Dijo que..., explico que..., pregunto si..., anadio que...'},
+  {task:'Verwandle einen kleinen Dialog in einen indirekten Bericht.',hint:'Achte auf Zeitenfolge und Zeitausdruecke.'},
+  {task:'Schreibe einen Nachrichtenabschnitt ueber Aussagen anderer Personen.',hint:'El portavoz afirmo que..., la testigo explico que...'},
+  {task:'Verbinde Bitten, Fragen und Versprechen in einem zusammenhaengenden Text.',hint:'Me pidio que..., pregunto si..., prometio que...'},
+],
+C1_gerundio:[
+{task:'Schreibe einen Absatz mit korrekt verwendeten Gerundien fuer Zeit, Art und Begleitumstaende.',hint:'Entró sonriendo, salio corriendo, fue aprendiendo poco a poco...'},
+  {task:'Beschreibe einen Prozess und benutze llevar/seguir/continuar + gerundio.',hint:'Llevo meses preparando..., sigo buscando...'},
+  {task:'Formuliere 4 Beispiele, in denen das Gerundio korrekt ist, und 2, in denen du es bewusst vermeidest.',hint:'Kein Gerundio als Adjektiv verwenden.'},
+  {task:'Schreibe einen literarischeren Mini-Text mit bewegter Handlung.',hint:'Cruzando la calle, oyendo voces, avanzo pensando en...'},
+],
+C1_finales_temporales:[
+{task:'Schreibe einen Plan oder Rattext mit para que, cuando, hasta que und en cuanto.',hint:'Hazlo para que..., llamame cuando..., espera hasta que...'},
+  {task:'Verbinde Zukunftsabsichten mit Temporalsaetzen im Subjuntivo.',hint:'Cuando llegues, en cuanto puedas, antes de que...'},
+  {task:'Schreibe einen Absatz ueber ein Projektziel und die noetigen Schritte.',hint:'Trabajamos para que..., antes de que termine..., en cuanto reciba...'},
+  {task:'Vergleiche Vergangenheit und Zukunft mit den gleichen Konnektoren.',hint:'Cuando llegaba... / cuando llegues...'},
+],
+C1_ser_estar_full:[
+{task:'Schreibe 6 Kontrastsatzpaare mit Bedeutungswechsel bei ser/estar.',hint:'Es listo / esta listo, es rico / esta rico...'},
+  {task:'Beschreibe eine Person, ein Essen und eine Situation mit bewussten Bedeutungsnuancen.',hint:'Achte auf den Bedeutungswechsel je nach Verb.'},
+  {task:'Schreibe einen Dialog, in dem eine falsche ser/estar-Wahl die Aussage veraendert.',hint:'Das kann humorvoll oder missverstaendlich sein.'},
+  {task:'Formuliere kurze Definitionen fuer mehrere problematische Adjektive.',hint:'aburrido, malo, bueno, vivo, seguro, nuevo...'},
+],
+C2_perifrasis_adv:[
+{task:'Schreibe einen reflektierten Text mit mehreren fortgeschrittenen Perifrasen.',hint:'llevar + gerundio, echarse a, acabar por, volver a, dejar de...'},
+  {task:'Erzaehle eine Entwicklung ueber laengere Zeit mit nuancierten Verbumschreibungen.',hint:'Llevo anos..., acabe por..., volvi a..., segui...'},
+  {task:'Schreibe einen stilistisch dichten Absatz ueber Emotionen und spontane Reaktionen.',hint:'Se echo a llorar, se puso a temblar, acabo por aceptar...'},
+  {task:'Vergleiche neutrale und fortgeschrittenere Ausdrucksweisen.',hint:'empezo a / se puso a, hizo otra vez / volvio a...'},
+],
 C2_conectores:[
-  {task:'Schreibe einen Absatz über Vor- und Nachteile des Sprachenlernens. Mindestens 4 Konnektoren.',hint:'Asimismo... No obstante... Dado que... Por consiguiente... Si bien...'},
+{task:'Schreibe einen Absatz über Vor- und Nachteile des Sprachenlernens. Mindestens 4 Konnektoren.',hint:'Asimismo... No obstante... Dado que... Por consiguiente... Si bien...'},
   {task:'Verfasse eine formelle Stellungnahme(5-6 Sätze) zu einem gesellschaftlichen Thema.',hint:'Cabe señalar que... A pesar de ello... Por tanto... Asimismo...'},
   {task:'Kommentiere 3-4 Sätze zu einem aktuellen Thema. Verwende si bien, no obstante und de ahí que.',hint:'Si bien es cierto que... No obstante... De ahí que...'},
   {task:'Schreibe eine kurze akademische Einleitung zu einem Thema deiner Wahl.',hint:'El presente escrito tiene como objetivo... Cabe señalar... Asimismo... Por consiguiente...'},
 ],
+C2_modalidad:[
+{task:'Schreibe einen argumentativen Absatz mit deber, deber de, tener que, poder und haber de.',hint:'Unterscheide klar zwischen Pflicht, Vermutung und stilistischem Register.'},
+  {task:'Formuliere 6 Saetze mit feinen Bedeutungsunterschieden bei Modalverben.',hint:'Debe de estar cansado vs. Debe descansar.'},
+  {task:'Schreibe einen formelleren Text mit epistemischer Unsicherheit und vorsichtiger Bewertung.',hint:'Podria decirse..., debe de tratarse de..., habria que...'},
+  {task:'Vergleiche Alltagssprache und gehobeneren Stil bei denselben Aussagen.',hint:'tener que / haber de, puede que / debe de...'},
+],
+C2_subj_complejo:[
+{task:'Schreibe einen argumentativen Absatz mit de ahi que, no es que und quizas/tal vez.',hint:'De ahi que sea..., no es que no quiera..., quizas convenga...'},
+  {task:'Formuliere 5 Beispiele fuer komplexe Subjuntivo-Ausloeser in gehobenem Stil.',hint:'no porque, como si, es probable que, de ahi que...'},
+  {task:'Schreibe eine differenzierte Stellungnahme mit Unsicherheit, Distanz und Einschraenkung.',hint:'No es que..., puede que..., de ahi que...'},
+  {task:'Vergleiche neutralere und nuanciertere Varianten derselben Aussage.',hint:'Quizas viene / quizas venga, no porque...'},
+],
+C2_registro:[
+{task:'Schreibe einen formellen Absatz und danach eine informellere Version desselben Inhalts.',hint:'Nutze cabe senalar, llevar a cabo, hacer hincapie en...'},
+  {task:'Baue mehrere Kollokationen und idiomatische Wendungen in einen zusammenhaengenden Text ein.',hint:'tener en cuenta, poner de manifiesto, estar al tanto...'},
+  {task:'Verfasse eine kurze akademische oder berufliche Stellungnahme in hohem Register.',hint:'En virtud de..., a tenor de..., cabe subrayar...'},
+  {task:'Schreibe einen Text mit bewusstem Registerwechsel fuer zwei Zielgruppen.',hint:'z.B. formelle Mail und lockere Nachricht zum gleichen Thema.'},
+],
+}
 };
 
 function getExercises(id){
@@ -1023,9 +1081,9 @@ function getExampleSentences(topic){
   return(topic?.example||'').split(/[.!?â€”]+/).map(s=>s.replace(/\s+/g,' ').trim()).filter(Boolean);
 }
 function createWordChoices(answer,topic,idx){
-  const pool=[...new Set((topic.example.match(/[A-Za-zÃÃ‰ÃÃ“NÃ“ÃšÃœÃ±Ã¡Ã©Ã­Ã³ÃºÃ¼]+/g)||[]).map(w=>w.trim()).filter(w=>w.length>2))];
+  const pool=[...new Set((topic.example.match(/[A-Za-zÁÉÍÓNÓÚÜñáéíóúü]+/g)||[]).map(w=>w.trim()).filter(w=>w.length>2))];
   const distractors=pool.filter(w=>normalizeAnswer(w)!==normalizeAnswer(answer)).slice(idx,idx+3);
-  while(distractors.length<3)distractors.push('opciÃ³n '+String.fromCharCode(65+distractors.length));
+  while(distractors.length<3)distractors.push('opción '+String.fromCharCode(65+distractors.length));
   return [answer,...distractors].sort(()=>Math.random()-.5);
 }
 function createFallbackExercises(topic){
@@ -1036,24 +1094,24 @@ function createFallbackExercises(topic){
     const words=sentence.split(/\s+/).filter(Boolean);
     if(words.length<3)return;
     const sortable=words.map(w=>w.replace(/[.,;:]+$/,''));
-    if(sortable.length>=4)generated.push({type:'sort',q:'Ordne den Beispielsatz zum Thema richtig:',words:sortable,answer:sortable.join(' '),explain:'Du trainierst hier die Wortstellung und prÃ¤gst dir eine korrekte Musterstruktur ein.'});
-    const candidate=words.slice().reverse().find(w=>normalizeAnswer(w.replace(/[.,;:]+$/,'')).length>2&&/^[A-Za-zÃÃ‰ÃÃ“NÃ“ÃšÃœÃ±Ã¡Ã©Ã­Ã³ÃºÃ¼]+$/.test(w.replace(/[.,;:]+$/,'')));
+    if(sortable.length>=4)generated.push({type:'sort',q:'Ordne den Beispielsatz zum Thema richtig:',words:sortable,answer:sortable.join(' '),explain:'Du trainierst hier die Wortstellung und prägst dir eine korrekte Musterstruktur ein.'});
+    const candidate=words.slice().reverse().find(w=>normalizeAnswer(w.replace(/[.,;:]+$/,'')).length>2&&/^[A-Za-zÁÉÍÓNÓÚÜñáéíóúü]+$/.test(w.replace(/[.,;:]+$/,'')));
     if(candidate){
       const clean=candidate.replace(/[.,;:]+$/,'');
       const masked=sentence.replace(clean,'___');
       const choices=createWordChoices(clean,topic,idx);
-      generated.push({type:'fill',q:'Completa el ejemplo: "'+masked+'"',answer:clean,hint:'Orientiere dich an der Grammatik-ErklÃ¤rung und am Beispielsatz.',explain:'Diese ErgÃ¤nzungsaufgabe nutzt direkt einen Kernsatz des Themas, damit Form und Verwendung zusammen geÃ¼bt werden.'});
-      generated.push({type:'mc',q:'Welches Wort vervollstÃ¤ndigt den Beispielsatz korrekt?',choices,correct:choices.findIndex(x=>normalizeAnswer(x)===normalizeAnswer(clean)),explain:'Die richtige LÃ¶sung stammt aus dem Beispielsatz dieses Themas und verankert die typische Form im Kontext.'});
+      generated.push({type:'fill',q:'Completa el ejemplo: "'+masked+'"',answer:clean,hint:'Orientiere dich an der Grammatik-Erklärung und am Beispielsatz.',explain:'Diese Ergänzungsaufgabe nutzt direkt einen Kernsatz des Themas, damit Form und Verwendung zusammen geübt werden.'});
+      generated.push({type:'mc',q:'Welches Wort vervollständigt den Beispielsatz korrekt?',choices,correct:choices.findIndex(x=>normalizeAnswer(x)===normalizeAnswer(clean)),explain:'Die richtige Lösung stammt aus dem Beispielsatz dieses Themas und verankert die typische Form im Kontext.'});
     }
   });
-  generated.push({type:'translate',q:'Schreibe einen zentralen Beispielsatz zu "'+topic.name+'" korrekt auf Spanisch.',answer:source[0],hint:'Nutze die Grammatik-ErklÃ¤rung direkt darÃ¼ber als StÃ¼tze.',explain:'Auch ohne voll kuratierte Aufgaben bekommst du hier einen klaren Merksatz zum aktiven Reproduzieren.'});
+  generated.push({type:'translate',q:'Schreibe einen zentralen Beispielsatz zu "'+topic.name+'" korrekt auf Spanisch.',answer:source[0],hint:'Nutze die Grammatik-Erklärung direkt darüber als Stütze.',explain:'Auch ohne voll kuratierte Aufgaben bekommst du hier einen klaren Merksatz zum aktiven Reproduzieren.'});
   return generated.slice(0,8);
 }
 function createFallbackFreeTasks(topic){
   return[
-    {task:'Schreibe 4-5 SÃ¤tze, in denen du "'+topic.name+'" mindestens dreimal bewusst verwendest.',hint:'Orientiere dich an diesem Fokus: '+topic.de},
-    {task:'Formuliere einen Mini-Dialog oder kurzen Absatz, der die Struktur "'+topic.name+'" natÃ¼rlich einbettet.',hint:'Nimm mindestens einen Ausdruck aus dem Beispiel auf und erweitere ihn.'},
-    {task:'ErklÃ¤re etwas Ã¼ber deinen Alltag, deine Meinung oder ein Erlebnis und baue dabei das Thema "'+topic.name+'" gezielt ein.',hint:'Achte mehr auf korrekte Anwendung als auf schwierigen Wortschatz.'},
+    {task:'Schreibe 4-5 Sätze, in denen du "'+topic.name+'" mindestens dreimal bewusst verwendest.',hint:'Orientiere dich an diesem Fokus: '+topic.de},
+    {task:'Formuliere einen Mini-Dialog oder kurzen Absatz, der die Struktur "'+topic.name+'" natürlich einbettet.',hint:'Nimm mindestens einen Ausdruck aus dem Beispiel auf und erweitere ihn.'},
+    {task:'Erkläre etwas über deinen Alltag, deine Meinung oder ein Erlebnis und baue dabei das Thema "'+topic.name+'" gezielt ein.',hint:'Achte mehr auf korrekte Anwendung als auf schwierigen Wortschatz.'},
     {task:'Schreibe erst einen einfachen Satz und danach eine anspruchsvollere Variante mit demselben Thema.',hint:'So trainierst du Kontrolle und Variation gleichzeitig.'},
   ];
 }
@@ -1068,7 +1126,7 @@ function getCoverageLabel(topic){
   const free=hasSpecificFreeTasks(topic.id);
   if(guided&&free)return{text:'Kuratierte Inhalte',color:'var(--mint2)'};
   if(guided||free)return{text:'Teilweise kuratiert',color:'var(--peach)'};
-  return{text:'ErgÃ¤nzte Lernkarten',color:'var(--violet)'};
+  return{text:'Ergänzte Lernkarten',color:'var(--violet)'};
 }
 function getOverviewStats(){
   const topics=Object.values(TOPICS).flat();
@@ -1131,7 +1189,7 @@ function selectLevel(lvl){
     const infoBox=null;
     const coverage={color:'',text:''};
     el.innerHTML=`<div class="topic-dot ${dotCls}"></div><div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">— ${t.de}</span></div><div class="topic-desc">${t.desc}</div></div><div class="topic-score">${d>0?c+'/'+d:''}</div><div style="color:var(--text3);font-size:16px">›</div>`;
-    if(infoBox)infoBox.insertAdjacentHTML('beforeend',`<div class="topic-meta"><div class="topic-badges"><span class="topic-badge" style="border-color:${coverage.color};color:${coverage.color}">${coverage.text}</span><span class="topic-badge">${getTopicExerciseCount(t.id)} Ãœbungen</span><span class="topic-badge">${getTopicFreeTaskCount(t.id)} Schreibimpulse</span></div></div>`);
+    if(infoBox)infoBox.insertAdjacentHTML('beforeend',`<div class="topic-meta"><div class="topic-badges"><span class="topic-badge" style="border-color:${coverage.color};color:${coverage.color}">${coverage.text}</span><span class="topic-badge">${getTopicExerciseCount(t.id)} Übungen</span><span class="topic-badge">${getTopicFreeTaskCount(t.id)} Schreibimpulse</span></div></div>`);
     el.innerHTML=`<div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">- ${t.de}</span></div><div class="topic-desc">${t.desc}</div></div><div style="color:var(--text3);font-size:16px">›</div>`;
     el.onclick=()=>selectTopic(t);list.appendChild(el);
   }
@@ -1143,7 +1201,7 @@ function selectTopic(topic){
   const coverage=getCoverageLabel(topic);
   document.getElementById('mode-topic-name').textContent=topic.name;
   document.getElementById('mode-topic-de').textContent=topic.de;
-  document.getElementById('mode-summary-guided').textContent=getTopicExerciseCount(topic.id)+' gefÃ¼hrte Aufgaben';
+  document.getElementById('mode-summary-guided').textContent=getTopicExerciseCount(topic.id)+' geführte Aufgaben';
   document.getElementById('mode-summary-free').textContent=getTopicFreeTaskCount(topic.id)+' Schreibimpulse';
   document.getElementById('mode-summary-guided').textContent=getTopicExerciseCount(topic.id)+' gefuehrte Aufgaben';
   document.getElementById('mode-summary-source').textContent=coverage.text;
