@@ -80,10 +80,10 @@ const TOPICS = { A1:[...], A2:[...], B1:[...], B2:[...], C1:[...], C2:[...] }
 // Jedes Topic: { id, name, de, desc, grammar, example }
 
 const EX = { TOPIC_ID: [ {type:'mc'|'fill'|'translate'|'sort', ...} ] }
-// 43 Themen mit je 10 kuratierten Übungen — ALLE vollständig, kein Fallback nötig
+// 50 Themen mit je 10 kuratierten Übungen — ALLE vollständig, kein Fallback nötig
 
 const FREE = { TOPIC_ID: [ {task:'...', hint:'...'} ] }
-// 43 Themen mit je 4 Schreibaufgaben — ALLE vollständig
+// 50 Themen mit je 4 Schreibaufgaben — ALLE vollständig
 ```
 
 ---
@@ -120,9 +120,9 @@ Akzente werden beim Vergleich toleriert.
 
 ---
 
-## Grammatik-Themen (vollständige aktuelle Liste — 43 Themen)
+## Grammatik-Themen (vollständige aktuelle Liste — 50 Themen)
 
-### A1 (5 Themen)
+### A1 (10 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | A1_presente | Presente de indicativo | Präsens |
@@ -130,8 +130,13 @@ Akzente werden beim Vergleich toleriert.
 | A1_ser_estar | Ser vs. Estar (básico) | Sein – Grundlagen |
 | A1_pronombres | Pronombres personales | Personalpronomen |
 | A1_negacion | Negación y preguntas | Verneinung & Fragen |
+| A1_numeros | Números | Zahlen 0–100 |
+| A1_hora | La hora | Uhrzeit |
+| A1_diasmeses | Días y meses | Wochentage & Monate |
+| A1_posesivos | Posesivos | Possessivpronomen |
+| A1_demonstrativa | Demostrativos | Demonstrativpronomen |
 
-### A2 (7 Themen)
+### A2 (9 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | A2_indefinido | Pretérito Indefinido | Einfache Vergangenheit |
@@ -141,6 +146,8 @@ Akzente werden beim Vergleich toleriert.
 | A2_adjetivos | Adjetivos y comparativos | Adjektive & Komparativ |
 | A2_preposiciones | Preposiciones básicas | Grundlegende Präpositionen |
 | A2_reflexivos | Verbos reflexivos | Reflexivverben |
+| A2_pronombres_obj | Pronombres de objeto directo | Direkte Objektpronomen lo/la/los/las |
+| A2_ir_a | Ir a + infinitivo | Analytisches Futur – Pläne & nahe Zukunft |
 
 ### B1 (8 Themen)
 | ID | Spanisch | Deutsch |
