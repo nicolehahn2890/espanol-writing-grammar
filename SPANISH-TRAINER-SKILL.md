@@ -80,11 +80,11 @@ const TOPICS = { A1:[...], A2:[...], B1:[...], B2:[...], C1:[...], C2:[...] }
 // Jedes Topic: { id, name, de, desc, grammar, example }
 
 const EX = { TOPIC_ID: [ {type:'mc'|'fill'|'translate'|'sort', ...} ] }
-// 31 Themen mit je 10 kuratierten Übungen
+// 43 Themen mit je 10 kuratierten Übungen
 
 const FREE = { TOPIC_ID: [ {task:'...', hint:'...'} ] }
-// 35 Themen mit je 4 Schreibaufgaben
-// 6 Themen ohne kuratierte EX nutzen createFallbackExercises() (autogeneriert)
+// 43 Themen mit je 4 Schreibaufgaben
+// Themen ohne kuratierte EX/FREE nutzen createFallbackExercises() / createFallbackFreeTasks()
 ```
 
 ---
@@ -121,7 +121,7 @@ Akzente werden beim Vergleich toleriert.
 
 ---
 
-## Grammatik-Themen (vollständige aktuelle Liste — 37 Themen)
+## Grammatik-Themen (vollständige aktuelle Liste — 43 Themen)
 
 ### A1 (5 Themen)
 | ID | Spanisch | Deutsch |
@@ -132,7 +132,7 @@ Akzente werden beim Vergleich toleriert.
 | A1_pronombres | Pronombres personales | Personalpronomen |
 | A1_negacion | Negación y preguntas | Verneinung & Fragen |
 
-### A2 (6 Themen)
+### A2 (7 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | A2_indefinido | Pretérito Indefinido | Einfache Vergangenheit |
@@ -141,8 +141,9 @@ Akzente werden beim Vergleich toleriert.
 | A2_gustar | Verbos tipo gustar | Verben wie gustar |
 | A2_adjetivos | Adjetivos y comparativos | Adjektive & Komparativ |
 | A2_preposiciones | Preposiciones básicas | Grundlegende Präpositionen |
+| A2_reflexivos | Verbos reflexivos | Reflexivverben |
 
-### B1 (7 Themen)
+### B1 (9 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | B1_pluscuamperfecto | Pretérito Pluscuamperfecto | Plusquamperfekt |
@@ -152,8 +153,9 @@ Akzente werden beim Vergleich toleriert.
 | B1_imperativo | Imperativo afirmativo y negativo | Imperativ |
 | B1_ser_estar_adv | Ser/Estar cambios semánticos | Ser/Estar Bedeutungsunterschiede |
 | B1_perifrasis | Perífrasis verbales | Verbale Umschreibungen |
+| B1_indef_vs_imperf | Indefinido vs. Imperfecto | Einfache vs. unvollendete Vergangenheit |
 
-### B2 (8 Themen)
+### B2 (9 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | B2_futuro_perf | Futuro perfecto | Futur II |
@@ -164,8 +166,9 @@ Akzente werden beim Vergleich toleriert.
 | B2_imperativo_pron | Imperativo con pronombres | Imperativ mit Pronomen |
 | B2_relativos | Pronombres relativos | Relativpronomen |
 | B2_concesivas | Oraciones concesivas | Konzessivsätze |
+| B2_pasiva_refleja | Pasiva refleja y pasiva con ser | Passiv – se vende / fue construido |
 
-### C1 (6 Themen)
+### C1 (7 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | C1_subj_pluscuamp | Subjuntivo pluscuamperfecto | Konjunktiv Plusquamperfekt |
@@ -174,8 +177,9 @@ Akzente werden beim Vergleich toleriert.
 | C1_gerundio | Gerundio avanzado | Gerundium fortgeschritten |
 | C1_finales_temporales | Finales y temporales | Final- & Temporalsätze |
 | C1_ser_estar_full | Ser/Estar lista completa | Ser/Estar vollständige Liste |
+| C1_subj_sustantivas | Subjuntivo en oraciones sustantivas | Konjunktiv in Substantivsätzen |
 
-### C2 (5 Themen)
+### C2 (7 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | C2_perifrasis_adv | Perífrasis verbales avanzadas | Fortgeschrittene Verbumschreibungen |
@@ -183,6 +187,8 @@ Akzente werden beim Vergleich toleriert.
 | C2_conectores | Conectores del discurso | Diskurskonnektoren |
 | C2_subj_complejo | Subjuntivo en construcciones complejas | Konjunktiv komplex |
 | C2_registro | Registro y léxico avanzado | Register & Wortschatz |
+| C2_nominalizacion | Nominalización | Nominalisierung |
+| C2_inversion_sintactica | Inversión sintáctica y topicalización | Syntaktische Inversion & Topikalisierung |
 
 ---
 
@@ -217,12 +223,11 @@ System-Prompt-Struktur für Feedback:
 
 ## Fallback-Mechanismus
 
-Themen ohne kuratierte Übungen in EX (aktuell 6 C1/C2-Themen) nutzen `createFallbackExercises()`:
-- Generiert sort/fill/mc/translate aus `topic.example` und `topic.grammar`
-- Gibt max. 8 Aufgaben zurück
+Alle 43 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur noch für zukünftige neue Themen benötigt:
 
-Themen ohne kuratierte FREE-Tasks nutzen `createFallbackFreeTasks()`:
-- 4 generische Schreibaufgaben zum Thema
+`createFallbackExercises()`: Generiert sort/fill/mc/translate aus `topic.example` und `topic.grammar`, max. 8 Aufgaben.
+
+`createFallbackFreeTasks()`: 4 generische Schreibaufgaben zum Thema.
 
 ---
 
@@ -242,6 +247,6 @@ Themen ohne kuratierte FREE-Tasks nutzen `createFallbackFreeTasks()`:
 
 ## Deployment
 
-Branch `claude/add-grammar-exercises-3DqgQ` → Pull Request → merge in `main` → GitHub Pages aktualisiert sich automatisch (~2 Min).
+Direkt auf `main` pushen → GitHub Pages aktualisiert sich automatisch (~2 Min).
 
 Live-URL: https://nicolehahn2890.github.io/espanol-writing-grammar
