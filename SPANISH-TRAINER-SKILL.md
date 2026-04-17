@@ -80,11 +80,10 @@ const TOPICS = { A1:[...], A2:[...], B1:[...], B2:[...], C1:[...], C2:[...] }
 // Jedes Topic: { id, name, de, desc, grammar, example }
 
 const EX = { TOPIC_ID: [ {type:'mc'|'fill'|'translate'|'sort', ...} ] }
-// 43 Themen mit je 10 kuratierten Übungen
+// 43 Themen mit je 10 kuratierten Übungen — ALLE vollständig, kein Fallback nötig
 
 const FREE = { TOPIC_ID: [ {task:'...', hint:'...'} ] }
-// 43 Themen mit je 4 Schreibaufgaben
-// Themen ohne kuratierte EX/FREE nutzen createFallbackExercises() / createFallbackFreeTasks()
+// 43 Themen mit je 4 Schreibaufgaben — ALLE vollständig
 ```
 
 ---
@@ -143,7 +142,7 @@ Akzente werden beim Vergleich toleriert.
 | A2_preposiciones | Preposiciones básicas | Grundlegende Präpositionen |
 | A2_reflexivos | Verbos reflexivos | Reflexivverben |
 
-### B1 (9 Themen)
+### B1 (8 Themen)
 | ID | Spanisch | Deutsch |
 |----|----------|---------|
 | B1_pluscuamperfecto | Pretérito Pluscuamperfecto | Plusquamperfekt |
@@ -223,7 +222,7 @@ System-Prompt-Struktur für Feedback:
 
 ## Fallback-Mechanismus
 
-Alle 43 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur noch für zukünftige neue Themen benötigt:
+Alle 43 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur für neu hinzugefügte Themen benötigt, bis deren Inhalte ergänzt werden:
 
 `createFallbackExercises()`: Generiert sort/fill/mc/translate aus `topic.example` und `topic.grammar`, max. 8 Aufgaben.
 
