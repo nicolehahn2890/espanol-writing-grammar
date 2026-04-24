@@ -78,6 +78,20 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
 .topic-meta{margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
 .topic-badges{display:flex;gap:6px;flex-wrap:wrap;}
 .topic-score{font-size:12px;color:var(--text3);text-align:right;white-space:nowrap;}
+.topic-progress{margin-top:8px;display:flex;align-items:center;gap:8px;}
+.topic-progress-bar{flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden;min-width:60px;}
+.topic-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--mint),var(--mint2));transition:width .4s;}
+.topic-progress-fill.has-wrong{background:linear-gradient(90deg,var(--peach),var(--pink));}
+.topic-progress-label{font-size:11px;color:var(--text3);white-space:nowrap;}
+.topic-progress-label strong{color:var(--text2);font-weight:600;}
+.topic-repeat-badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:10px;background:rgba(249,201,168,0.15);color:var(--peach);border:1px solid rgba(249,201,168,0.3);margin-left:6px;}
+.mode-progress{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.mode-progress-bar{flex:1;height:6px;background:var(--bg4);border-radius:4px;overflow:hidden;min-width:120px;}
+.mode-progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--mint),var(--mint2));transition:width .4s;}
+.mode-progress-fill.has-wrong{background:linear-gradient(90deg,var(--peach),var(--pink));}
+.mode-progress-text{font-size:12px;color:var(--text2);white-space:nowrap;}
+.mode-progress-text strong{color:var(--mint2);font-weight:600;}
+.mode-progress-text em{font-style:normal;color:var(--peach);font-weight:600;}
 .mode-header{text-align:center;padding:16px 0 20px;}
 .mode-header h2{font-family:'Playfair Display',serif;font-size:22px;font-style:italic;color:var(--text);margin-bottom:4px;}
 .mode-de{font-size:13px;color:var(--violet);margin-bottom:4px;}
@@ -255,6 +269,7 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
   </div>
   <div class="mode-header"><h2 id="mode-topic-name"></h2><div class="mode-de" id="mode-topic-de"></div><p id="mode-topic-level"></p></div>
   <div class="grammar-box"><h3>Grammatik-Erklärung</h3><p id="grammar-text"></p><div class="example-row"><div class="example" id="grammar-example"></div><button class="tts-btn" id="grammar-example-tts" type="button" aria-label="Beispiel anhören" title="Beispiel anhören">🔊</button></div></div>
+  <div class="mode-progress" id="mode-progress" style="display:none"><div class="mode-progress-bar"><div class="mode-progress-fill" id="mode-progress-fill"></div></div><div class="mode-progress-text" id="mode-progress-text"></div></div>
   <div class="mode-cards">
     <div class="mode-card mode-a" onclick="startModeA()"><div class="mode-icon">📝</div><h3>Geführte Übungen</h3><p>10 Aufgaben: Lückentext, Multiple Choice, Satz umstellen</p></div>
     <div class="mode-card mode-b" onclick="startModeB()"><div class="mode-icon">✨</div><h3>Freies Schreiben</h3><p>Schreibe eigene Sätze – KI korrigiert und erklärt</p></div>
@@ -1525,7 +1540,37 @@ function createFallbackFreeTasks(topic){
 }
 function hasSpecificExercises(id){return !!EX[id];}
 function hasSpecificFreeTasks(id){return !!FREE[id];}
-function getExercises(id){if(EX[id])return[...EX[id]];const t=findTopic(id);return createFallbackExercises(t);}
+function getExercises(id){
+  const base=EX[id]?[...EX[id]]:createFallbackExercises(findTopic(id));
+  return base.map((e,i)=>({...e,_idx:i}));
+}
+function shuffleArr(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function buildPractice(topicId,size){
+  const all=getExercises(topicId);
+  if(all.length===0)return[];
+  const p=S.progress[topicId]||{};
+  const wrongSet=new Set(Array.isArray(p.wrongIds)?p.wrongIds:[]);
+  const masteredSet=new Set(Array.isArray(p.masteredIds)?p.masteredIds:[]);
+  const wrong=shuffleArr(all.filter(e=>wrongSet.has(e._idx)));
+  const unseen=shuffleArr(all.filter(e=>!wrongSet.has(e._idx)&&!masteredSet.has(e._idx)));
+  const mastered=shuffleArr(all.filter(e=>masteredSet.has(e._idx)));
+  const target=Math.min(size,all.length);
+  const queue=[];
+  const wrongQuota=Math.min(wrong.length,Math.ceil(target/2));
+  queue.push(...wrong.slice(0,wrongQuota));
+  if(queue.length<target)queue.push(...unseen.slice(0,target-queue.length));
+  if(queue.length<target)queue.push(...mastered.slice(0,target-queue.length));
+  if(queue.length<target)queue.push(...shuffleArr(all).slice(0,target-queue.length));
+  return queue;
+}
+function getTopicStats(topicId){
+  const total=getExercises(topicId).length;
+  const p=S.progress[topicId]||{};
+  const mastered=Array.isArray(p.masteredIds)?p.masteredIds.length:Math.min(p.correct||0,total);
+  const wrong=Array.isArray(p.wrongIds)?p.wrongIds.length:0;
+  const pct=total>0?Math.round(Math.min(mastered,total)/total*100):0;
+  return{total,mastered:Math.min(mastered,total),wrong,pct,done:p.done||0,correct:p.correct||0};
+}
 function getFreeTasks(id){if(FREE[id])return FREE[id];const t=findTopic(id);return createFallbackFreeTasks(t);}
 function getTopicExerciseCount(id){return getExercises(id).length;}
 function getTopicFreeTaskCount(id){return getFreeTasks(id).length;}
@@ -1597,9 +1642,13 @@ function selectLevel(lvl){
   const list=document.getElementById('topics-list');list.innerHTML='';
   for(const t of topics){
     const p=S.progress[t.id]||{};const d=p.done||0,c=p.correct||0;
-    const dotCls=d===0?'':(c/d>=0.7?'done':'partial');
+    const stats=getTopicStats(t.id);
+    const dotCls=stats.mastered>=stats.total&&stats.total>0?'done':(d>0?'partial':'');
+    const repeatBadge=stats.wrong>0?`<span class="topic-repeat-badge">🔁 ${stats.wrong}</span>`:'';
+    const progressHtml=stats.total>0?`<div class="topic-progress"><div class="topic-progress-bar"><div class="topic-progress-fill${stats.wrong>0?' has-wrong':''}" style="width:${stats.pct}%"></div></div><div class="topic-progress-label"><strong>${stats.mastered}</strong>/${stats.total} gemeistert${repeatBadge}</div></div>`:'';
+    const scoreText=d>0?`${c}/${d} · ${Math.round(c/d*100)}%`:'';
     const el=document.createElement('div');el.className='topic-item';
-    el.innerHTML=`<div class="topic-dot ${dotCls}"></div><div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">— ${t.de}</span></div><div class="topic-desc">${t.desc}</div></div><div class="topic-score">${d>0?c+'/'+d:''}</div><div style="color:var(--text3);font-size:16px">›</div>`;
+    el.innerHTML=`<div class="topic-dot ${dotCls}"></div><div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">— ${t.de}</span></div><div class="topic-desc">${t.desc}</div>${progressHtml}</div><div class="topic-score">${scoreText}</div><div style="color:var(--text3);font-size:16px">›</div>`;
     el.onclick=()=>selectTopic(t);list.appendChild(el);
   }
   showScreen('topics');
@@ -1626,10 +1675,23 @@ function selectTopic(topic){
       ttsBtn.style.display='none';
     }
   }
+  const mp=document.getElementById('mode-progress');
+  const mpFill=document.getElementById('mode-progress-fill');
+  const mpText=document.getElementById('mode-progress-text');
+  const stats=getTopicStats(topic.id);
+  if(stats.total>0&&(stats.mastered>0||stats.wrong>0)){
+    mpFill.className='mode-progress-fill'+(stats.wrong>0?' has-wrong':'');
+    mpFill.style.width=stats.pct+'%';
+    const wrongPart=stats.wrong>0?` · <em>🔁 ${stats.wrong} ${stats.wrong===1?'Aufgabe kommt':'Aufgaben kommen'} wieder</em>`:'';
+    mpText.innerHTML=`<strong>${stats.mastered}</strong>/${stats.total} gemeistert${wrongPart}`;
+    mp.style.display='';
+  } else {
+    mp.style.display='none';
+  }
   showScreen('mode');
 }
 
-function startModeA(){currentExercises=getExercises(currentTopic.id);currentExIdx=0;currentScore=0;showScreen('exercise');renderExercise();}
+function startModeA(){currentExercises=buildPractice(currentTopic.id,10);currentExIdx=0;currentScore=0;showScreen('exercise');renderExercise();}
 
 function renderExercise(){
   if(currentExIdx>=currentExercises.length){showResults();return;}
@@ -1707,7 +1769,20 @@ function checkAnswer(){
   if(isCorrect)currentScore++;
   const key=currentTopic.id;
   if(!S.progress[key])S.progress[key]={done:0,correct:0};
-  S.progress[key].done++;if(isCorrect)S.progress[key].correct++;
+  const p=S.progress[key];
+  if(!Array.isArray(p.wrongIds))p.wrongIds=[];
+  if(!Array.isArray(p.masteredIds))p.masteredIds=[];
+  p.done++;if(isCorrect)p.correct++;
+  const idx=ex._idx;
+  if(typeof idx==='number'){
+    if(isCorrect){
+      if(!p.masteredIds.includes(idx))p.masteredIds.push(idx);
+      p.wrongIds=p.wrongIds.filter(x=>x!==idx);
+    }else{
+      if(!p.wrongIds.includes(idx))p.wrongIds.push(idx);
+      p.masteredIds=p.masteredIds.filter(x=>x!==idx);
+    }
+  }
   saveState();
   const btn=document.getElementById('btn-check');
   btn.textContent=currentExIdx<currentExercises.length-1?'Weiter →':'Ergebnis →';
@@ -1727,7 +1802,7 @@ function showResults(){
   showScreen('results');
 }
 
-function retryExercises(){currentExIdx=0;currentScore=0;currentExercises=getExercises(currentTopic.id);showScreen('exercise');renderExercise();}
+function retryExercises(){currentExIdx=0;currentScore=0;currentExercises=buildPractice(currentTopic.id,10);showScreen('exercise');renderExercise();}
 
 function startModeB(){
   if(!S.apiKey){alert('Bitte trage zuerst deinen API-Key in den Einstellungen ein.');showScreen('settings');return;}
