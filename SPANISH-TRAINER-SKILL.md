@@ -26,7 +26,8 @@ Spanisch-Level: C1
 - Technologie: Standalone HTML-Datei (kein Framework, kein Build-Schritt)
 - Dateiname: index.html
 - localStorage-Key: `espanol_trainer_v1` — **NIEMALS umbenennen!**
-- API: Anthropic Claude Haiku (`claude-haiku-4-5-20251001`) für Modus B (freies Schreiben)
+- API: Anthropic Claude Haiku (`claude-haiku-4-5-20251001`) für Modus B (freies Schreiben) und Modus C (Hablar)
+- Browser-native `SpeechSynthesis` API für TTS der Grammatik-Beispielsätze (kein API-Call, kostenlos)
 
 ---
 
@@ -58,16 +59,23 @@ Level-Farben:
 ```javascript
 S = {
   apiKey: '',      // Anthropic API Key, gespeichert in localStorage
-  progress: {},    // { "B2_subjuntivo_imp": { done: 3, correct: 2 } }
+  progress: {},    // { "B2_subjuntivo_imp": { done, correct, wrongIds:[], masteredIds:[] } }
 }
 ```
+
+Pro Thema:
+- `done` / `correct`: Attempt-Counter (alle Runden)
+- `wrongIds`: Index-Liste der Aufgaben, deren **letzte** Antwort falsch war → werden in nächster Modus-A-Runde priorisiert
+- `masteredIds`: Index-Liste der Aufgaben, deren **letzte** Antwort richtig war → gelten als gemeistert
+
+Richtige Antwort verschiebt den Exercise-Index `wrongIds → masteredIds`, falsche Antwort umgekehrt. So bleibt Mastery immer aktuell und falsche Aufgaben kommen garantiert wieder.
 
 ### Screens
 | Screen | Beschreibung |
 |--------|-------------|
 | home | Level-Auswahl (A1–C2) + Stats |
-| topics | Themenliste für gewähltes Level |
-| mode | Modus-Auswahl + Grammatik-Erklärung (3 Modi) |
+| topics | Themenliste für gewähltes Level (inkl. Mastery-Balken pro Thema) |
+| mode | Modus-Auswahl + Grammatik-Erklärung (3 Modi) + TTS-Button + Mastery-Balken |
 | exercise | Geführte Übungen (Modus A) |
 | free | Freies Schreiben mit KI (Modus B) |
 | speech | Freies Sprechen mit KI (Modus C – Web Speech API) |
@@ -106,6 +114,26 @@ const FREE = { TOPIC_ID: [ {task:'...', hint:'...'} ] }
 ```
 
 Feedback immer mit: Richtig/Falsch + korrekte Antwort + `explain`-Text.
+
+### Auswahl der 10 Aufgaben pro Runde (`buildPractice`)
+
+`startModeA` / `retryExercises` rufen **nicht** mehr direkt `getExercises` auf, sondern `buildPractice(topicId, 10)`. Die Queue wird so gebaut:
+
+1. **Priorität 1** — bis zu `⌈size/2⌉` Aufgaben aus `wrongIds` (zufällig)
+2. **Priorität 2** — ungesehene Aufgaben (weder in `wrongIds` noch `masteredIds`)
+3. **Priorität 3** — gemeisterte Aufgaben (zum Auffüllen wenn alles gemeistert)
+4. Fallback — zufällige Aufgaben, falls Topic < 10 Übungen hat
+
+`getExercises(id)` taggt jede Aufgabe mit `_idx` (stabiler Index in `EX[id]`). Dieser Index ist der Primärschlüssel für `wrongIds`/`masteredIds`.
+
+### Fortschritts-Anzeige pro Thema
+
+`getTopicStats(topicId)` liefert `{total, mastered, wrong, pct, done, correct}`. Zwei Stellen rendern das:
+
+- **Themenliste** (`renderTopics`): Mini-Balken + `X/Y gemeistert` + optional `🔁 N` Badge
+- **Modus-Screen** (`selectTopic`): gleicher Balken zentral über den Modus-Karten, mit Hinweis `🔁 N Aufgaben kommen wieder` wenn `wrongIds.length > 0`
+
+Farblogik: Balken mint-grün wenn keine Wiederholungen anstehen, peach→pink sobald `wrong > 0`. `topic-dot` wird nur grün bei `mastered >= total`.
 
 ### Antwort-Normalisierung (fill/translate)
 ```javascript
@@ -214,6 +242,20 @@ Wiederverwendet die `FREE`-Tasks (jedes Thema hat 4 Schreibimpulse die auch als 
 
 ---
 
+## TTS — Grammatik-Beispiele anhören
+
+Auf dem Modus-Screen steht neben dem spanischen Beispielsatz (im `grammar-box`) ein runder 🔊-Button, der die Browser-native `window.speechSynthesis` API mit `lang:'es-ES'`, `rate:0.95` nutzt. Kein API-Call, keine Kosten.
+
+Helper in `index.html`:
+- `ttsSupported()` — prüft `'speechSynthesis' in window`
+- `pickSpanishVoice()` — wählt erste `es-*`-Stimme aus `getVoices()`
+- `speakSpanish(text, btn)` — cancelt laufende Wiedergabe, toggelt bei erneutem Klick, setzt `.speaking` CSS-Klasse (mint-Pulse)
+- `stopSpeaking()` — wird in `showScreen()` bei jedem Screen-Wechsel ≠ mode aufgerufen, damit keine Stimme weiterläuft
+
+Wenn `ttsSupported()` `false` liefert, wird der Button versteckt (Firefox ohne Spanish-Voice Fallback: Browser rendert mit Default-Stimme, was akzeptabel ist).
+
+---
+
 ## Modus B — KI-Feedback
 
 ```javascript
@@ -267,6 +309,9 @@ Alle 50 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur f�
 10. KI-Feedback immer durch `renderMarkdownFeedback()` rendern (HTML-Escape gegen XSS)
 11. API-Calls immer via `callAnthropicAPI()` Helper (einheitliche Fehlerbehandlung)
 12. Navigation folgt `SCREEN_PARENT`-Map — keinen eigenen Stack aufbauen
+13. Neue Felder in `S.progress[id]` defensiv prüfen (`Array.isArray(p.wrongIds)`) — alte localStorage-Einträge haben sie nicht
+14. `buildPractice(topicId, size)` nutzen statt direktem `getExercises()` für Modus A — sonst fehlt die Wiederholungs-Logik
+15. TTS nur über `speakSpanish()` auslösen, nie direkt `speechSynthesis.speak()` aufrufen (sonst fehlt Cancel/Toggle/Visual-State)
 
 ---
 
