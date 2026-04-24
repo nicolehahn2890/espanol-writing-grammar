@@ -86,7 +86,14 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
 .grammar-box{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--violet);border-radius:var(--radius2);padding:16px 18px;margin-bottom:18px;word-break:break-word;overflow-wrap:break-word;}
 .grammar-box h3{font-size:12px;font-weight:600;color:var(--violet);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;}
 .grammar-box p{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:8px;}
-.grammar-box .example{font-style:italic;color:var(--mint2);background:rgba(168,224,204,0.08);border-radius:6px;padding:8px 12px;font-size:13px;margin-top:6px;}
+.grammar-box .example{font-style:italic;color:var(--mint2);background:rgba(168,224,204,0.08);border-radius:6px;padding:8px 12px;font-size:13px;margin-top:6px;flex:1;}
+.example-row{display:flex;align-items:stretch;gap:8px;margin-top:6px;}
+.example-row .example{margin-top:0;}
+.tts-btn{flex-shrink:0;width:36px;min-height:36px;align-self:stretch;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--mint2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;padding:0;transition:all .2s;}
+.tts-btn:hover{border-color:var(--mint2);color:var(--mint);}
+.tts-btn.speaking{background:var(--mint2);color:var(--bg);border-color:var(--mint2);animation:tts-pulse 1.2s infinite;}
+.tts-btn:disabled{opacity:.4;cursor:not-allowed;}
+@keyframes tts-pulse{0%,100%{box-shadow:0 0 0 0 rgba(168,224,204,0.5);}50%{box-shadow:0 0 0 6px rgba(168,224,204,0);}}
 .mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
 .mode-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;cursor:pointer;transition:all .25s;text-align:center;}
 .mode-card:hover{transform:translateY(-3px);}
@@ -247,7 +254,7 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
     <div class="mode-summary-pill" id="mode-summary-source">Ergänzte Lernkarten</div>
   </div>
   <div class="mode-header"><h2 id="mode-topic-name"></h2><div class="mode-de" id="mode-topic-de"></div><p id="mode-topic-level"></p></div>
-  <div class="grammar-box"><h3>Grammatik-Erklärung</h3><p id="grammar-text"></p><div class="example" id="grammar-example"></div></div>
+  <div class="grammar-box"><h3>Grammatik-Erklärung</h3><p id="grammar-text"></p><div class="example-row"><div class="example" id="grammar-example"></div><button class="tts-btn" id="grammar-example-tts" type="button" aria-label="Beispiel anhören" title="Beispiel anhören">🔊</button></div></div>
   <div class="mode-cards">
     <div class="mode-card mode-a" onclick="startModeA()"><div class="mode-icon">📝</div><h3>Geführte Übungen</h3><p>10 Aufgaben: Lückentext, Multiple Choice, Satz umstellen</p></div>
     <div class="mode-card mode-b" onclick="startModeB()"><div class="mode-icon">✨</div><h3>Freies Schreiben</h3><p>Schreibe eigene Sätze – KI korrigiert und erklärt</p></div>
@@ -1542,6 +1549,7 @@ function getCurrentScreen(){
 }
 function showScreen(name){
   if(name!=='speech'&&speechIsRecording)stopRecording();
+  if(name!=='mode')stopSpeaking();
   if(name==='settings'){const cur=getCurrentScreen();if(cur!=='settings')prevBeforeSettings=cur;}
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
@@ -1608,6 +1616,16 @@ function selectTopic(topic){
   document.getElementById('mode-topic-level').textContent=currentLevel+' — '+LEVELS[currentLevel].name;
   document.getElementById('grammar-text').textContent=topic.grammar;
   document.getElementById('grammar-example').textContent=topic.example;
+  const ttsBtn=document.getElementById('grammar-example-tts');
+  if(ttsBtn){
+    if(ttsSupported()){
+      ttsBtn.style.display='';
+      ttsBtn.classList.remove('speaking');delete ttsBtn.dataset.active;
+      ttsBtn.onclick=()=>speakSpanish(topic.example,ttsBtn);
+    } else {
+      ttsBtn.style.display='none';
+    }
+  }
   showScreen('mode');
 }
 
@@ -1777,6 +1795,35 @@ Wenn keine Fehler: Lobe ausführlich und gib Tipps für höheres Niveau.`;
     document.getElementById('btn-free-check').disabled=false;
     document.getElementById('btn-free-check').textContent='Nochmal versuchen';
   }
+}
+
+function ttsSupported(){return typeof window!=='undefined'&&'speechSynthesis'in window&&typeof window.SpeechSynthesisUtterance==='function';}
+function pickSpanishVoice(){
+  if(!ttsSupported())return null;
+  const voices=window.speechSynthesis.getVoices()||[];
+  return voices.find(v=>/^es(-|_)/i.test(v.lang))||voices.find(v=>/spanish|espanol|español/i.test(v.name))||null;
+}
+function stopSpeaking(){
+  if(!ttsSupported())return;
+  try{window.speechSynthesis.cancel();}catch(_){}
+  document.querySelectorAll('.tts-btn.speaking').forEach(b=>{b.classList.remove('speaking');delete b.dataset.active;});
+}
+function speakSpanish(text,btn){
+  if(!ttsSupported())return;
+  const clean=(text||'').trim();if(!clean)return;
+  const wasActive=btn&&btn.dataset.active==='1';
+  stopSpeaking();
+  if(wasActive)return;
+  const u=new SpeechSynthesisUtterance(clean);
+  u.lang='es-ES';u.rate=0.95;u.pitch=1.0;
+  const v=pickSpanishVoice();if(v)u.voice=v;
+  u.onstart=()=>{if(btn){btn.classList.add('speaking');btn.dataset.active='1';}};
+  u.onend=()=>{if(btn){btn.classList.remove('speaking');delete btn.dataset.active;}};
+  u.onerror=()=>{if(btn){btn.classList.remove('speaking');delete btn.dataset.active;}};
+  try{window.speechSynthesis.speak(u);}catch(_){}
+}
+if(typeof window!=='undefined'&&ttsSupported()&&window.speechSynthesis.getVoices().length===0){
+  window.speechSynthesis.onvoiceschanged=()=>{/* voices now loaded */};
 }
 
 function getSpeechRecognition(){
