@@ -87,17 +87,30 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
 .grammar-box h3{font-size:12px;font-weight:600;color:var(--violet);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;}
 .grammar-box p{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:8px;}
 .grammar-box .example{font-style:italic;color:var(--mint2);background:rgba(168,224,204,0.08);border-radius:6px;padding:8px 12px;font-size:13px;margin-top:6px;}
-.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.mode-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px;}
 .mode-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;cursor:pointer;transition:all .25s;text-align:center;}
 .mode-card:hover{transform:translateY(-3px);}
 .mode-card.mode-a:hover{border-color:var(--blue);}
 .mode-card.mode-b:hover{border-color:var(--pink2);}
+.mode-card.mode-c:hover{border-color:var(--mint2);}
 .mode-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 10px;}
 .mode-a .mode-icon{background:rgba(123,174,232,0.15);}
 .mode-b .mode-icon{background:rgba(244,167,195,0.15);}
+.mode-c .mode-icon{background:rgba(168,224,204,0.15);}
 .mode-card h3{font-size:14px;font-weight:600;margin-bottom:6px;}
 .mode-card p{font-size:12px;color:var(--text3);line-height:1.5;}
-.mode-a h3{color:var(--blue);}.mode-b h3{color:var(--pink);}
+.mode-a h3{color:var(--blue);}.mode-b h3{color:var(--pink);}.mode-c h3{color:var(--mint2);}
+.speech-controls{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:14px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);}
+.mic-btn{width:84px;height:84px;border-radius:50%;border:2px solid var(--mint);background:var(--bg3);color:var(--mint2);font-size:34px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.mic-btn:hover{transform:scale(1.05);border-color:var(--mint2);}
+.mic-btn.recording{background:#e87a7a;border-color:#e87a7a;color:#fff;animation:mic-pulse 1.5s infinite;}
+.mic-btn:disabled{opacity:.4;cursor:not-allowed;}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,122,122,0.45);}50%{box-shadow:0 0 0 14px rgba(232,122,122,0);}}
+.mic-status{font-size:13px;color:var(--text3);text-align:center;min-height:18px;}
+.speech-transcript{width:100%;min-height:110px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius2);padding:16px;font-family:inherit;font-size:15px;color:var(--text);line-height:1.6;outline:none;resize:vertical;margin-bottom:12px;}
+.speech-transcript:focus{border-color:var(--mint2);}
+.speech-transcript-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:6px;}
+.speech-unsupported{background:rgba(232,122,122,0.1);border:1px solid rgba(232,122,122,0.3);border-radius:var(--radius2);padding:14px 16px;color:#e87a7a;font-size:13px;margin-bottom:14px;}
 .exercise-meta{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .ex-level-pill{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--text3);}
 .ex-topic-name{font-size:13px;color:var(--text2);}
@@ -238,6 +251,7 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
   <div class="mode-cards">
     <div class="mode-card mode-a" onclick="startModeA()"><div class="mode-icon">📝</div><h3>Geführte Übungen</h3><p>10 Aufgaben: Lückentext, Multiple Choice, Satz umstellen</p></div>
     <div class="mode-card mode-b" onclick="startModeB()"><div class="mode-icon">✨</div><h3>Freies Schreiben</h3><p>Schreibe eigene Sätze – KI korrigiert und erklärt</p></div>
+    <div class="mode-card mode-c" onclick="startModeC()"><div class="mode-icon">🎙️</div><h3>Hablar</h3><p>Sprich frei – Browser transkribiert, KI gibt Feedback</p></div>
   </div>
 </div>
 <div id="screen-exercise" class="screen">
@@ -282,6 +296,31 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
     <button class="btn-primary" id="btn-free-check" onclick="checkFreeAnswer()">Feedback erhalten</button>
   </div>
 </div>
+<div id="screen-speech" class="screen">
+  <div class="exercise-meta">
+    <div class="ex-level-pill" id="speech-level-pill"></div>
+    <div class="ex-topic-name" id="speech-topic-name"></div>
+    <div class="ex-counter" id="speech-task-num"></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="speech-progress" style="width:0%"></div></div>
+  <div class="modeb-task">
+    <div class="modeb-task-label">Sprechaufgabe</div>
+    <div class="modeb-task-text" id="speech-task-text"></div>
+    <div class="modeb-task-hint" id="speech-task-hint" style="display:none"></div>
+  </div>
+  <div id="speech-unsupported" class="speech-unsupported" style="display:none">⚠️ Dein Browser unterstützt keine Spracheingabe. Nutze Chrome, Edge oder Safari — oder tippe direkt ins Feld unten.</div>
+  <div class="speech-controls">
+    <button class="mic-btn" id="mic-btn" onclick="toggleRecording()" aria-label="Aufnahme starten">🎤</button>
+    <div class="mic-status" id="mic-status">Tippe zum Starten der Aufnahme</div>
+  </div>
+  <div class="speech-transcript-label">Transkript (bearbeitbar)</div>
+  <textarea class="speech-transcript" id="speech-transcript" placeholder="Dein gesprochener Text erscheint hier… Du kannst ihn vor dem Absenden korrigieren."></textarea>
+  <div class="ai-feedback" id="speech-feedback"><div class="ai-badge">KI-Feedback</div><div class="ai-feedback-content" id="speech-feedback-content"></div></div>
+  <div class="ex-actions">
+    <button class="btn-secondary" id="btn-speech-next" style="display:none" onclick="nextSpeechTask()">Nächste Aufgabe →</button>
+    <button class="btn-primary" id="btn-speech-check" onclick="checkSpeechAnswer()">Feedback erhalten</button>
+  </div>
+</div>
 <div id="screen-results" class="screen">
   <div class="results-wrap">
     <div class="results-score" id="results-score">8/10</div>
@@ -319,6 +358,7 @@ const LEGACY_LS_KEYS=['espanol_v2'];
 let S={apiKey:'',progress:{}};
 let currentLevel=null,currentTopic=null,currentExercises=[],currentExIdx=0,currentScore=0;
 let currentFreeTasks=[],currentFreeIdx=0,navStack=['home'],selectedChoice=-1,sortAnswer=[];
+let currentSpeechTasks=[],currentSpeechIdx=0,speechRecognition=null,speechIsRecording=false;
 
 function loadState(){
   try{
@@ -1474,6 +1514,7 @@ function getOverviewStats(){
 function findTopic(id){for(const l of Object.values(TOPICS)){const t=l.find(x=>x.id===id);if(t)return t;}return null;}
 
 function showScreen(name){
+  if(name!=='speech'&&speechIsRecording)stopRecording();
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.getElementById('btn-back').style.display=name==='home'?'none':'flex';
@@ -1481,6 +1522,7 @@ function showScreen(name){
   window.scrollTo(0,0);
 }
 function goBack(){
+  if(speechIsRecording)stopRecording();
   navStack.pop();
   const prev=navStack[navStack.length-1]||'home';
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -1525,11 +1567,7 @@ function selectLevel(lvl){
     const p=S.progress[t.id]||{};const d=p.done||0,c=p.correct||0;
     const dotCls=d===0?'':(c/d>=0.7?'done':'partial');
     const el=document.createElement('div');el.className='topic-item';
-    const infoBox=null;
-    const coverage={color:'',text:''};
     el.innerHTML=`<div class="topic-dot ${dotCls}"></div><div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">— ${t.de}</span></div><div class="topic-desc">${t.desc}</div></div><div class="topic-score">${d>0?c+'/'+d:''}</div><div style="color:var(--text3);font-size:16px">›</div>`;
-    if(infoBox)infoBox.insertAdjacentHTML('beforeend',`<div class="topic-meta"><div class="topic-badges"><span class="topic-badge" style="border-color:${coverage.color};color:${coverage.color}">${coverage.text}</span><span class="topic-badge">${getTopicExerciseCount(t.id)} Übungen</span><span class="topic-badge">${getTopicFreeTaskCount(t.id)} Schreibimpulse</span></div></div>`);
-    el.innerHTML=`<div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">- ${t.de}</span></div><div class="topic-desc">${t.desc}</div></div><div style="color:var(--text3);font-size:16px">›</div>`;
     el.onclick=()=>selectTopic(t);list.appendChild(el);
   }
   navStack=['home'];showScreen('topics');
@@ -1542,7 +1580,6 @@ function selectTopic(topic){
   document.getElementById('mode-topic-de').textContent=topic.de;
   document.getElementById('mode-summary-guided').textContent=getTopicExerciseCount(topic.id)+' geführte Aufgaben';
   document.getElementById('mode-summary-free').textContent=getTopicFreeTaskCount(topic.id)+' Schreibimpulse';
-  document.getElementById('mode-summary-guided').textContent=getTopicExerciseCount(topic.id)+' gefuehrte Aufgaben';
   document.getElementById('mode-summary-source').textContent=coverage.text;
   document.getElementById('mode-topic-level').textContent=currentLevel+' — '+LEVELS[currentLevel].name;
   document.getElementById('grammar-text').textContent=topic.grammar;
@@ -1728,6 +1765,141 @@ Wenn keine Fehler: Lobe ausführlich und gib Tipps für höheres Niveau.`;
     document.getElementById('ai-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${e.message}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
     document.getElementById('btn-free-check').disabled=false;
     document.getElementById('btn-free-check').textContent='Nochmal versuchen';
+  }
+}
+
+function getSpeechRecognition(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return null;
+  const r=new SR();r.lang='es-ES';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
+  return r;
+}
+
+function startModeC(){
+  if(!S.apiKey){alert('Bitte trage zuerst deinen API-Key in den Einstellungen ein.');showScreen('settings');return;}
+  currentSpeechTasks=getFreeTasks(currentTopic.id);currentSpeechIdx=0;
+  showScreen('speech');renderSpeechTask();
+}
+
+function renderSpeechTask(){
+  const task=currentSpeechTasks[currentSpeechIdx];const total=currentSpeechTasks.length;
+  document.getElementById('speech-level-pill').textContent=currentLevel;
+  document.getElementById('speech-topic-name').textContent=currentTopic.name;
+  document.getElementById('speech-task-num').textContent='Aufgabe '+(currentSpeechIdx+1)+' / '+total;
+  document.getElementById('speech-progress').style.width=((currentSpeechIdx+1)/total*100)+'%';
+  document.getElementById('speech-task-text').textContent=task.task;
+  const hint=document.getElementById('speech-task-hint');
+  if(task.hint){hint.textContent='💡 '+task.hint;hint.style.display='block';}else hint.style.display='none';
+  document.getElementById('speech-transcript').value='';
+  document.getElementById('speech-feedback').className='ai-feedback';
+  document.getElementById('speech-feedback-content').innerHTML='';
+  document.getElementById('btn-speech-next').style.display='none';
+  document.getElementById('btn-speech-check').style.display='';
+  document.getElementById('btn-speech-check').disabled=false;
+  document.getElementById('btn-speech-check').textContent='Feedback erhalten';
+  const supported=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+  document.getElementById('speech-unsupported').style.display=supported?'none':'block';
+  document.getElementById('mic-btn').disabled=!supported;
+  document.getElementById('mic-status').textContent=supported?'Tippe auf das Mikrofon zum Starten':'Spracheingabe nicht verfügbar – tippe stattdessen';
+  stopRecording();
+}
+
+function toggleRecording(){
+  if(speechIsRecording){stopRecording();return;}
+  if(!speechRecognition)speechRecognition=getSpeechRecognition();
+  if(!speechRecognition){alert('Spracheingabe wird von diesem Browser nicht unterstützt.');return;}
+  const ta=document.getElementById('speech-transcript');
+  const baseText=ta.value.trim();
+  let finalTranscript=baseText?baseText+' ':'';
+  speechRecognition.onresult=function(event){
+    let interim='';
+    for(let i=event.resultIndex;i<event.results.length;i++){
+      const res=event.results[i];
+      if(res.isFinal)finalTranscript+=res[0].transcript+' ';
+      else interim+=res[0].transcript;
+    }
+    ta.value=(finalTranscript+interim).replace(/\s+/g,' ').trim();
+  };
+  speechRecognition.onerror=function(e){
+    document.getElementById('mic-status').textContent='Fehler: '+(e.error||'unbekannt');
+    stopRecording();
+  };
+  speechRecognition.onend=function(){if(speechIsRecording){try{speechRecognition.start();}catch(_){stopRecording();}}};
+  try{
+    speechRecognition.start();speechIsRecording=true;
+    document.getElementById('mic-btn').classList.add('recording');
+    document.getElementById('mic-btn').setAttribute('aria-label','Aufnahme stoppen');
+    document.getElementById('mic-status').textContent='🔴 Aufnahme läuft – sprich auf Spanisch';
+  }catch(e){
+    document.getElementById('mic-status').textContent='Konnte nicht starten: '+e.message;
+    speechIsRecording=false;
+  }
+}
+
+function stopRecording(){
+  if(!speechRecognition)return;
+  speechIsRecording=false;
+  try{speechRecognition.stop();}catch(_){}
+  const btn=document.getElementById('mic-btn');
+  if(btn){btn.classList.remove('recording');btn.setAttribute('aria-label','Aufnahme starten');}
+  const status=document.getElementById('mic-status');
+  if(status&&status.textContent.startsWith('🔴'))status.textContent='Aufnahme beendet. Text prüfen und absenden.';
+}
+
+function nextSpeechTask(){
+  currentSpeechIdx++;
+  if(currentSpeechIdx>=currentSpeechTasks.length)showScreen('topics');
+  else renderSpeechTask();
+}
+
+async function checkSpeechAnswer(){
+  stopRecording();
+  const text=document.getElementById('speech-transcript').value.trim();
+  if(!text||text.length<5){alert('Bitte sprich oder tippe zuerst etwas auf Spanisch.');return;}
+  const task=currentSpeechTasks[currentSpeechIdx];
+  document.getElementById('btn-speech-check').disabled=true;
+  document.getElementById('btn-speech-check').textContent='Analysiert...';
+  const fb=document.getElementById('speech-feedback');
+  fb.className='ai-feedback show';
+  document.getElementById('speech-feedback-content').innerHTML='<div class="ai-loading"><div class="ai-dots"><span></span><span></span><span></span></div> KI analysiert dein Transkript...</div>';
+
+  const sys=`Du bist ein erfahrener Spanisch-Sprach-Tutor. Die Lernende hat die Aufgabe MÜNDLICH bearbeitet; der folgende Text ist ein Browser-Transkript ihrer Sprachaufnahme. Beachte: Transkriptionen enthalten oft fehlende Akzente, unvollständige Satzzeichen oder kleine Verständnisfehler des Transkribierers – bewerte solche reinen Transkriptionsartefakte nicht als Sprachfehler. Konzentriere dich auf Grammatik, Wortwahl, Idiomatik und Redefluss.
+
+Aufgabe: ${task.task}
+Grammatikthema: ${currentTopic.name} — ${currentTopic.de}
+Niveau: ${currentLevel}
+
+Feedback-Struktur auf Deutsch:
+**Bewertung:** Ein Satz ob die Aufgabe erfüllt wurde.
+**Korrekturen:** Grammatik- und Wortwahl-Fehler (keine reinen Transkriptionsartefakte). Format: ❌ Fehler → ✅ Korrektur (Erklärung)
+**Haupterklärung:** Wichtigster grammatischer Punkt (2-3 Sätze).
+**Positives:** Was gut gesprochen wurde.
+**Tipps zum Sprechen:** Ein konkreter Hinweis zu Aussprache, Rhythmus oder Wortschatz für dieses Niveau.
+**Verbesserter Text:** Der korrigierte Text vollständig.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1000,system:sys,messages:[{role:'user',content:'Mein Transkript: '+text}]})
+    });
+    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'API-Fehler '+res.status);}
+    const data=await res.json();
+    const content=data.content?.[0]?.text||'Kein Feedback erhalten.';
+    document.getElementById('speech-feedback-content').innerHTML=content
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/❌/g,'<span style="color:#e87a7a">❌</span>')
+      .replace(/✅/g,'<span style="color:var(--mint2)">✅</span>')
+      .replace(/\n/g,'<br>');
+    const key=currentTopic.id;
+    if(!S.progress[key])S.progress[key]={done:0,correct:0};
+    S.progress[key].done++;S.progress[key].correct++;saveState();
+    document.getElementById('btn-speech-check').style.display='none';
+    document.getElementById('btn-speech-next').style.display='';
+  }catch(e){
+    document.getElementById('speech-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${e.message}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
+    document.getElementById('btn-speech-check').disabled=false;
+    document.getElementById('btn-speech-check').textContent='Nochmal versuchen';
   }
 }
 

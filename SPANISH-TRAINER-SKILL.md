@@ -67,9 +67,10 @@ S = {
 |--------|-------------|
 | home | Level-Auswahl (A1–C2) + Stats |
 | topics | Themenliste für gewähltes Level |
-| mode | Modus-Auswahl + Grammatik-Erklärung |
+| mode | Modus-Auswahl + Grammatik-Erklärung (3 Modi) |
 | exercise | Geführte Übungen (Modus A) |
 | free | Freies Schreiben mit KI (Modus B) |
+| speech | Freies Sprechen mit KI (Modus C – Web Speech API) |
 | results | Ergebnis nach Modus A |
 | settings | API-Key + Fortschritt zurücksetzen |
 
@@ -195,6 +196,21 @@ Akzente werden beim Vergleich toleriert.
 | C2_registro | Registro y léxico avanzado | Register & Wortschatz |
 | C2_nominalizacion | Nominalización | Nominalisierung |
 | C2_inversion_sintactica | Inversión sintáctica y topicalización | Syntaktische Inversion & Topikalisierung |
+
+---
+
+## Modus C — Sprechen mit KI-Feedback
+
+Nutzt die Browser-native **Web Speech API** (`SpeechRecognition` / `webkitSpeechRecognition`) mit `lang:'es-ES'`, `continuous:true`, `interimResults:true`. Browser-Support: Chrome/Edge/Safari vollständig, Firefox eingeschränkt. Bei fehlender Unterstützung zeigt die App einen Hinweis und das Transkript-Feld lässt sich manuell befüllen.
+
+Workflow:
+1. Nutzerin klickt Mic-Button → `toggleRecording()` startet Aufnahme mit rotem Pulse
+2. Browser transkribiert live in das `speech-transcript` Textarea (editierbar)
+3. Nochmaliger Klick auf Mic stoppt — oder Klick auf "Feedback erhalten"
+4. Transkript geht an Claude mit speziellem Prompt (Transkriptionsartefakte ignorieren, Aussprache-Tipps)
+5. Feedback erscheint im selben Format wie Modus B
+
+Wiederverwendet die `FREE`-Tasks (jedes Thema hat 4 Schreibimpulse die auch als Sprechimpulse funktionieren).
 
 ---
 
