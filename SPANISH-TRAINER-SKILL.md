@@ -245,7 +245,7 @@ System-Prompt-Struktur für Feedback:
 
 ## Fallback-Mechanismus
 
-Alle 43 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur für neu hinzugefügte Themen benötigt, bis deren Inhalte ergänzt werden:
+Alle 50 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur für neu hinzugefügte Themen benötigt, bis deren Inhalte ergänzt werden:
 
 `createFallbackExercises()`: Generiert sort/fill/mc/translate aus `topic.example` und `topic.grammar`, max. 8 Aufgaben.
 
@@ -257,13 +257,16 @@ Alle 43 Themen haben kuratierte EX- und FREE-Einträge. Der Fallback wird nur f�
 
 1. `espanol_trainer_v1` als localStorage-Key NIE umbenennen
 2. Alle 4 Übungstypen (mc/fill/translate/sort) pro Thema verwenden
-3. Antwort-Normalisierung (`normalizeAnswer`) immer verwenden
+3. Antwort-Normalisierung (`normalizeAnswer`/`normalizeSortAnswer`) immer verwenden
 4. Jeden Übungstyp mit `explain`-Text versehen
 5. API-Key NIE hardcoden — immer aus `S.apiKey` lesen
 6. `anthropic-dangerous-direct-browser-access` Header immer setzen
 7. Neue Themen: sowohl in `TOPICS` als auch in `EX` und `FREE` eintragen
 8. Keine doppelten Schlüssel in `EX` oder `FREE` — JavaScript nimmt stillschweigend den letzten!
 9. Strings immer als UTF-8 schreiben — keine manuellen Escape-Sequenzen für Umlaute
+10. KI-Feedback immer durch `renderMarkdownFeedback()` rendern (HTML-Escape gegen XSS)
+11. API-Calls immer via `callAnthropicAPI()` Helper (einheitliche Fehlerbehandlung)
+12. Navigation folgt `SCREEN_PARENT`-Map — keinen eigenen Stack aufbauen
 
 ---
 

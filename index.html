@@ -357,8 +357,10 @@ const LS='espanol_trainer_v1';
 const LEGACY_LS_KEYS=['espanol_v2'];
 let S={apiKey:'',progress:{}};
 let currentLevel=null,currentTopic=null,currentExercises=[],currentExIdx=0,currentScore=0;
-let currentFreeTasks=[],currentFreeIdx=0,navStack=['home'],selectedChoice=-1,sortAnswer=[];
+let currentFreeTasks=[],currentFreeIdx=0,selectedChoice=-1,sortAnswer=[];
 let currentSpeechTasks=[],currentSpeechIdx=0,speechRecognition=null,speechIsRecording=false;
+let prevBeforeSettings='home';
+const SCREEN_PARENT={home:null,topics:'home',mode:'topics',exercise:'mode',free:'mode',speech:'mode',results:'topics',settings:null};
 
 function loadState(){
   try{
@@ -370,11 +372,32 @@ function loadState(){
       if(key!==LS)localStorage.setItem(LS,d);
       break;
     }
-  }catch(e){}
+  }catch(e){console.warn('loadState: gespeicherter Fortschritt konnte nicht gelesen werden',e);}
 }
-function saveState(){localStorage.setItem(LS,JSON.stringify(S));}
+function saveState(){
+  try{localStorage.setItem(LS,JSON.stringify(S));}
+  catch(e){console.warn('saveState: localStorage nicht verfügbar',e);}
+}
 function normalizeAnswer(s){return(s||'').toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[¡¿!?.,"']/g,'').replace(/\s+/g,' ').trim();}
 function normalizeSortAnswer(s){return(s||'').toLowerCase().replace(/[¡¿!?.,"']/g,'').replace(/\s+/g,' ').trim();}
+function escapeHTML(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function renderMarkdownFeedback(raw){
+  return escapeHTML(raw)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/❌/g,'<span style="color:#e87a7a">❌</span>')
+    .replace(/✅/g,'<span style="color:var(--mint2)">✅</span>')
+    .replace(/\n/g,'<br>');
+}
+async function callAnthropicAPI(systemPrompt,userContent,maxTokens){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens||900,system:systemPrompt,messages:[{role:'user',content:userContent}]})
+  });
+  if(!res.ok){const err=await res.json().catch(()=>({}));throw new Error(err.error?.message||'API-Fehler '+res.status);}
+  const data=await res.json();
+  return data.content?.[0]?.text||'Kein Feedback erhalten.';
+}
 
 const LEVELS={
   A1:{name:'Einstieg',desc:'Grundlagen der spanischen Sprache',color:'var(--mint2)'},
@@ -1513,22 +1536,23 @@ function getOverviewStats(){
 }
 function findTopic(id){for(const l of Object.values(TOPICS)){const t=l.find(x=>x.id===id);if(t)return t;}return null;}
 
+function getCurrentScreen(){
+  const active=document.querySelector('.screen.active');
+  return active?active.id.replace('screen-',''):'home';
+}
 function showScreen(name){
   if(name!=='speech'&&speechIsRecording)stopRecording();
+  if(name==='settings'){const cur=getCurrentScreen();if(cur!=='settings')prevBeforeSettings=cur;}
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
   document.getElementById('btn-back').style.display=name==='home'?'none':'flex';
-  if(name!==navStack[navStack.length-1])navStack.push(name);
   window.scrollTo(0,0);
 }
 function goBack(){
   if(speechIsRecording)stopRecording();
-  navStack.pop();
-  const prev=navStack[navStack.length-1]||'home';
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+prev).classList.add('active');
-  document.getElementById('btn-back').style.display=prev==='home'?'none':'flex';
-  window.scrollTo(0,0);
+  const current=getCurrentScreen();
+  const target=current==='settings'?(prevBeforeSettings||'home'):(SCREEN_PARENT[current]||'home');
+  showScreen(target);
 }
 
 function renderHome(){
@@ -1570,7 +1594,7 @@ function selectLevel(lvl){
     el.innerHTML=`<div class="topic-dot ${dotCls}"></div><div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">— ${t.de}</span></div><div class="topic-desc">${t.desc}</div></div><div class="topic-score">${d>0?c+'/'+d:''}</div><div style="color:var(--text3);font-size:16px">›</div>`;
     el.onclick=()=>selectTopic(t);list.appendChild(el);
   }
-  navStack=['home'];showScreen('topics');
+  showScreen('topics');
 }
 
 function selectTopic(topic){
@@ -1648,13 +1672,11 @@ function checkAnswer(){
     isCorrect=selectedChoice===ex.correct;correctDisplay=ex.choices[ex.correct];
     document.querySelectorAll('.choice-btn').forEach((b,i)=>{b.disabled=true;if(i===ex.correct)b.classList.add('correct');else if(i===selectedChoice&&!isCorrect)b.classList.add('wrong');});
   }else if(ex.type==='sort'){
-    const norm=s=>s.toLowerCase().replace(/[¡¿!?.,"']/g,'').trim();
-    isCorrect=norm(sortAnswer.join(' '))===norm(ex.answer);correctDisplay=ex.answer;
+    isCorrect=normalizeSortAnswer(sortAnswer.join(' '))===normalizeSortAnswer(ex.answer);correctDisplay=ex.answer;
   }else{
     const inp=document.getElementById('ex-text-input');const val=inp?inp.value.trim():'';if(!val)return;
-    const norm=s=>s.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[¡¿!?.,"']/g,'').trim();
-    const u=norm(val),c=norm(ex.answer);
-    isCorrect=u===c||(ex.answer.includes(' ')&&(u===c||c.split('|').some(a=>u===norm(a))));
+    const u=normalizeAnswer(val),c=normalizeAnswer(ex.answer);
+    isCorrect=u===c||c.split('|').some(a=>u===normalizeAnswer(a));
     if(inp)inp.classList.add(isCorrect?'correct':'wrong');
     correctDisplay=ex.answer;
   }
@@ -1743,26 +1765,15 @@ Feedback-Struktur:
 Wenn keine Fehler: Lobe ausführlich und gib Tipps für höheres Niveau.`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:sys,messages:[{role:'user',content:'Meine Antwort: '+text}]})
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'API-Fehler '+res.status);}
-    const data=await res.json();
-    const content=data.content?.[0]?.text||'Kein Feedback erhalten.';
-    document.getElementById('ai-feedback-content').innerHTML=content
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/❌/g,'<span style="color:#e87a7a">❌</span>')
-      .replace(/✅/g,'<span style="color:var(--mint2)">✅</span>')
-      .replace(/\n/g,'<br>');
+    const content=await callAnthropicAPI(sys,'Meine Antwort: '+text,900);
+    document.getElementById('ai-feedback-content').innerHTML=renderMarkdownFeedback(content);
     const key=currentTopic.id;
     if(!S.progress[key])S.progress[key]={done:0,correct:0};
     S.progress[key].done++;S.progress[key].correct++;saveState();
     document.getElementById('btn-free-check').style.display='none';
     document.getElementById('btn-free-next').style.display='';
   }catch(e){
-    document.getElementById('ai-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${e.message}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
+    document.getElementById('ai-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${escapeHTML(e.message)}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
     document.getElementById('btn-free-check').disabled=false;
     document.getElementById('btn-free-check').textContent='Nochmal versuchen';
   }
@@ -1878,26 +1889,15 @@ Feedback-Struktur auf Deutsch:
 **Verbesserter Text:** Der korrigierte Text vollständig.`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1000,system:sys,messages:[{role:'user',content:'Mein Transkript: '+text}]})
-    });
-    if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||'API-Fehler '+res.status);}
-    const data=await res.json();
-    const content=data.content?.[0]?.text||'Kein Feedback erhalten.';
-    document.getElementById('speech-feedback-content').innerHTML=content
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/❌/g,'<span style="color:#e87a7a">❌</span>')
-      .replace(/✅/g,'<span style="color:var(--mint2)">✅</span>')
-      .replace(/\n/g,'<br>');
+    const content=await callAnthropicAPI(sys,'Mein Transkript: '+text,1000);
+    document.getElementById('speech-feedback-content').innerHTML=renderMarkdownFeedback(content);
     const key=currentTopic.id;
     if(!S.progress[key])S.progress[key]={done:0,correct:0};
     S.progress[key].done++;S.progress[key].correct++;saveState();
     document.getElementById('btn-speech-check').style.display='none';
     document.getElementById('btn-speech-next').style.display='';
   }catch(e){
-    document.getElementById('speech-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${e.message}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
+    document.getElementById('speech-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${escapeHTML(e.message)}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
     document.getElementById('btn-speech-check').disabled=false;
     document.getElementById('btn-speech-check').textContent='Nochmal versuchen';
   }
@@ -1917,7 +1917,6 @@ function resetProgress(){
 loadState();
 document.getElementById('settings-key').value=S.apiKey||'';
 renderHome();
-navStack=['home'];
 </script>
 </body>
 </html>
