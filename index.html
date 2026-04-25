@@ -1600,6 +1600,8 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   document.getElementById('btn-back').style.display=name==='home'?'none':'flex';
   window.scrollTo(0,0);
+  if(name==='home')renderHome();
+  else if(name==='topics')renderTopicsList();
 }
 function goBack(){
   if(speechIsRecording)stopRecording();
@@ -1631,7 +1633,14 @@ function renderHome(){
 }
 
 function selectLevel(lvl){
-  currentLevel=lvl;const info=LEVELS[lvl];const topics=TOPICS[lvl]||[];
+  currentLevel=lvl;
+  renderTopicsList();
+  showScreen('topics');
+}
+
+function renderTopicsList(){
+  if(!currentLevel)return;
+  const lvl=currentLevel;const info=LEVELS[lvl];const topics=TOPICS[lvl]||[];
   document.getElementById('topic-level-badge').textContent=lvl;
   document.getElementById('topic-level-badge').style.color=info.color;
   document.getElementById('topic-level-name').textContent=info.name;
@@ -1651,7 +1660,6 @@ function selectLevel(lvl){
     el.innerHTML=`<div class="topic-dot ${dotCls}"></div><div class="topic-info"><div class="topic-name">${t.name} <span class="topic-name-de">— ${t.de}</span></div><div class="topic-desc">${t.desc}</div>${progressHtml}</div><div class="topic-score">${scoreText}</div><div style="color:var(--text3);font-size:16px">›</div>`;
     el.onclick=()=>selectTopic(t);list.appendChild(el);
   }
-  showScreen('topics');
 }
 
 function selectTopic(topic){
