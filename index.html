@@ -314,6 +314,7 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
   <textarea class="modeb-textarea" id="free-textarea" placeholder="Schreibe hier auf Spanisch..."></textarea>
   <div class="ai-feedback" id="ai-feedback"><div class="ai-badge">KI-Feedback</div><div class="ai-feedback-content" id="ai-feedback-content"></div></div>
   <div class="ex-actions">
+    <button class="btn-secondary" id="btn-free-skip" onclick="nextFreeTask()">Weiter ohne Feedback →</button>
     <button class="btn-secondary" id="btn-free-next" style="display:none" onclick="nextFreeTask()">Nächste Aufgabe →</button>
     <button class="btn-primary" id="btn-free-check" onclick="checkFreeAnswer()">Feedback erhalten</button>
   </div>
@@ -339,6 +340,7 @@ body::after{content:'';position:fixed;bottom:-200px;right:-200px;width:500px;hei
   <textarea class="speech-transcript" id="speech-transcript" placeholder="Dein gesprochener Text erscheint hier… Du kannst ihn vor dem Absenden korrigieren."></textarea>
   <div class="ai-feedback" id="speech-feedback"><div class="ai-badge">KI-Feedback</div><div class="ai-feedback-content" id="speech-feedback-content"></div></div>
   <div class="ex-actions">
+    <button class="btn-secondary" id="btn-speech-skip" onclick="nextSpeechTask()">Weiter ohne Feedback →</button>
     <button class="btn-secondary" id="btn-speech-next" style="display:none" onclick="nextSpeechTask()">Nächste Aufgabe →</button>
     <button class="btn-primary" id="btn-speech-check" onclick="checkSpeechAnswer()">Feedback erhalten</button>
   </div>
@@ -1830,6 +1832,7 @@ function renderFreeTask(){
   document.getElementById('ai-feedback').className='ai-feedback';
   document.getElementById('ai-feedback-content').innerHTML='';
   document.getElementById('btn-free-next').style.display='none';
+  document.getElementById('btn-free-skip').style.display='';
   document.getElementById('btn-free-check').style.display='';
   document.getElementById('btn-free-check').disabled=false;
   document.getElementById('btn-free-check').textContent='Feedback erhalten';
@@ -1872,6 +1875,7 @@ Wenn keine Fehler: Lobe ausführlich und gib Tipps für höheres Niveau.`;
     if(!S.progress[key])S.progress[key]={done:0,correct:0};
     S.progress[key].done++;S.progress[key].correct++;saveState();
     document.getElementById('btn-free-check').style.display='none';
+    document.getElementById('btn-free-skip').style.display='none';
     document.getElementById('btn-free-next').style.display='';
   }catch(e){
     document.getElementById('ai-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${escapeHTML(e.message)}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
@@ -1935,6 +1939,7 @@ function renderSpeechTask(){
   document.getElementById('speech-feedback').className='ai-feedback';
   document.getElementById('speech-feedback-content').innerHTML='';
   document.getElementById('btn-speech-next').style.display='none';
+  document.getElementById('btn-speech-skip').style.display='';
   document.getElementById('btn-speech-check').style.display='';
   document.getElementById('btn-speech-check').disabled=false;
   document.getElementById('btn-speech-check').textContent='Feedback erhalten';
@@ -2025,6 +2030,7 @@ Feedback-Struktur auf Deutsch:
     if(!S.progress[key])S.progress[key]={done:0,correct:0};
     S.progress[key].done++;S.progress[key].correct++;saveState();
     document.getElementById('btn-speech-check').style.display='none';
+    document.getElementById('btn-speech-skip').style.display='none';
     document.getElementById('btn-speech-next').style.display='';
   }catch(e){
     document.getElementById('speech-feedback-content').innerHTML=`<span style="color:#e87a7a">Fehler: ${escapeHTML(e.message)}</span><br><small style="color:var(--text3)">Prüfe deinen API-Key in den Einstellungen.</small>`;
