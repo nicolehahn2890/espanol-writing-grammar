@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Español · Akademie — Vorschau</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBF4EB;
+  --bg-tint:rgba(214,51,108,0.05);
+  --card:#FCF8F1;
+  --card-tint:#EAF6F4;
+  --ink:#22202B;
+  --ink2:#4d4a57;
+  --muted:#8a8693;
+  --line:rgba(34,32,43,0.10);
+  --line2:rgba(34,32,43,0.16);
+  --rose:#D6336C;
+  --teal:#1f9e94;
+  --purple:#7048aa;
+  --orange:#e0702a;
+  --blue:#3a73c9;
+  --green:#2f9e6e;
+  --magenta:#c2447e;
+  --ok:#2f9e6e;
+  --err:#d6336c;
+  --radius:10px;
+  --radius2:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',system-ui,sans-serif;color:var(--ink2);background:var(--bg);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0 0 auto 0;height:420px;background:linear-gradient(180deg,var(--bg-tint),transparent);pointer-events:none;z-index:0;}
+a{color:inherit;text-decoration:none;}
+
+/* Header */
+#header{position:sticky;top:0;z-index:50;background:rgba(251,244,235,0.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:12px;}
+#header .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--rose),var(--orange));display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+#header .brand{font-family:'Playfair Display',serif;font-weight:700;font-size:18px;color:var(--ink);font-style:italic;}
+#header .preview-tag{margin-left:auto;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);border:1px solid rgba(214,51,108,.3);background:rgba(214,51,108,.07);padding:4px 10px;border-radius:999px;font-weight:600;}
+
+#app{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:32px 20px 90px;}
+.screen{display:none;animation:fade .3s ease;}
+.screen.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+/* Hero */
+.hero{padding:8px 0 26px;}
+.hero .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--rose);font-weight:600;margin-bottom:10px;}
+.hero h1{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.08;color:var(--ink);margin-bottom:12px;}
+.hero p{font-size:16px;color:var(--ink2);max-width:640px;}
+
+.stats{display:flex;gap:28px;flex-wrap:wrap;margin:22px 0 8px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.stat .num{font-family:'Playfair Display',serif;font-weight:700;font-size:28px;color:var(--ink);}
+.stat .lbl{font-size:12px;color:var(--muted);letter-spacing:.04em;}
+
+/* Section heading like the academy */
+.sec-head{margin:38px 0 6px;}
+.sec-head h2{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(22px,3.4vw,30px);color:var(--ink);display:flex;align-items:center;gap:12px;}
+.sec-head h2::before{content:'';width:9px;height:9px;border-radius:50%;background:var(--rose);flex-shrink:0;}
+.sec-rule{height:2px;background:linear-gradient(90deg,rgba(214,51,108,.5),rgba(214,51,108,0));margin:14px 0 4px;border-radius:2px;}
+.sec-intro{font-size:15px;color:var(--ink2);max-width:760px;margin:6px 0 20px;}
+.sec-intro a{color:var(--rose);text-decoration:underline;text-underline-offset:3px;}
+
+/* Module grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-top:3px solid var(--accent,var(--rose));border-radius:var(--radius);padding:22px 22px 20px;display:flex;flex-direction:column;min-height:248px;transition:transform .18s ease,box-shadow .18s ease;cursor:pointer;}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(34,32,43,.08);}
+.card.tinted{background:var(--card-tint);}
+.card .badge{position:absolute;top:18px;right:18px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--accent,var(--rose));padding:4px 9px;border-radius:6px;}
+.card .num{font-family:'Playfair Display',serif;font-weight:800;font-size:42px;line-height:1;color:var(--accent,var(--rose));margin-bottom:14px;}
+.card h3{font-family:'Playfair Display',serif;font-weight:700;font-size:19px;color:var(--ink);line-height:1.25;margin-bottom:6px;}
+.card .meta{font-size:13px;color:var(--muted);margin-bottom:12px;}
+.card .blurb{font-size:14px;color:var(--ink2);flex:1;}
+.card .blurb b{color:var(--ink);font-weight:600;}
+.card .bar{height:5px;border-radius:4px;background:rgba(34,32,43,.08);margin:16px 0 8px;overflow:hidden;}
+.card .bar i{display:block;height:100%;border-radius:4px;background:var(--accent,var(--rose));width:0;transition:width .5s ease;}
+.card .status{font-size:12.5px;color:var(--muted);margin-bottom:14px;}
+.card .cta{font-size:14px;font-weight:600;color:var(--accent,var(--rose));display:inline-flex;align-items:center;gap:6px;}
+.card.locked{cursor:default;opacity:.72;}
+.card.locked:hover{transform:none;box-shadow:none;}
+
+.foot-note{margin-top:26px;font-size:13px;color:var(--muted);text-align:center;}
+
+/* Back link */
+.backlink{display:inline-flex;align-items:center;gap:7px;font-size:14px;color:var(--rose);font-weight:500;margin-bottom:22px;cursor:pointer;}
+.backlink:hover{text-decoration:underline;text-underline-offset:3px;}
+
+/* Lesson */
+.lesson-head{display:flex;align-items:flex-start;gap:18px;margin-bottom:8px;}
+.lesson-head .lnum{font-family:'Playfair Display',serif;font-weight:800;font-size:46px;line-height:1;color:var(--accent,var(--rose));}
+.lesson-head .lvl{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent,var(--rose));border:1px solid var(--line2);border-radius:6px;padding:3px 8px;display:inline-block;margin-bottom:8px;}
+.lesson-head h1{font-family:'Playfair Display',serif;font-weight:800;font-size:clamp(26px,4vw,38px);color:var(--ink);line-height:1.1;}
+.lesson-head .de{font-size:15px;color:var(--muted);margin-top:4px;}
+
+.article{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px clamp(20px,4vw,40px);margin:22px 0 24px;}
+.article h3{font-family:'Playfair Display',serif;font-weight:700;font-size:21px;color:var(--ink);margin:30px 0 12px;display:flex;align-items:center;gap:10px;}
+.article h3:first-child{margin-top:0;}
+.article h3::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--accent,var(--rose));flex-shrink:0;}
+.article p{font-size:15.5px;color:var(--ink2);margin:0 0 12px;}
+.article ul{margin:0 0 14px;padding-left:22px;}
+.article li{font-size:15px;margin-bottom:6px;}
+.article b{color:var(--ink);font-weight:600;}
+.article .es{font-style:italic;color:var(--rose);font-weight:500;}
+.article table{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:14.5px;overflow:hidden;border-radius:8px;}
+.article th,.article td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);}
+.article thead th{background:rgba(214,51,108,.07);color:var(--ink);font-weight:600;font-family:'DM Sans';}
+.article tbody td:first-child{color:var(--muted);}
+.article tbody td b{color:var(--ink);}
+.article .ex{background:rgba(31,158,148,.08);border-left:3px solid var(--teal);border-radius:6px;padding:11px 14px;font-size:14.5px;color:var(--ink2);margin:6px 0 16px;}
+.article .ex i{color:var(--teal);font-style:italic;}
+.article .tip{background:rgba(224,112,42,.08);border-left:3px solid var(--orange);border-radius:6px;padding:11px 14px;font-size:14.5px;margin:6px 0 16px;}
+.article .tip b{color:var(--orange);}
+
+.start-ex{display:flex;justify-content:center;margin:10px 0 4px;}
+.btn{font-family:inherit;font-size:15px;font-weight:600;border:none;border-radius:9px;padding:13px 26px;cursor:pointer;transition:transform .15s ease,opacity .15s;display:inline-flex;align-items:center;gap:8px;}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:var(--rose);color:#fff;}
+.btn-primary:hover{opacity:.92;}
+.btn-ghost{background:transparent;color:var(--rose);border:1px solid var(--line2);}
+.btn-ghost:hover{background:rgba(214,51,108,.06);}
+
+/* Exercise */
+.ex-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:14px;}
+.ex-top .count{font-size:13px;color:var(--muted);font-weight:500;}
+.ex-top .tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--rose);background:rgba(214,51,108,.08);padding:4px 10px;border-radius:999px;}
+.ex-bar{height:6px;background:rgba(34,32,43,.08);border-radius:4px;overflow:hidden;margin-bottom:22px;}
+.ex-bar i{display:block;height:100%;background:var(--rose);width:0;transition:width .4s ease;border-radius:4px;}
+.ex-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:28px clamp(20px,4vw,34px);}
+.ex-instr{font-size:13px;color:var(--muted);margin-bottom:10px;}
+.ex-q{font-size:20px;color:var(--ink);font-weight:500;margin-bottom:6px;line-height:1.4;}
+.ex-q .es{font-style:italic;color:var(--rose);}
+.ex-hint{font-size:13.5px;color:var(--muted);margin-bottom:18px;}
+.ex-input{width:100%;font-family:inherit;font-size:17px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line2);border-radius:9px;padding:13px 15px;outline:none;transition:border-color .15s;}
+.ex-input:focus{border-color:var(--rose);}
+.ex-actions{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
+.ex-fb{margin-top:18px;border-radius:9px;padding:14px 16px;font-size:14.5px;display:none;}
+.ex-fb.show{display:block;animation:fade .25s;}
+.ex-fb.ok{background:rgba(47,158,110,.1);border:1px solid rgba(47,158,110,.3);}
+.ex-fb.no{background:rgba(214,51,108,.08);border:1px solid rgba(214,51,108,.28);}
+.ex-fb .fb-head{font-weight:700;margin-bottom:5px;}
+.ex-fb.ok .fb-head{color:var(--ok);}
+.ex-fb.no .fb-head{color:var(--err);}
+.ex-fb .sol{color:var(--ink);}
+.ex-fb .sol b{color:var(--ink);}
+.ex-fb .explain{margin-top:7px;color:var(--ink2);}
+
+/* Results */
+.res-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:40px 30px;text-align:center;}
+.res-card .emo{font-size:48px;margin-bottom:10px;}
+.res-card h2{font-family:'Playfair Display',serif;font-weight:700;font-size:28px;color:var(--ink);margin-bottom:8px;}
+.res-card .score{font-size:18px;color:var(--ink2);margin-bottom:4px;}
+.res-card .detail{font-size:14px;color:var(--muted);}
+.res-actions{display:flex;gap:12px;justify-content:center;margin-top:24px;flex-wrap:wrap;}
+
+@media(max-width:600px){
+  #app{padding:24px 16px 80px;}
+  .grid{grid-template-columns:1fr;}
+  .lesson-head .lnum{font-size:38px;}
+}
+</style>
+</head>
+<body>
+<div id="header">
+  <div class="logo">📚</div>
+  <div class="brand">Español · Akademie</div>
+  <div class="preview-tag">Vorschau</div>
+</div>
+
+<div id="app">
+  <!-- HOME -->
+  <div id="screen-home" class="screen active">
+    <div class="hero">
+      <div class="kicker">Spanische Grammatik · A1 – C2</div>
+      <h1>Lerne Spanisch wie in einer Akademie.</h1>
+      <p>Zu jedem Grammatikthema ein vollständiger, verständlicher Lehrtext — und feste Schreibübungen, die dein Wissen sofort festigen. Klar strukturiert, Schritt für Schritt.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="s-topics">7</div><div class="lbl">Themen in A1</div></div>
+      <div class="stat"><div class="num" id="s-done">0</div><div class="lbl">Abgeschlossen</div></div>
+      <div class="stat"><div class="num" id="s-acc">—</div><div class="lbl">Genauigkeit</div></div>
+    </div>
+
+    <div class="sec-head"><h2>Niveau A1 — Die Themen im Überblick</h2></div>
+    <div class="sec-rule"></div>
+    <p class="sec-intro">Sieben Grundlagen-Module bringen dich sicher durch das Anfänger-Niveau. Jede Karte zeigt, was im Modul steckt. Beginne mit <a onclick="openLesson('A1_presente')">Presente de indicativo</a>.</p>
+
+    <div class="grid" id="card-grid"></div>
+
+    <div class="foot-note">A2 – C2 folgen nach Freigabe dieser Vorschau · dies ist eine Design-Vorschau mit einer vollständig ausgearbeiteten Beispiel-Lektion.</div>
+  </div>
+
+  <!-- LESSON -->
+  <div id="screen-lesson" class="screen">
+    <div class="backlink" onclick="goHome()">← Zur Übersicht</div>
+    <div class="lesson-head">
+      <div class="lnum" id="l-num">01</div>
+      <div>
+        <span class="lvl" id="l-lvl">A1 · Modul</span>
+        <h1 id="l-title"></h1>
+        <div class="de" id="l-de"></div>
+      </div>
+    </div>
+    <div class="article" id="l-article"></div>
+    <div class="start-ex"><button class="btn btn-primary" id="l-start">Übungen starten →</button></div>
+  </div>
+
+  <!-- EXERCISE -->
+  <div id="screen-exercise" class="screen">
+    <div class="backlink" onclick="backToLesson()">← Zurück zur Lektion</div>
+    <div class="ex-top">
+      <span class="count" id="ex-count">1 / 12</span>
+      <span class="tag" id="ex-tag">Lückentext</span>
+    </div>
+    <div class="ex-bar"><i id="ex-bar-fill"></i></div>
+    <div class="ex-card">
+      <div class="ex-instr" id="ex-instr"></div>
+      <div class="ex-q" id="ex-q"></div>
+      <div class="ex-hint" id="ex-hint"></div>
+      <input class="ex-input" id="ex-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Deine Antwort…">
+      <div class="ex-fb" id="ex-fb"></div>
+      <div class="ex-actions" id="ex-actions"></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="screen-results" class="screen">
+    <div class="res-card">
+      <div class="emo" id="r-emo">🎉</div>
+      <h2 id="r-title">Stark gemacht!</h2>
+      <div class="score" id="r-score"></div>
+      <div class="detail" id="r-detail"></div>
+    </div>
+    <div class="res-actions">
+      <button class="btn btn-ghost" id="r-retry">Nochmal üben</button>
+      <button class="btn btn-primary" id="r-home">Zur Übersicht</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Daten ---------- */
+const ACCENTS=['--rose','--teal','--purple','--orange','--blue','--green','--magenta'];
+
+const A1=[
+  {id:'A1_presente',name:'Presente de indicativo',de:'Präsens – Gegenwart',desc:'Regelmäßige & unregelmäßige Verben, alle Personen, Verwendung.',ready:true},
+  {id:'A1_articulos',name:'Artículos',de:'Artikel – bestimmt & unbestimmt',desc:'el/la/los/las, un/una/unos/unas und die wichtigsten Sonderregeln.',ready:false},
+  {id:'A1_ser_estar',name:'Ser y estar',de:'Sein – ser vs. estar',desc:'Eigenschaften gegen Zustände und Orte sicher unterscheiden.',ready:false},
+  {id:'A1_genero',name:'Género y número',de:'Genus & Numerus',desc:'Geschlecht erkennen und den Plural korrekt bilden.',ready:false},
+  {id:'A1_adjetivos',name:'Adjetivos',de:'Adjektive – Angleichung',desc:'Anpassung an Genus und Numerus, Stellung im Satz.',ready:false},
+  {id:'A1_gustar',name:'Verbo gustar',de:'Das Verb gustar',desc:'Mögen mit gustar und indirektem Objektpronomen.',ready:false},
+  {id:'A1_numeros',name:'Números y fechas',de:'Zahlen & Datum',desc:'Zahlen, Uhrzeit, Wochentage und Datumsangaben.',ready:false},
+];
+
+/* Vollständig ausgearbeitete Beispiel-Lektion */
+const LESSONS={
+A1_presente:{
+article:`
+<h3>Wofür brauchst du das Presente?</h3>
+<p>Das <b>Presente de indicativo</b> ist die spanische Gegenwartsform. Du brauchst es für:</p>
+<ul>
+<li><b>Aktuelle Handlungen:</b> <span class="es">Ahora estudio español.</span> – Jetzt lerne ich Spanisch.</li>
+<li><b>Gewohnheiten & Wiederholungen:</b> <span class="es">Todos los días trabajo.</span> – Jeden Tag arbeite ich.</li>
+<li><b>Allgemeingültiges & Fakten:</b> <span class="es">El agua hierve a 100 grados.</span></li>
+<li><b>Nahe, sichere Zukunft:</b> <span class="es">Mañana llego a las ocho.</span> – Morgen komme ich um acht.</li>
+</ul>
+
+<h3>Regelmäßige Verben</h3>
+<p>Es gibt drei Verbgruppen, erkennbar an der Endung des Infinitivs: <b>-ar</b>, <b>-er</b>, <b>-ir</b>. Du nimmst den Stamm (Infinitiv ohne Endung) und hängst die passende Endung an:</p>
+<table>
+<thead><tr><th>Person</th><th>hablar (sprechen)</th><th>comer (essen)</th><th>vivir (leben)</th></tr></thead>
+<tbody>
+<tr><td>yo</td><td><b>hablo</b></td><td><b>como</b></td><td><b>vivo</b></td></tr>
+<tr><td>tú</td><td>habl<b>as</b></td><td>com<b>es</b></td><td>viv<b>es</b></td></tr>
+<tr><td>él/ella/usted</td><td>habl<b>a</b></td><td>com<b>e</b></td><td>viv<b>e</b></td></tr>
+<tr><td>nosotros/-as</td><td>habl<b>amos</b></td><td>com<b>emos</b></td><td>viv<b>imos</b></td></tr>
+<tr><td>vosotros/-as</td><td>habl<b>áis</b></td><td>com<b>éis</b></td><td>viv<b>ís</b></td></tr>
+<tr><td>ellos/ellas/ustedes</td><td>habl<b>an</b></td><td>com<b>en</b></td><td>viv<b>en</b></td></tr>
+</tbody>
+</table>
+<div class="tip"><b>Merke:</b> -er und -ir sind fast gleich — nur „nosotros" (-emos/-imos) und „vosotros" (-éis/-ís) unterscheiden sich.</div>
+
+<h3>Wichtige unregelmäßige Verben</h3>
+<p>Diese vier brauchst du ständig — lerne sie auswendig:</p>
+<table>
+<thead><tr><th>Person</th><th>ser (sein)</th><th>estar (sein)</th><th>ir (gehen)</th><th>tener (haben)</th></tr></thead>
+<tbody>
+<tr><td>yo</td><td><b>soy</b></td><td><b>estoy</b></td><td><b>voy</b></td><td><b>tengo</b></td></tr>
+<tr><td>tú</td><td>eres</td><td>estás</td><td>vas</td><td>tienes</td></tr>
+<tr><td>él/ella/usted</td><td>es</td><td>está</td><td>va</td><td>tiene</td></tr>
+<tr><td>nosotros</td><td>somos</td><td>estamos</td><td>vamos</td><td>tenemos</td></tr>
+<tr><td>vosotros</td><td>sois</td><td>estáis</td><td>vais</td><td>tenéis</td></tr>
+<tr><td>ellos/ustedes</td><td>son</td><td>están</td><td>van</td><td>tienen</td></tr>
+</tbody>
+</table>
+
+<h3>Verben mit Vokalwechsel im Stamm</h3>
+<p>Bei vielen Verben ändert sich der betonte Stammvokal — aber <b>nicht</b> bei „nosotros" und „vosotros" (die Endung ist dort unbetont). Man nennt sie „Schuhverben", weil die unveränderten Formen die Schuhsohle bilden.</p>
+<table>
+<thead><tr><th>Wechsel</th><th>Beispiel</th><th>yo / tú / él</th><th>nosotros</th></tr></thead>
+<tbody>
+<tr><td>e → ie</td><td>querer (wollen)</td><td><b>quiero, quieres, quiere</b></td><td>queremos</td></tr>
+<tr><td>o → ue</td><td>poder (können)</td><td><b>puedo, puedes, puede</b></td><td>podemos</td></tr>
+<tr><td>e → i</td><td>pedir (bitten)</td><td><b>pido, pides, pide</b></td><td>pedimos</td></tr>
+</tbody>
+</table>
+<p>Genauso: <span class="es">pensar→pienso, dormir→duermo, jugar→juego (u→ue)</span>.</p>
+
+<h3>Verben mit unregelmäßigem „yo"</h3>
+<p>Manche Verben sind nur in der 1. Person Singular unregelmäßig, sonst regelmäßig:</p>
+<ul>
+<li><span class="es">hacer → <b>hago</b></span> (machen), <span class="es">poner → <b>pongo</b></span> (stellen), <span class="es">salir → <b>salgo</b></span> (hinausgehen)</li>
+<li><span class="es">conocer → <b>conozco</b></span> (kennen), <span class="es">ver → <b>veo</b></span> (sehen), <span class="es">dar → <b>doy</b></span> (geben)</li>
+</ul>
+<div class="ex"><i>Yo hago la cama, pongo la mesa y salgo a las ocho.</i> – Ich mache das Bett, decke den Tisch und gehe um acht.</div>
+
+<h3>Typische Signalwörter</h3>
+<p>Diese Wörter zeigen oft das Presente an: <b>ahora</b> (jetzt), <b>hoy</b> (heute), <b>siempre</b> (immer), <b>normalmente</b> (normalerweise), <b>todos los días</b> (jeden Tag), <b>a veces</b> (manchmal), <b>nunca</b> (nie).</p>
+<div class="tip"><b>Stolperfalle:</b> Im Spanischen lässt man das Personalpronomen meist weg, weil die Verbendung die Person schon zeigt: <span class="es">Hablo español</span> statt <span class="es">Yo hablo español</span>. Man setzt es nur zur Betonung.</div>
+`,
+exercises:[
+  {type:'fill',tag:'Lückentext',instr:'Setze das Verb in der richtigen Form ein.',q:'Yo ___ español. <span class="es">(hablar)</span>',answer:'hablo',hint:'1. Person Singular, -ar-Verb',explain:'-ar-Verben enden in der yo-Form auf -o: hablo.'},
+  {type:'fill',tag:'Lückentext',instr:'Setze das Verb in der richtigen Form ein.',q:'Nosotros ___ paella los domingos. <span class="es">(comer)</span>',answer:'comemos',hint:'nosotros, -er-Verb',explain:'nosotros + -er → -emos: comemos.'},
+  {type:'fill',tag:'Lückentext',instr:'Setze das Verb in der richtigen Form ein.',q:'Ellos ___ en Madrid. <span class="es">(vivir)</span>',answer:'viven',hint:'3. Person Plural, -ir-Verb',explain:'ellos + -ir → -en: viven.'},
+  {type:'fill',tag:'Lückentext',instr:'Setze das Verb in der richtigen Form ein.',q:'¿Tú ___ hambre? <span class="es">(tener)</span>',answer:'tienes',hint:'unregelmäßig: e→ie',explain:'tener ist unregelmäßig: tú tienes.'},
+  {type:'form',tag:'Konjugation',instr:'Konjugiere das Verb für die angegebene Person.',q:'<span class="es">ser</span> — nosotros',answer:'somos',hint:'unregelmäßiges Verb',explain:'ser: yo soy, tú eres, él es, nosotros somos…'},
+  {type:'form',tag:'Konjugation',instr:'Konjugiere das Verb für die angegebene Person.',q:'<span class="es">ir</span> — yo',answer:'voy',hint:'völlig unregelmäßig',explain:'ir: voy, vas, va, vamos, vais, van.'},
+  {type:'form',tag:'Konjugation',instr:'Konjugiere das Verb für die angegebene Person.',q:'<span class="es">poder</span> — ella',answer:'puede',hint:'Vokalwechsel o→ue',explain:'poder (o→ue): puedo, puedes, puede…'},
+  {type:'transform',tag:'Satz umformen',instr:'Setze den Satz in den Plural (yo → nosotros).',q:'<span class="es">Yo trabajo aquí.</span>',answer:['nosotros trabajamos aqui','trabajamos aqui'],hint:'trabajar, nosotros-Form',explain:'yo trabajo → nosotros trabajamos aquí.'},
+  {type:'transform',tag:'Satz umformen',instr:'Verneine den Satz (no vor dem Verb).',q:'<span class="es">Ella canta bien.</span>',answer:'ella no canta bien',hint:'no steht direkt vor dem Verb',explain:'Die Verneinung steht vor dem Verb: Ella no canta bien.'},
+  {type:'transform',tag:'Satz umformen',instr:'Mache aus „tú" die höfliche Form „usted".',q:'<span class="es">Tú hablas mucho.</span>',answer:'usted habla mucho',hint:'usted nutzt die él/ella-Form',explain:'usted verwendet die 3. Person Singular: usted habla.'},
+  {type:'translate',tag:'Übersetzung',instr:'Übersetze ins Spanische.',q:'Ich wohne in Berlin.',answer:['vivo en berlin','yo vivo en berlin'],hint:'vivir, yo-Form',explain:'(Yo) vivo en Berlín. Das Pronomen kann wegfallen.'},
+  {type:'translate',tag:'Übersetzung',instr:'Übersetze ins Spanische.',q:'Wir haben Hunger.',answer:['tenemos hambre','nosotros tenemos hambre'],hint:'tener hambre',explain:'„Hunger haben" = tener hambre → tenemos hambre.'},
+  {type:'translate',tag:'Übersetzung',instr:'Übersetze ins Spanische.',q:'Was machst du?',answer:['que haces','¿que haces?'],hint:'hacer in der tú-Form',explain:'hacer → tú haces. ¿Qué haces?'},
+]
+}
+};
+
+/* ---------- Status / Fortschritt ---------- */
+const STORE='akademie_preview_v1';
+let progress={};
+try{progress=JSON.parse(localStorage.getItem(STORE))||{};}catch(e){progress={};}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(progress));}catch(e){}}
+
+function statusOf(id){
+  const p=progress[id];
+  if(!p||!p.attempts)return{key:'new',label:'Noch nicht begonnen',pct:0};
+  if(p.best>=p.total)return{key:'done',label:'Abgeschlossen',pct:100};
+  return{key:'wip',label:'In Arbeit',pct:Math.round((p.best/p.total)*100)};
+}
+
+/* ---------- Rendering: Home ---------- */
+function renderHome(){
+  const grid=document.getElementById('card-grid');
+  let done=0,accNum=0,accDen=0;
+  grid.innerHTML=A1.map((t,i)=>{
+    const acc='var('+ACCENTS[i%ACCENTS.length]+')';
+    const st=statusOf(t.id);
+    if(st.key==='done')done++;
+    const p=progress[t.id];
+    if(p&&p.attempts){accNum+=p.bestCorrectTotal||p.best;accDen+=(p.totalAttemptedAnswers||p.total);}
+    const num=String(i+1).padStart(2,'0');
+    const exCount=t.ready&&LESSONS[t.id]?LESSONS[t.id].exercises.length+' Übungen':'in Vorbereitung';
+    const locked=!t.ready;
+    return `<div class="card ${locked?'locked':''} ${i===0?'tinted':''}" style="--accent:${acc}" ${locked?'':`onclick="openLesson('${t.id}')"`}>
+      ${locked?'<span class="badge">Bald</span>':(i===0?'<span class="badge">Start hier</span>':'')}
+      <div class="num">${num}</div>
+      <h3>${t.name}</h3>
+      <div class="meta">A1 · ${exCount}</div>
+      <div class="blurb"><b>${t.de}.</b> ${t.desc}</div>
+      <div class="bar"><i style="width:${st.pct}%"></i></div>
+      <div class="status">${locked?'Folgt in der Vollversion':st.label}</div>
+      ${locked?'<span class="cta" style="color:var(--muted)">Bald verfügbar</span>':`<span class="cta">Lektion starten →</span>`}
+    </div>`;
+  }).join('');
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-acc').textContent=accDen?Math.round((accNum/accDen)*100)+'%':'—';
+}
+
+/* ---------- Rendering: Lesson ---------- */
+let currentTopic=null;
+function openLesson(id){
+  const t=A1.find(x=>x.id===id);if(!t||!LESSONS[id])return;
+  currentTopic=t;
+  const i=A1.findIndex(x=>x.id===id);
+  const acc='var('+ACCENTS[i%ACCENTS.length]+')';
+  document.getElementById('screen-lesson').style.setProperty('--accent',acc);
+  document.getElementById('l-num').textContent=String(i+1).padStart(2,'0');
+  document.getElementById('l-num').style.color=acc;
+  document.getElementById('l-title').textContent=t.name;
+  document.getElementById('l-de').textContent=t.de;
+  const art=document.getElementById('l-article');
+  art.style.setProperty('--accent',acc);
+  art.innerHTML=LESSONS[id].article;
+  document.getElementById('l-start').onclick=()=>startExercises(id);
+  show('screen-lesson');
+}
+
+/* ---------- Übungen ---------- */
+let exList=[],exIdx=0,exCorrect=0,answered=false;
+function startExercises(id){
+  exList=LESSONS[id].exercises.slice();
+  exIdx=0;exCorrect=0;
+  show('screen-exercise');
+  renderEx();
+}
+function renderEx(){
+  answered=false;
+  const e=exList[exIdx];
+  document.getElementById('ex-count').textContent=(exIdx+1)+' / '+exList.length;
+  document.getElementById('ex-tag').textContent=e.tag;
+  document.getElementById('ex-bar-fill').style.width=((exIdx)/exList.length*100)+'%';
+  document.getElementById('ex-instr').textContent=e.instr;
+  document.getElementById('ex-q').innerHTML=e.q;
+  document.getElementById('ex-hint').textContent=e.hint?('💡 '+e.hint):'';
+  const inp=document.getElementById('ex-input');
+  inp.value='';inp.disabled=false;
+  const fb=document.getElementById('ex-fb');fb.className='ex-fb';fb.innerHTML='';
+  document.getElementById('ex-actions').innerHTML='<button class="btn btn-primary" id="ex-check">Prüfen</button><button class="btn btn-ghost" id="ex-skip">Überspringen</button>';
+  document.getElementById('ex-check').onclick=checkEx;
+  document.getElementById('ex-skip').onclick=nextEx;
+  inp.focus();
+  inp.onkeydown=(ev)=>{if(ev.key==='Enter'){ev.preventDefault();answered?nextEx():checkEx();}};
+}
+function norm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[¡¿!?.,;:"']/g,'').replace(/\s+/g,' ').trim();}
+function checkEx(){
+  if(answered)return;
+  const e=exList[exIdx];
+  const val=document.getElementById('ex-input').value;
+  const answers=Array.isArray(e.answer)?e.answer:[e.answer];
+  const ok=answers.some(a=>norm(a)===norm(val));
+  answered=true;
+  document.getElementById('ex-input').disabled=true;
+  if(ok)exCorrect++;
+  const fb=document.getElementById('ex-fb');
+  fb.className='ex-fb show '+(ok?'ok':'no');
+  const sol=Array.isArray(e.answer)?e.answer[0]:e.answer;
+  fb.innerHTML=`<div class="fb-head">${ok?'✓ Richtig!':'✗ Nicht ganz'}</div>`+
+    (ok?'':`<div class="sol">Lösung: <b>${sol}</b></div>`)+
+    `<div class="explain">${e.explain}</div>`;
+  document.getElementById('ex-actions').innerHTML=`<button class="btn btn-primary" id="ex-next">${exIdx+1>=exList.length?'Ergebnis ansehen':'Weiter'} →</button>`;
+  document.getElementById('ex-next').onclick=nextEx;
+  document.getElementById('ex-next').focus();
+}
+function nextEx(){
+  exIdx++;
+  if(exIdx>=exList.length){finish();return;}
+  renderEx();
+}
+function finish(){
+  const total=exList.length;
+  const p=progress[currentTopic.id]||{attempts:0};
+  p.attempts=(p.attempts||0)+1;
+  p.total=total;
+  if(exCorrect>(p.best||0)){p.best=exCorrect;}
+  p.lastCorrect=exCorrect;
+  progress[currentTopic.id]=p;
+  save();
+  const pct=Math.round(exCorrect/total*100);
+  document.getElementById('r-emo').textContent=pct>=80?'🎉':pct>=50?'👍':'💪';
+  document.getElementById('r-title').textContent=pct>=80?'Stark gemacht!':pct>=50?'Gut dabei!':'Weiter üben!';
+  document.getElementById('r-score').textContent=exCorrect+' von '+total+' richtig ('+pct+'%)';
+  document.getElementById('r-detail').textContent=pct>=80?'Du beherrschst dieses Thema sicher.':'Lies den Lehrtext nochmal und probier es erneut.';
+  document.getElementById('r-retry').onclick=()=>startExercises(currentTopic.id);
+  document.getElementById('r-home').onclick=goHome;
+  show('screen-results');
+}
+
+/* ---------- Navigation ---------- */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+function goHome(){renderHome();show('screen-home');}
+function backToLesson(){if(currentTopic)openLesson(currentTopic.id);else goHome();}
+
+renderHome();
+</script>
+</body>
+</html>
