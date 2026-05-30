@@ -248,11 +248,14 @@ const ACCENTS=['--rose','--teal','--purple','--orange','--blue','--green','--mag
 const A1=[
   {id:'A1_presente',name:'Presente de indicativo',de:'Präsens – Gegenwart',desc:'Regelmäßige & unregelmäßige Verben, alle Personen, Verwendung.',ready:true},
   {id:'A1_articulos',name:'Artículos',de:'Artikel – bestimmt & unbestimmt',desc:'el/la/los/las, un/una/unos/unas und die wichtigsten Sonderregeln.',ready:false},
-  {id:'A1_ser_estar',name:'Ser y estar',de:'Sein – ser vs. estar',desc:'Eigenschaften gegen Zustände und Orte sicher unterscheiden.',ready:false},
-  {id:'A1_genero',name:'Género y número',de:'Genus & Numerus',desc:'Geschlecht erkennen und den Plural korrekt bilden.',ready:false},
-  {id:'A1_adjetivos',name:'Adjetivos',de:'Adjektive – Angleichung',desc:'Anpassung an Genus und Numerus, Stellung im Satz.',ready:false},
-  {id:'A1_gustar',name:'Verbo gustar',de:'Das Verb gustar',desc:'Mögen mit gustar und indirektem Objektpronomen.',ready:false},
-  {id:'A1_numeros',name:'Números y fechas',de:'Zahlen & Datum',desc:'Zahlen, Uhrzeit, Wochentage und Datumsangaben.',ready:false},
+  {id:'A1_ser_estar',name:'Ser vs. Estar',de:'Sein – ser vs. estar',desc:'Identität & Eigenschaften gegen Ort & Zustände sicher trennen.',ready:false},
+  {id:'A1_pronombres',name:'Pronombres personales',de:'Personalpronomen',desc:'yo/tú/él/usted/nosotros/vosotros/ellos und ihr Gebrauch.',ready:false},
+  {id:'A1_negacion',name:'Negación y preguntas',de:'Verneinung & Fragewörter',desc:'no vor dem Verb und die Fragewörter qué/dónde/cuándo …',ready:false},
+  {id:'A1_numeros',name:'Números',de:'Zahlen 0–100',desc:'Kardinalzahlen bilden und korrekt einsetzen.',ready:false},
+  {id:'A1_hora',name:'La hora',de:'Uhrzeit',desc:'¿Qué hora es? — y cuarto, y media, menos cuarto, a las …',ready:false},
+  {id:'A1_diasmeses',name:'Días y meses',de:'Wochentage & Monate',desc:'Wochentage, Monate und Datumsangaben.',ready:false},
+  {id:'A1_posesivos',name:'Posesivos',de:'Possessivpronomen',desc:'mi/tu/su und mío/tuyo/suyo richtig anwenden.',ready:false},
+  {id:'A1_demonstrativa',name:'Demostrativos',de:'Demonstrativpronomen',desc:'este/ese/aquel und die Neutren esto/eso/aquello.',ready:false},
 ];
 
 /* Vollständig ausgearbeitete Beispiel-Lektion */
@@ -376,6 +379,7 @@ function renderHome(){
       ${locked?'<span class="cta" style="color:var(--muted)">Bald verfügbar</span>':`<span class="cta">Lektion starten →</span>`}
     </div>`;
   }).join('');
+  document.getElementById('s-topics').textContent=A1.length;
   document.getElementById('s-done').textContent=done;
   document.getElementById('s-acc').textContent=accDen?Math.round((accNum/accDen)*100)+'%':'—';
 }
