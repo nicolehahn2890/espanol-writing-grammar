@@ -19,6 +19,7 @@ The UI is in German (target audience: German speakers learning Spanish); all exa
 - Light cream theme (`--bg:#FBF4EB`), Playfair Display serif headlines, DM Sans body.
 - Section headings have a rose dot before them and a fading underline rule.
 - Numbered module cards (`01`, `02`, …) in a grid, each with a colored top-border accent (rotating palette `ACCENTS`), progress bar and status label ("Noch nicht begonnen" / "In Arbeit" / "Abgeschlossen").
+- **Responsive:** a single `@media(max-width:600px)` block handles phones — module grid collapses to one column, paddings shrink, and lesson tables become compact + horizontally scrollable (see `.table-wrap` under Teaching texts). The sticky header is fully opaque so scrolled content never bleeds through.
 
 ## Screens & navigation
 Screens are `<div class="screen">` toggled by `showScreen(name)`; `SCREEN_PARENT` defines back-navigation.
@@ -51,6 +52,8 @@ HTML strings using a small, fixed vocabulary of classes rendered by `.article` C
 - `<b>` to bold key forms
 
 If a topic has no `ARTICLES[id]`, `buildFallbackArticle()` renders `grammar` + `example`. Currently all topics are covered, so the fallback is a safety net.
+
+**Tables are auto-wrapped for mobile:** after `openLesson()` sets the article HTML, it wraps every `<table>` in a `.table-wrap` div (`overflow-x:auto`). Wide conjugation tables (e.g. ser/estar/ir/tener) therefore scroll horizontally inside their box on narrow screens instead of being clipped at the right edge. Author tables normally with `<table>` — do not hand-wrap them.
 
 ## Exercise types
 - `mc`: multiple choice — `{type, q, choices:[], correct:idx, explain}`
