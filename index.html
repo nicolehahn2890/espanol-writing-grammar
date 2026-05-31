@@ -83,7 +83,8 @@ a{color:inherit;text-decoration:none;}
 .article li{font-size:15px;margin-bottom:6px;}
 .article b{color:var(--ink);font-weight:600;}
 .article .es{font-style:italic;color:var(--rose);font-weight:500;}
-.article table{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:14.5px;overflow:hidden;border-radius:8px;}
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0 18px;border-radius:8px;}
+.article table{width:100%;border-collapse:collapse;font-size:14.5px;border-radius:8px;}
 .article th,.article td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);}
 .article thead th{background:rgba(214,51,108,.07);color:var(--ink);font-weight:600;}
 .article tbody td:first-child{color:var(--muted);}
@@ -151,6 +152,9 @@ a{color:inherit;text-decoration:none;}
   #app{padding:24px 16px 80px;}
   .grid{grid-template-columns:1fr;}
   .lesson-head .lnum{font-size:38px;}
+  .article{padding:22px 16px;}
+  .article table{font-size:13.5px;min-width:max-content;}
+  .article th,.article td{padding:8px 10px;white-space:nowrap;}
 }
 </style>
 </head>
@@ -1180,6 +1184,11 @@ function openLesson(id){
   document.getElementById('l-de').textContent=t.de;
   const art=document.getElementById('l-article');art.style.setProperty('--accent',acc);
   art.innerHTML=ARTICLES[id]||buildFallbackArticle(t);
+  art.querySelectorAll('table').forEach(tb=>{
+    if(tb.parentElement&&tb.parentElement.classList.contains('table-wrap'))return;
+    const w=document.createElement('div');w.className='table-wrap';
+    tb.parentNode.insertBefore(w,tb);w.appendChild(tb);
+  });
   document.getElementById('l-start').onclick=()=>startExercises(id);
   document.getElementById('l-start').style.background=acc;
   document.getElementById('lesson-back').onclick=()=>showScreen('level');
