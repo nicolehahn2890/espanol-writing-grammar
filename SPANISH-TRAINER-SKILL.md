@@ -11,7 +11,7 @@ A single-file Spanish grammar academy (`index.html`) covering CEFR levels A1–C
 The UI is in German (target audience: German speakers learning Spanish); all examples are in Spanish.
 
 ## Architecture
-- **Single file**: Everything lives in `index.html` (HTML structure, `<style>`, `<script>`).
+- **Single file**: Everything lives in `index.html` (HTML structure, `<style>`, `<script>`). The only companion asset is `apple-touch-icon.png` (home-screen/favicon image, see below).
 - **No external deps, fully offline**: no network calls at all (the old Anthropic API, speech recognition and TTS were removed).
 - **State**: Global `S` object `{progress:{}}` persisted to `localStorage` under `espanol_trainer_v1` (migrates from legacy `espanol_v2`). The schema is backwards-compatible with the previous app, so existing learner progress is preserved.
 
@@ -20,6 +20,11 @@ The UI is in German (target audience: German speakers learning Spanish); all exa
 - Section headings have a rose dot before them and a fading underline rule.
 - Numbered module cards (`01`, `02`, …) in a grid, each with a colored top-border accent (rotating palette `ACCENTS`), progress bar and status label ("Noch nicht begonnen" / "In Arbeit" / "Abgeschlossen").
 - **Responsive:** a single `@media(max-width:600px)` block handles phones — module grid collapses to one column, paddings shrink, and lesson tables become compact + horizontally scrollable (see `.table-wrap` under Teaching texts). The sticky header is fully opaque so scrolled content never bleeds through.
+
+## Home-screen icon (iPhone)
+- `apple-touch-icon.png` (180×180) in the repo root: white Playfair Display "Ñ" on the rose→orange brand gradient (same gradient as the `.logo` header element), subtle inner ring + soft letter shadow. Corners are square — iOS applies its own rounded mask.
+- Linked in `<head>`: `apple-touch-icon` + same PNG as favicon, `apple-mobile-web-app-title` is **"Español"**, `theme-color` is the cream `--bg` (#FBF4EB).
+- If the icon is redesigned, keep it full-bleed square, no transparency, and re-export at 180×180.
 
 ## Screens & navigation
 Screens are `<div class="screen">` toggled by `showScreen(name)`; `SCREEN_PARENT` defines back-navigation.
@@ -84,4 +89,4 @@ If a topic has no `ARTICLES[id]`, `buildFallbackArticle()` renders `grammar` + `
 ## Conventions
 - German UI labels; Spanish example sentences with correct accents.
 - Keep everything in one file. No frameworks, no network calls.
-- Branch policy for this repo: commit and push to `main` only.
+- **Branch policy: commit and push to `main` only. Never create or push other branches.**
