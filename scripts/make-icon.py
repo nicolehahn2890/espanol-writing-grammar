@@ -14,17 +14,10 @@ import zlib, struct
 G, SCALE = 36, 5
 INK   = (65,38,95,255)
 WHITE = (255,255,255,255)
-PINK, LAV = (255,157,200), (181,140,240)
-BANDS = 8
+PURPLE = (181,140,240)              # --purple / lavender #b58cf0
 
-def lerp(a,b,t): return tuple(round(a[i]+(b[i]-a[i])*t) for i in range(3))
-
-px=[[None]*G for _ in range(G)]
-for y in range(G):
-    for x in range(G):
-        t=(x+y)/(2*(G-1))
-        t=round(t*(BANDS-1))/(BANDS-1)        # quantise -> visible pixel bands
-        px[y][x]=(*lerp(PINK,LAV,t),255)
+# solid lavender background (no gradient — looks cleaner at small sizes)
+px=[[(*PURPLE,255) for _ in range(G)] for _ in range(G)]
 
 def setp(x,y,c):
     if 0<=x<G and 0<=y<G: px[y][x]=c
