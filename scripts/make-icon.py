@@ -22,9 +22,7 @@ px=[[(*PURPLE,255) for _ in range(G)] for _ in range(G)]
 def setp(x,y,c):
     if 0<=x<G and 0<=y<G: px[y][x]=c
 
-for y in range(G):
-    for x in range(G):
-        if x<2 or x>=G-2 or y<2 or y>=G-2: px[y][x]=INK
+# (no border frame — plain lavender background)
 
 xoff, yoff = 12, 7
 # tilde: bold 2-row descending wave (left high -> right low) = ñ mark
