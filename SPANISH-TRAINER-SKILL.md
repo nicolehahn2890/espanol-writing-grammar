@@ -52,10 +52,10 @@ Two further data objects:
 
 ## Teaching texts (ARTICLES)
 HTML strings using a small, fixed vocabulary of classes rendered by `.article` CSS:
-- `<h3>` section heading (auto rose dot)
-- `<p>`, `<ul>/<li>`, `<table>` (conjugation/form tables)
-- `<span class="es">` Spanish inline text (rose, italic)
-- `<div class="ex">` example box (teal), `<div class="tip">` tip box (orange)
+- `<h3>` section heading (auto `★` star in the accent color)
+- `<p>`, `<ul>/<li>`, `<table>` (conjugation/form tables — 3px ink outer border, pink header row, 2px inner grid, card-tint first column)
+- `<span class="es">` Spanish inline text (rose, weight 600 — no italic; pixel glyphs stay crisp)
+- `<div class="ex">` example callout (mint/green left bar), `<div class="tip">` tip callout (butter/yellow left bar) — both 3px ink outline + hard shadow
 - `<b>` to bold key forms
 
 If a topic has no `ARTICLES[id]`, `buildFallbackArticle()` renders `grammar` + `example`. Currently all topics are covered, so the fallback is a safety net.

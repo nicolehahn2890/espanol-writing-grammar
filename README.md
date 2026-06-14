@@ -29,8 +29,9 @@ Eine Web-App zum Lernen der spanischen Grammatik von **A1 bis C2** — aufgebaut
 
 ## Technik
 
-- Eine einzige Datei: `index.html` (Struktur, Styles und Logik)
-- Kawaii-Pixel-Art-Design (Pixelify Sans + Press Start 2P, Pastell-Regenbogen, chunky Outlines & Hard-Shadows)
+- `index.html` (Struktur, Styles und Logik) + `assets/` (`bg-tile.png` Konfetti-Hintergrund, `icon-180.png` App-Icon) und `apple-touch-icon.png`
+- Kawaii-Pixel-Art-Design (Pixelify Sans + Press Start 2P, Pastell-Regenbogen, eckige Ecken, chunky 3px-Outlines & Hard-Offset-Schatten, gestufte Hover/Press-Animationen)
+- Schriften via Google Fonts (Online); für komplett offline `@font-face` selbst hosten
 - Fortschritt in `localStorage` (`espanol_trainer_v1`)
 - Keine Netzwerkanfragen, kein API-Key, keine Tracking
 
