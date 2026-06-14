@@ -11,19 +11,21 @@ A single-file Spanish grammar academy (`index.html`) covering CEFR levels A1–C
 The UI is in German (target audience: German speakers learning Spanish); all examples are in Spanish.
 
 ## Architecture
-- **Single file**: Everything lives in `index.html` (HTML structure, `<style>`, `<script>`). The only companion asset is `apple-touch-icon.png` (home-screen/favicon image, see below).
+- **Single file**: Everything lives in `index.html` (HTML structure, `<style>`, `<script>`). Companion assets: `apple-touch-icon.png` (home-screen/favicon image, see below) and `assets/` (`bg-tile.png` confetti background tile, `icon-180.png` app mark).
 - **No external deps, fully offline**: no network calls at all (the old Anthropic API, speech recognition and TTS were removed).
 - **State**: Global `S` object `{progress:{}}` persisted to `localStorage` under `espanol_trainer_v1` (migrates from legacy `espanol_v2`). The schema is backwards-compatible with the previous app, so existing learner progress is preserved.
 
-## Design / look ("Akademie" style)
-- Light cream theme (`--bg:#FBF4EB`), Playfair Display serif headlines, DM Sans body.
-- Section headings have a rose dot before them and a fading underline rule.
-- Numbered module cards (`01`, `02`, …) in a grid, each with a colored top-border accent (rotating palette `ACCENTS`), progress bar and status label ("Noch nicht begonnen" / "In Arbeit" / "Abgeschlossen").
-- **Responsive:** a single `@media(max-width:600px)` block handles phones — module grid collapses to one column, paddings shrink, and lesson tables become compact + horizontally scrollable (see `.table-wrap` under Teaching texts). The sticky header is fully opaque so scrolled content never bleeds through.
+## Design / look ("Kawaii Pixel-Art Akademie" style)
+- Soft pastel-rainbow theme over a pink-cream page (`--bg:#fdeef7`) scattered with a subtle pixel-confetti tile (`assets/bg-tile.png`) and a candy-rainbow band fading down from the top. Headlines + body use **Pixelify Sans**; small 8-bit accents (kickers, numbers, badges, choice-letter tiles, instruction eyebrows) use **Press Start 2P**.
+- Everything is built from chunky **3px deep-grape (`--ink:#41265f`) outlines** and **hard offset shadows (no blur)** that grow on hover (`translate(-2/-3px)`) and collapse to `0` on press. **Square corners everywhere** (`--radius:0`). Stepped motion (`steps(2,end)`), no opacity fades — entrance animates `translateY` only.
+- Headings over the patterned page get a white 8-direction "sticker" outline for legibility (scoped to `body.akademie-bg`; invisible on white cards).
+- Section headings start with a `★` in the accent color followed by an 8px candy-rainbow rule. Glyph icons only (▶ ◀ ★ ✓ ✗), no icon library.
+- Numbered module cards in a grid: 12px accent header strip, 52×52 accent number tile, chunky progress bar, status label and a "Fertig" badge when complete (rotating palette `ACCENTS`). CEFR levels have fixed accents (A1 teal · A2 green · B1 blue · B2 purple · C1 rose · C2 magenta) set via `LEVELS[x].color`.
+- **Responsive:** a single `@media(max-width:600px)` block handles phones — module grid collapses to one column, paddings shrink, lesson tables become compact + horizontally scrollable (see `.table-wrap`). The sticky header is fully opaque with a 3px ink bottom border.
 
 ## Home-screen icon (iPhone)
-- `apple-touch-icon.png` (180×180) in the repo root: white Playfair Display "Ñ" on the rose→orange brand gradient (same gradient as the `.logo` header element), subtle inner ring + soft letter shadow. Corners are square — iOS applies its own rounded mask.
-- Linked in `<head>`: `apple-touch-icon` + same PNG as favicon, `apple-mobile-web-app-title` is **"Español"**, `theme-color` is the cream `--bg` (#FBF4EB).
+- `apple-touch-icon.png` (180×180) in the repo root: white Press Start 2P "Ñ" on the pink→lavender brand gradient (same `--grad-brand` as the `.logo` header tile), grape pixel border + corner sparkles. Corners are square — iOS applies its own rounded mask. (Same image as `assets/icon-180.png`.)
+- Linked in `<head>`: `apple-touch-icon` + same PNG as favicon, `apple-mobile-web-app-title` is **"Español"**, `theme-color` is the pink-cream `--bg` (#FDEEF7).
 - If the icon is redesigned, keep it full-bleed square, no transparency, and re-export at 180×180.
 
 ## Screens & navigation

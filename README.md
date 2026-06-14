@@ -30,7 +30,7 @@ Eine Web-App zum Lernen der spanischen Grammatik von **A1 bis C2** — aufgebaut
 ## Technik
 
 - Eine einzige Datei: `index.html` (Struktur, Styles und Logik)
-- Helles Akademie-Design (Playfair-Display-Überschriften, Creme-Theme)
+- Kawaii-Pixel-Art-Design (Pixelify Sans + Press Start 2P, Pastell-Regenbogen, chunky Outlines & Hard-Shadows)
 - Fortschritt in `localStorage` (`espanol_trainer_v1`)
 - Keine Netzwerkanfragen, kein API-Key, keine Tracking
 
