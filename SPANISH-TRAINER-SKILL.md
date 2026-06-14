@@ -28,6 +28,7 @@ The UI is in German (target audience: German speakers learning Spanish); all exa
 - **Crisp, not blurry:** the icon is authored on a small **36×36** logical grid and scaled ×5 with nearest-neighbour to 180×180, so every pixel is a hard block; the gradient is quantised into ~8 visible bands. **Do not** anti-alias or export from a smooth/vector source — it must stay blocky.
 - Regenerate via the committed pure-Python (no deps) script: `python3 scripts/make-icon.py` (run from the repo root). It builds the 36×36 RGBA grid, nearest-neighbour upscales ×5, and writes the PNG with `zlib`/`struct` to **both** `apple-touch-icon.png` and `assets/icon-180.png`. Edit the glyph/colors there; keep it full-bleed square, no transparency, 180×180.
 - Linked in `<head>`: `apple-touch-icon` + same PNG as favicon, `apple-mobile-web-app-title` is **"Español"**, `theme-color` is the pink-cream `--bg` (#FDEEF7).
+- **Cache-busting:** both `<head>` links use a version query (`apple-touch-icon.png?v=N`). iOS/browsers aggressively cache the home-screen icon by filename, so **bump `?v=N` whenever the icon changes**, otherwise re-downloading/re-adding the app keeps showing the old icon. On iPhone, also remove the old home-screen shortcut and re-add it to force a refresh.
 
 ## Screens & navigation
 Screens are `<div class="screen">` toggled by `showScreen(name)`; `SCREEN_PARENT` defines back-navigation.
