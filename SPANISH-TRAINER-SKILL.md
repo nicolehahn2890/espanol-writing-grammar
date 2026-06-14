@@ -24,9 +24,10 @@ The UI is in German (target audience: German speakers learning Spanish); all exa
 - **Responsive:** a single `@media(max-width:600px)` block handles phones — module grid collapses to one column, paddings shrink, lesson tables become compact + horizontally scrollable (see `.table-wrap`). The sticky header is fully opaque with a 3px ink bottom border.
 
 ## Home-screen icon (iPhone)
-- `apple-touch-icon.png` (180×180) in the repo root: white Press Start 2P "Ñ" on the pink→lavender brand gradient (same `--grad-brand` as the `.logo` header tile), grape pixel border + corner sparkles. Corners are square — iOS applies its own rounded mask. (Same image as `assets/icon-180.png`.)
+- `apple-touch-icon.png` (180×180, identical to `assets/icon-180.png`): true pixel-art — a white hand-drawn "Ñ" (pixel-grid letterform + bold tilde) on the pink→lavender brand gradient (`--grad-brand`), with a 2-cell grape pixel border and white "+" sparkles. Corners are square — iOS applies its own rounded mask.
+- **Crisp, not blurry:** the icon is authored on a small **36×36** logical grid and scaled ×5 with nearest-neighbour to 180×180, so every pixel is a hard block; the gradient is quantised into ~8 visible bands. **Do not** anti-alias or export from a smooth/vector source — it must stay blocky.
+- Regenerate via the committed pure-Python (no deps) script: `python3 scripts/make-icon.py` (run from the repo root). It builds the 36×36 RGBA grid, nearest-neighbour upscales ×5, and writes the PNG with `zlib`/`struct` to **both** `apple-touch-icon.png` and `assets/icon-180.png`. Edit the glyph/colors there; keep it full-bleed square, no transparency, 180×180.
 - Linked in `<head>`: `apple-touch-icon` + same PNG as favicon, `apple-mobile-web-app-title` is **"Español"**, `theme-color` is the pink-cream `--bg` (#FDEEF7).
-- If the icon is redesigned, keep it full-bleed square, no transparency, and re-export at 180×180.
 
 ## Screens & navigation
 Screens are `<div class="screen">` toggled by `showScreen(name)`; `SCREEN_PARENT` defines back-navigation.
